@@ -48,22 +48,25 @@ break
 New-NetIPAddress -InterfaceAlias Ethernet -IPAddress 10.0.0.10 -AddressFamily IPv4 -PrefixLength 24 -DefaultGateway 10.0.0.1
 
 # install ADDS + DHCP op DC1
+$adminPassword = 'Pa55w.rd'
+Install-WindowsFeature AD-Domain-Services, DHCP -IncludeManagementTools -IncludeAllSubFeature
+Install-ADDSForest -DomainName 'adatum.msft' -SafeModeAdministratorPassword (ConvertTo-SecureString $adminPassword -AsPlainText -Force)
+# DC restarts automatically
+
 Add-DhcpServerInDC
 Add-DhcpServerv4Scope -Name ‘default scope’ -StartRange 10.0.0.101 -EndRange 10.0.0.200 -SubnetMask 255.255.255.0
 Set-DhcpServerv4OptionValue -DnsServer 10.0.0.10 -DnsDomain 'adatum.msft' -Router 10.0.0.1
-Install-WindowsFeature AD-Domain-Services, DHCP -IncludeManagementTools -IncludeAllSubFeature
-Install-ADDSForest -DomainName 'adatum.msft' -SafeModeAdministratorPassword $adminPassword
 
-# start other VMs, become member of domain automatically
-Get-VM | Start-VM
+# start SQL/SCOM VM, becomes member of domain automatically
+Get-VM LON-SV1 | Start-VM
 
 # log on to LON-SV1
 
-# Extract files from SCOM DVD to C:
-D:\SCOM_2019.exe
-
 # install AD Tools
 Install-WindowsFeature RSAT-AD-Tools
+
+# Extract files from SCOM DVD to C:
+D:\SCOM_2019.exe
 
 # install SQL
 Get-VM LON-SV1 | Get-VMDvdDrive | Set-VMDvdDrive -Path $sqlPath
@@ -132,6 +135,5 @@ Do {
 } until ( $p2 | where { $_.name -match 'monitoringhost' } )
 
 Write-Host -fore green 'health service started!'
-
 
 
