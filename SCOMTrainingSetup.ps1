@@ -121,7 +121,7 @@ $scomSetup = 'C:\System Center Operations Manager 2019\Setup.exe'
 if (Test-Path $scomSetup) { Write-Host "SCOM Setup files found." } else { throw "SCOM Setup files not found! Aborting." }
 
 New-ADOrganizationalUnit SCOM
-$pw = ConvertTo-SecureString 'Pa$$w0rd' -AsPlainText -Force
+$pw = ConvertTo-SecureString 'Pa55w.rd' -AsPlainText -Force
 'MSAA', 'SDK', 'DRA', 'DWA' | foreach {
     New-ADUser -AccountPassword $pw -Name $_ -Path 'OU=SCOM,DC=Adatum,DC=msft' -Enabled $true
 }
