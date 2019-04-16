@@ -1,14 +1,20 @@
-$destFolder = 'E:\Hyper-V\'
+# requirements
+$serverbasedisk = dir d:\ -recurse -filter 'Base17C-WS16-1607*'
+$clientbasedisk = dir d:\ -recurse -filter 'Base17A-W10-1607*'
+$ParentPath = 'D:\Hyper-V\'
 $sqlPath  = 'E:\Hyper-V\en_sql_server_2016_enterprise_with_service_pack_1_x64_dvd_9542382.iso'
 $scomPath = 'E:\Hyper-V\mu_system_center_operations_manager_2019_x64_dvd_b3488f5c.iso'
+
+
+# init
+$destFolder = 'E:\Hyper-V\'
+$ExportPath = 'C:\Export\'
 $adminPassword = 'Pa55w.rd'
 $timezone = 'W. Europe Standard Time'
 
-$serverbasedisk = dir d:\ -recurse -filter 'Base17C-WS16-1607*'
-$clientbasedisk = dir d:\ -recurse -filter 'Base17A-W10-1607*'
 $switch = Get-VMSwitch | Select -first 1
+if ($switch.count -lt 1) { throw 'No VMSwitch found!' }
 Install-Module Dimmo   # tbv New-VMFromBaseDisk
-
 
 # create client
 New-VMFromBaseDisk -VMName LON-W10 -BaseDisk $clientbasedisk.fullname -VirtualSwitchName $switch.name -DestinationFolder $destFolder
@@ -56,22 +62,28 @@ Install-ADDSForest -DomainName 'adatum.msft' -SafeModeAdministratorPassword (Con
 Add-DhcpServerInDC
 Add-DhcpServerv4Scope -Name ‘default scope’ -StartRange 10.0.0.101 -EndRange 10.0.0.200 -SubnetMask 255.255.255.0
 Set-DhcpServerv4OptionValue -DnsServer 10.0.0.10 -DnsDomain 'adatum.msft' -Router 10.0.0.1
+Get-DhcpServerv4Lease -ScopeId 10.0.0.0
 
 # start SQL/SCOM VM, becomes member of domain automatically
 Get-VM LON-SV1 | Start-VM
-
+vmconnect.exe $env:COMPUTERNAME LON-SV1
 # log on to LON-SV1
 
-# install AD Tools
-Install-WindowsFeature RSAT-AD-Tools
+# init
+diskperf -y
 
 # Extract files from SCOM DVD to C:
 D:\SCOM_2019.exe
 
+# install AD Tools
+Install-WindowsFeature RSAT-AD-Tools
+
+
 # install SQL
 Get-VM LON-SV1 | Get-VMDvdDrive | Set-VMDvdDrive -Path $sqlPath
-d:\setup.exe /q /ACTION=Install /FEATURES=SQLEngine,FullText,RS /INSTANCENAME=MSSQLSERVER /SQLSVCACCOUNT="adatum\administrator" /SQLSVCPASSWORD="Pa55w.rd" /SQLSYSADMINACCOUNTS="adatum\domain admins" /AGTSVCACCOUNT="NT AUTHORITY\Network Service" /IACCEPTSQLSERVERLICENSETERMS
-Get-VM LON-SV1 | Get-VMDvdDrive | Set-VMDvdDrive -Path $sqlPath
+taskmgr.exe
+D:\Setup.exe /q /ACTION=Install /FEATURES=SQLEngine,FullText,RS /INSTANCENAME=MSSQLSERVER /SQLSVCACCOUNT="adatum\administrator" /SQLSVCPASSWORD="Pa55w.rd" /SQLSYSADMINACCOUNTS="adatum\domain admins" /AGTSVCACCOUNT="NT AUTHORITY\Network Service" /IACCEPTSQLSERVERLICENSETERMS
+Get-VM LON-SV1 | Get-VMDvdDrive | Set-VMDvdDrive -Path $null
 
 <#
 /FEATURES=SQLEngine,FullText	Installs the Database Engine and full-text.
@@ -81,14 +93,16 @@ Get-VM LON-SV1 | Get-VMDvdDrive | Set-VMDvdDrive -Path $sqlPath
 #>
 
 
-
-
 Get-VM | where name -notmatch dc | Stop-VM
 Get-VM | where name -match dc | Stop-VM
 
-Export-VM
+mkdir $ExportPath
+Get-VM | Export-VM -Path $ExportPath
 
-
+# dedup files
+#dir $ExportPath, $ParentPath | group length | where count -gt 1
+$dups = Get-ChildItem $ExportPath, $ParentPath -Recurse -Filter '*.vhd' | Sort-Object length -Descending | Select-Object length, name, directory, fullname | Out-GridView -OutputMode Multiple
+$dups | foreach { Remove-Item $_.fullname }
 
 #copy files to central storage
 
