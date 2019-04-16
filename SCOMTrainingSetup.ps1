@@ -63,6 +63,7 @@ Add-DhcpServerInDC
 Add-DhcpServerv4Scope -Name ‘default scope’ -StartRange 10.0.0.101 -EndRange 10.0.0.200 -SubnetMask 255.255.255.0
 Set-DhcpServerv4OptionValue -DnsServer 10.0.0.10 -DnsDomain 'adatum.msft' -Router 10.0.0.1
 Get-DhcpServerv4Lease -ScopeId 10.0.0.0
+Remove-DnsServerForwarder   # remove all forwarders
 
 # start SQL/SCOM VM, becomes member of domain automatically
 Get-VM LON-SV1 | Start-VM
