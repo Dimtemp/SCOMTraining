@@ -90,7 +90,8 @@ c.	If you agree to send operational data reports to Microsoft, ODR reports are g
 ## Confirming Successful Deployment of the Reporting Server
 After the reporting server is deployed, it can take up to 30 minutes for reports to appear in the Reporting space of the Operations console. You also must close and reopen each open instance of the console to expose the Reporting button in the navigation pane of the console.
 After waiting a short while, close and reopen the Operations console and navigate to the Reporting space. Select the Microsoft ODR Report Library report folder in the navigation pane, and then double-click on any of the ODR reports in the central pane, such as Management Packs. The selected report is generated and displayed in a new window. Close the report window when done.
-If time permits: Install the Web console
+
+## If time permits: Install the Web console
 Open a PowerShell prompt and enter these commands:
 Import-Module ServerManager
 Add-WindowsFeature Web-Metabase
