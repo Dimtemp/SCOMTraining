@@ -1,4 +1,9 @@
 # Chapter: Backup and Recovery
+
+## Preparation
+Log on to LON-SV1 as Adatum\Administrator.
+Open a web browser and download the SQL Management Studio from this URL: https://go.microsoft.com/fwlink/?linkid=2043154.
+
 ## Operations Manager Database Backups
 1. Open SQL Server Management Studio and navigate to Databases -> OperationsManager. Right-click the OperationsManager database, select Tasks, and then choose Back Up to bring up the Back up Database General page.
 2. The default backup type is Full, which is the backup type used for the OperationsManager database. This backup type backs up the entire database file, rather than just those changes since the previous backup. (Because the OpsMgr databases have a simple recovery model by default, the transaction log is truncated as each transaction completes, meaning you cannot do an transaction log backup unless you change the recovery model in the database options to Full.)
