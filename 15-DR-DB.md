@@ -29,5 +29,5 @@ Follow these steps to restore the operational database:
 2. Before performing a full restore for a SQL Server database, you must delete the existing database. Launch SQL Server Management Studio -> Databases -> OperationsManager. Right-click the database and select Delete. Uncheck the option to delete and back up and restore history information from the database; check the option to close existing connections; then click OK to delete the operational database.
 3. Restore the database from the most recent backup. Right-click Databases and select Restore Database. In the Source for Restore section, select From Database, and select OperationsManager from the drop-down list. This displays the Restore Database page.
 4. If you have more than one backup, verify you selected the latest one for restore and click OK to begin the restore process. Depending on the size of your database, this may take several minutes.
-5. Start the services you disabled on your management servers in step 1 and verify you can open the SCOM Console.
-NOTE Eventually an alert about the SQL Broker will appear. To resolve this, open SQL Management Studio, Open the Properties of the OperationsManager database, click Options and enable the broker (true).
+5. Open the Properties of the OperationsManager database, click Options and enable the broker (true). If you omit this step, eventually an alert about the SQL Broker will appear.
+6. Start the services you disabled on your management servers in step 1 and verify you can open the SCOM Console.
