@@ -1,17 +1,20 @@
 # Chapter: Installing System Center Operations Manager
 
-## Prepare service accounts
+## Prepare environment
 1. Open Hyper-V Manager.
+1. Make sure the LON-DC1 VM is running. If it is not, start it and wait for the boot procedure.
 1. Start LON-SV1 and log on as Adatum\Administrator.
+1. Open a PowerShell console.
+1. Run this command: 
+1. New-ADOrganizationalUnit SCOM
+1. $pw = ConvertTo-SecureString 'Pa55w.rd' -AsPlainText -Force
+1. 'MSAA', 'SDK', 'DRA', 'DWA' | foreach { New-ADUser -AccountPassword $pw -Name $_ -Path 'OU=SCOM,DC=Adatum,DC=msft' -Enabled $true }
+1. ADD-ADGroupMember -Identity 'Domain Admins' -Members 'MSAA', 'SDK'
+1. Get-Service SQLSERVERAGENT | Set-Service -StartupType Automatic -Passthru | Start-Service   # tbv Reporting
 1. Open Active Directory Users and Computers from the Administrative Tools.
-1. Create these four accounts in Active Directory and assign them a unique password:
-•	MSAA
-•	SDK
-•	DRA
-•	DWA
-
-1. Open Computer Management.
-1. Open Configuration, open Local Users and Groups, open Groups and open the Administrators group. Add the ADATUM\MSAA and ADATUM\SDK domain accounts as members of the local Administrators group.
+1. Verify the four service accounts you just created using PowerShell.
+1. Open Services from the Administrative Tools.
+1. Verify that the SQL Server Agent Service is running and set to automatic.
 
 
 ## Run the Operations Manager setup
