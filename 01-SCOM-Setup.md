@@ -6,10 +6,12 @@
 1. Start LON-SV1 and log on as Adatum\Administrator.
 1. Open a PowerShell console.
 1. Run these commands:
-  1. New-ADOrganizationalUnit SCOM
-  1. $pw = ConvertTo-SecureString 'Pa55w.rd' -AsPlainText -Force
-  1. 'MSAA', 'SDK', 'DRA', 'DWA' | foreach { New-ADUser -AccountPassword $pw -Name $_ -Path 'OU=SCOM,DC=Adatum,DC=msft' -Enabled $true }
-  1. ADD-ADGroupMember -Identity 'Domain Admins' -Members 'MSAA', 'SDK'
+```PowerShell
+  New-ADOrganizationalUnit SCOM
+  $pw = ConvertTo-SecureString 'Pa55w.rd' -AsPlainText -Force
+  'MSAA', 'SDK', 'DRA', 'DWA' | foreach { New-ADUser -AccountPassword $pw -Name $_ -Path 'OU=SCOM,DC=Adatum,DC=msft' -Enabled $true }
+  ADD-ADGroupMember -Identity 'Domain Admins' -Members 'MSAA', 'SDK'
+```
 1. Open Active Directory Users and Computers from the Administrative Tools.
 1. Verify the four service accounts you just created using PowerShell.
 1. Open Windows Explorer.
