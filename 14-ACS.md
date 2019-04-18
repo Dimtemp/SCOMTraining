@@ -19,7 +19,7 @@ UploadAuditReports <AuditDBServer> <Reporting Server Web Service URL> <ACS folde
 For example:
 UploadAuditReports  LON-SV1  http://LON-SV1/reportserver  C:\ACS
 3. Running this command successfully produces output which, at first glance, appears to contain warnings, but actually are empty error lists, and this is an expected output.
-4. Browse to the Reporting Services Report Manager URL (http://LON-SV1/Reports) and open the Audit Reports folder. Click the Details View button on the right of the screen. Click on the DBAudit data source and confirm Windows integrated security is selected for the connection credential type. If you make any changes, click Apply.
+4. Browse to the Reporting Services Report Manager URL (http://LON-SV1/Reports) and open the Audit Reports folder. Click the View button on the right of the screen and select Show Hidden Items. Click on the DBAudit data source and confirm that the connection string mentions Windows integrated security.
 
 ## Enabling ACS Forwarders
 Audit collection is enabled in the Operations console from the Monitoring -> Operations Manager views. Enable audit collection first for all management servers and gateways, then for all agents. Follow these steps:
