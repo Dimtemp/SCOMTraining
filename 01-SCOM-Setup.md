@@ -79,7 +79,9 @@ https://docs.microsoft.com/en-us/system-center/scom/release-notes-om?view=sc-om-
 ## Confirming Installation Readiness of the Reporting Server
 Verify that Reporting Services is configured correctly and running before attempting to install the OpsMgr Reporting server feature. Spending several minutes confirming readiness can save a significant amount of time recovering from a setup failure. Follow these steps to install a reporting server running SQL Server Reporting Services:
 1. Open a PowerShell console and run this command:
+```PowerShell
 > Get-Service SQLSERVERAGENT | Set-Service -StartupType Automatic -Passthru | Start-Service
+```
 1. Open Services from the Administrative Tools.
 1. Verify that the SQL Server Agent Service is running and set to automatic.
 1. Click Start -> Programs -> Microsoft SQL Server -> Configuration Tools -> Reporting Services Configuration Manager. Connect to the instance on which you installed Reporting Services (LON-SV1).
@@ -114,7 +116,9 @@ After confirming readiness of the local Reporting Services instance, perform the
 
 ## If time permits: Install the Web console
 1. On the LON-SV1 Server, open a PowerShell prompt and enter this command:
-> Install-WindowsFeature Web-Windows-Auth, Web-Asp-Net, Web-Request-Monitor, NET-WCF-HTTP-Activation45, Web-Mgmt-Console, Web-Metabase
+```PowerShell
+Install-WindowsFeature Web-Windows-Auth, Web-Asp-Net, Web-Request-Monitor, NET-WCF-HTTP-Activation45, Web-Mgmt-Console, Web-Metabase
+```
 1. This might take several minutes.
 1. Open Windows Explorer.
 1. Navigate to C:\System Center Operations Manager 2019.
