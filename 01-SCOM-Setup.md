@@ -92,37 +92,32 @@ After the reporting server is deployed, it can take up to 30 minutes for reports
 After waiting a short while, close and reopen the Operations console and navigate to the Reporting space. Select the Microsoft ODR Report Library report folder in the navigation pane, and then double-click on any of the ODR reports in the central pane, such as Management Packs. The selected report is generated and displayed in a new window. Close the report window when done.
 
 ## If time permits: Install the Web console
-Open a PowerShell prompt and enter these commands:
-Import-Module ServerManager
-Add-WindowsFeature Web-Metabase
-1. Installing the Web console requires ISAPI and CGI Restrictions in IIS enabled for ASP.NET 4. Select the web server in IIS Manager, then select the IIS -> ISAPI and CGI Restrictions feature, and click Open Feature in the Actions pane.
-2. Locate ASP.NET v4.0.30319 in the Description column. You may find two entries, for 32-bit and 64-bit frameworks. Select any instances of ASP.NET v4.0.30319 in Not Allowed status, then click Allow in the Actions Pane.
-3. Run Setup from the Operations Manager DVD, and from the splash screen, click the large Install link to start the setup wizard. After the Launching Operations Manager Setup splash screen, you will see the Select features to install dialog.
-4. Select Web console. Click Next.
-5. Select Installation location. The default location is %ProgramFiles%\System Center 2012\Operations Manager. Accept the default or specify your alternative path, and click Next.
-6. Setup continues with the message Verifying that your environment has the required hardware and software. If issues are found, the message The Setup wizard cannot continue appears. This means additional hardware resources or software are required to continue.
-7. After resolving any prerequisite problems, click Verify Prerequisites Again. If the verification is successful, click Next.
-8. At the Specify a Management server page, enter the name of a management server to be used by the Web console only. The management server you specify will handle data associated with specific management servers or management groups. Normally, this is the name of the first installed management server, or if using a load-balanced management server pool, the virtual server name of the pool. Click Next.
-9. At the Specify a web site for use with the Web console page, select an IIS web site to be used for the Web console. Select an existing web site from the available web sites on the local IIS server. The Default Web Site is the default setting.
-10. You may see this warning: Web console does not have sufficient access to the database. Setup can continue, but note that some components may not fully install. If this appears and you will be using the application performance monitoring (APM) features of OpsMgr, execute the following SQL statement against the operations and data warehouse databases in SQL Server Management Studio.
-EXEC [apm].GrantRWPermissionsToComputer 'ADATUM\LON-SV1$'
-After executing the SQL statement and refreshing the setup configuration (click Previous, then Next again) the warning should clear.
-11. At the Select an authentication mode for use with the Web console page, select Mixed authentication mode. Click Next.
+1. On the LON-SV1 Server, open a PowerShell prompt and enter this command:
+Install-WindowsFeature Web-Windows-Auth, Web-Asp-Net, Web-Request-Monitor, NET-WCF-HTTP-Activation45, Web-Mgmt-Console, Web-Metabase
+1. Run Setup from the Operations Manager DVD, and from the splash screen, click the large Install link to start the setup wizard. After the Launching Operations Manager Setup splash screen, you will see the Select features to install dialog.
+1. Select Web console. Click Next.
+1. Select Installation location. Accept the default or specify your alternative path, and click Next.
+1. Setup continues with the message Verifying that your environment has the required hardware and software. If issues are found, the message The Setup wizard cannot continue appears. This means additional hardware resources or software are required to continue.
+1. After resolving any prerequisite problems, click Verify Prerequisites Again. If the verification is successful, click Next.
+1. At the Specify a Management server page, enter the name of a management server to be used by the Web console only. The management server you specify will handle data associated with specific management servers or management groups. Normally, this is the name of the first installed management server, or if using a load-balanced management server pool, the virtual server name of the pool. Click Next.
+1. At the Specify a web site for use with the Web console page, select an IIS web site to be used for the Web console. Select an existing web site from the available web sites on the local IIS server. The Default Web Site is the default setting.
+1. At the Select an authentication mode for use with the Web console page, select Mixed authentication mode. Click Next.
 Note: If you are publishing the Web console to the Internet, select Use Network Authentication. Use Mixed Authentication only if you are using the Web console in intranet scenarios. 
-12. At the Web console Installation Summary page, review your selections. Take note of the Uniform Resource Locators (URLs) to be used for accessing the Web console and APM features. To continue, press Install.
-13. Setup is complete when all green checkmarks appear in the left column. Any component that failed to install is marked with a red “X.” You will also want to Exit the OpsMgr installer that is still open.
-14. Configure permissions inheritance for the Web console:
-▶ In Windows Explorer, navigate to C:\Program Files\System Center 2012\Operations Manager\WebConsole\MonitoringView), right-click the TempImages folder, and click Properties.
+1. At the Web console Installation Summary page, review your selections. Take note of the Uniform Resource Locators (URLs) to be used for accessing the Web console and APM features. To continue, press Install.
+1. Setup is complete when all green checkmarks appear in the left column. Any component that failed to install is marked with a red “X.” You will also want to Exit the OpsMgr installer that is still open.
+1. Configure permissions inheritance for the Web console:
+▶ In Windows Explorer, navigate to C:\Program Files\System Center\Operations Manager\WebConsole\MonitoringView), right-click the TempImages folder, and click Properties.
 ▶ On the Security tab, click Advanced.
 ▶ On the Permissions tab, select Change Permissions.
 ▶ Clear the Include inheritable permissions from this object’s parent check box.
 ▶ In Permission entries, click Administrators, and then click Remove. Repeat for the SYSTEM entry, and then click OK.
 ▶ Click OK to close Advanced Security Settings for TempImages, and then click OK to close TempImages Properties.
 The first time you access the Web console with your browser, you are prompted to install or update Silverlight if needed. It may be necessary to add the website of the Web console to your browser’s trusted sites.
+
 If the Web console is not functioning then perform this procedure.
 1.	Open Windows Explorer and navigate to c:\windows\temp. Open the properties.
 2.	Open Security tab and select IIS-IUSR. In the permissions list select modify in the Allow column and click Ok.
 3.	Open a PowerShell prompt and enter this command: iisreset.
 4.	Try to reload the Web Console.
 
-Now would be a great time to create a checkpoint (previously known as a snapshot) of your virtual machines, so you can revert to the current situation in case of an emergency. Open Hyper-V Manager, select LON-DC1 and LON-SV1 and click Checkpoint (or Snapshot). Verify that a snapshot has been created from these two machines.
+Now would be a great time to create a checkpoint (snapshot) of your virtual machines, so you can revert to the current situation in case of an emergency. Open Hyper-V Manager, select LON-DC1 and LON-SV1 and click Checkpoint. Verify that a snapshot has been created from these two machines.
