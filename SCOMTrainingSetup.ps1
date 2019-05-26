@@ -1,9 +1,10 @@
 # requirements
-$serverbasedisk = dir d:\ -recurse -filter 'Base17C-WS16-1607*'
-$clientbasedisk = dir d:\ -recurse -filter 'Base17A-W10-1607*'
 $ParentPath = 'D:\Hyper-V\'
 $sqlPath  = 'E:\Hyper-V\en_sql_server_2016_enterprise_with_service_pack_1_x64_dvd_9542382.iso'
 $scomPath = 'E:\Hyper-V\mu_system_center_operations_manager_2019_x64_dvd_b3488f5c.iso'
+
+$serverbasedisk = dir $ParentPath -recurse -filter 'Base17C-WS16-1607*'
+$clientbasedisk = dir $ParentPath -recurse -filter 'Base17A-W10-1607*'
 
 
 # init
@@ -59,11 +60,14 @@ Install-WindowsFeature AD-Domain-Services, DHCP -IncludeManagementTools -Include
 Install-ADDSForest -DomainName 'adatum.msft' -SafeModeAdministratorPassword (ConvertTo-SecureString $adminPassword -AsPlainText -Force)
 # DC restarts automatically
 
+# https://blogs.technet.microsoft.com/uktechnet/2016/06/08/setting-up-active-directory-via-powershell/
 Add-DhcpServerInDC
 Add-DhcpServerv4Scope -Name ‘default scope’ -StartRange 10.0.0.101 -EndRange 10.0.0.200 -SubnetMask 255.255.255.0
 Set-DhcpServerv4OptionValue -DnsServer 10.0.0.10 -DnsDomain 'adatum.msft' -Router 10.0.0.1
 Get-DhcpServerv4Lease -ScopeId 10.0.0.0
 Remove-DnsServerForwarder   # remove all forwarders
+# https://devblogs.microsoft.com/scripting/use-powershell-to-create-ipv4-scopes-on-your-dhcp-server/
+# https://docs.microsoft.com/en-us/powershell/module/dhcpserver/set-dhcpserverv4optionvalue?view=win10-ps
 
 # start SQL/SCOM VM, becomes member of domain automatically
 Get-VM LON-SV1 | Start-VM
@@ -91,6 +95,7 @@ Get-VM LON-SV1 | Get-VMDvdDrive | Set-VMDvdDrive -Path $null
 /FEATURES=SQL,Tools             Installs the complete Database Engine and all tools
 /SQLSVCINSTANTFILEINIT="True"
 /PID   Specifies the product key for the edition of SQL Server. If this parameter is not specified, Evaluation is used.
+https://docs.microsoft.com/en-us/sql/database-engine/install-windows/install-sql-server-from-the-command-prompt?view=sql-server-2017#Feature
 #>
 
 
