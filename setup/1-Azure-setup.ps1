@@ -30,7 +30,8 @@ $sourceFiles | Foreach { AzCopy copy $_ $blobSas }
 
 
 # create VM in Azure for each student
-UITWERKEN
+# UITWERKEN
+$cred!!!!!!!!!!!!!
 $students | Foreach-Object {
-    New-AzVM -Resourcegroup $_  -VMName $_ -location $location -vmsize $vmsize
+    New-AzVM -ResourceGroupName $_  -Name $_ -Location $location -Size $vmsize -AllocationMethod Static -Credential $cred -Image 'Win2016Datacenter' # -OpenPorts 3389 -AsJob
 }
