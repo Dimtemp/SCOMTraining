@@ -49,3 +49,10 @@ Get-VM | foreach {
 # start DC
 Start-VM LON-DC1
 
+# start SQL/SCOM VM, becomes member of domain automatically
+Get-VM LON-SV1 | Start-VM
+vmconnect.exe $env:COMPUTERNAME LON-SV1
+Get-VM LON-SV1 | Get-VMDvdDrive | Set-VMDvdDrive -Path $sqlPath
+Get-VM LON-SV1 | Get-VMDvdDrive | Set-VMDvdDrive -Path $null
+
+
