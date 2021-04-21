@@ -1,17 +1,16 @@
 # run this script from the management server VM
 
-# enable disk stats
+# run taskmgr and enable disk stats
+taskmgr.exe
 diskperf -y
 
-# Extract files from SCOM DVD to C:
+# Extract files from SCOM DVD
 D:\SCOM_2019.exe
 
 # install AD Tools
 Install-WindowsFeature RSAT-AD-Tools
 
-
 # install SQL
-taskmgr.exe
 D:\Setup.exe /q /ACTION=Install /FEATURES=SQLEngine,FullText,RS /INSTANCENAME=MSSQLSERVER /SQLSVCACCOUNT="adatum\administrator" /SQLSVCPASSWORD="Pa55w.rd" /SQLSYSADMINACCOUNTS="adatum\domain admins" /AGTSVCACCOUNT="NT AUTHORITY\Network Service" /IACCEPTSQLSERVERLICENSETERMS
 
 <#
