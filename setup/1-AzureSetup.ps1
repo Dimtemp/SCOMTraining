@@ -9,11 +9,14 @@ $sourceFiles | Test-Path
 Get-Command AzCopy.exe
 
 # create storage account
-UITWERKEN
+$sa = New-AzStorageAccount -ResourceGroupName SCOMTraining -Name "stor$(Get-Random)" -SkuName Standard_LRS -Location 'westeurope' -Kind StorageV2
+New-AzStorageContainer -Context $sa.Context -Name 'container1' -Permission Container
+$StartTime = Get-Date
+$EndTime = $startTime.AddDays(365)
 
 # generate SAS
-UITWERKEN
-$blobSas = 'https://scomtraining.blob.core.windows.net/files?sp=acw&st=2021-04-20T15:01:29Z&se=2022-04-20T23:01:29Z&spr=https&sv=2020-02-10&sr=c&sig=7scTOHooh25UtcCgGlyCZXuE1ib0eCojIDiBCOI0wTQ%3D'
+$blobSas = New-AzStorageContainerSASToken -Name 'container1' -Permission rwd -StartTime $StartTime -ExpiryTime $EndTime -context $sa.Context
+
 
 # upload files to storage account
 $sourceFiles | Foreach { AzCopy copy $_ $blobSas }
