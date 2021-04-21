@@ -1,56 +1,54 @@
-# Run this from Azure VM
-Set-ExecutionPolicy Bypass -Scope Process -Force
+# Run this script from the host VM
+# Set-ExecutionPolicy Bypass -Scope Process -Force
+
+# init
+$destinationFolder = 'C:\Hyper-V\'
+$adminPassword = 'Pa55w.rd'
+$timezone = 'W. Europe Standard Time'
 
 # Chocolatey  install
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
 iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
+# install Dimmo module, required for New-VMFromBaseDisk
+Install-Module Dimmo
+
 # Git setup
 choco install git
 cd\
-git clone https://github.com/Dimtemp/SCOMTraining/blob/master/SCOMTrainingSetup.ps1
+git clone https://github.com/Dimtemp/SCOMTraining/
 git clone https://github.com/Azure/azure-devtestlab.git
 
 # Hyper-V setup
 cd \azure-devtestlab\samples\ClassroomLabs\Scripts\HyperV\
-Set-ExecutionPolicy bypass -force
+# Set-ExecutionPolicy bypass -force
 .\SetupForNestedVirtualization.ps1   # No DHCP?!?!?!? Provided by LON-DC1
+
+# download and install AzCopy
 Invoke-WebRequest -Uri 'https://aka.ms/downloadazcopy-v10-windows' -OutFile AzCopy.zip -UseBasicParsing
-
-#Expand Archive
 Expand-Archive ./AzCopy.zip
-
-# move AzCopy to windir
 Get-ChildItem ./AzCopy/*/azcopy.exe | Move-Item -Destination $env:windir
 
 # copy files from storage account using AzCopy
-mkdir C:\Hyper-V
-AzCopy.exe copy $blobSas C:\Hyper-V
+mkdir $destinationFolder
+AzCopy.exe copy $blobSas $destinationFolder   # blobsas!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-#Base17C-WS16-1607*
-#Base17A-W10-1607*
-#E:\Hyper-V\en_sql_server_2016_enterprise_with_service_pack_1_x64_dvd_9542382.iso
-#E:\Hyper-V\mu_system_center_operations_manager_2019_x64_dvd_b3488f5c.iso
-
+# required files:
+# Base17C-WS16-1607
+# Base17A-W10-1607
+# en_sql_server_2016_enterprise_with_service_pack_1_x64_dvd_9542382.iso
+# mu_system_center_operations_manager_2019_x64_dvd_b3488f5c.iso
 
 # requirements
-$ParentPath = 'D:\Hyper-V\'
-$sqlPath  = 'E:\Hyper-V\en_sql_server_2016_enterprise_with_service_pack_1_x64_dvd_9542382.iso'
-$scomPath = 'E:\Hyper-V\mu_system_center_operations_manager_2019_x64_dvd_b3488f5c.iso'
+$sqlPath  = Join-Path $destinationFolder 'en_sql_server_2016_enterprise_with_service_pack_1_x64_dvd_9542382.iso'
+$scomPath = Join-Path $destinationFolder 'mu_system_center_operations_manager_2019_x64_dvd_b3488f5c.iso'
 
-$serverbasedisk = dir $ParentPath -recurse -filter 'Base17C-WS16-1607*'
-$clientbasedisk = dir $ParentPath -recurse -filter 'Base17A-W10-1607*'
+$serverbasedisk = Get-ChildItem $destinationFolder -recurse -filter 'Base17C-WS16-1607*'
+$clientbasedisk = Get-ChildItem $destinationFolder -recurse -filter 'Base17A-W10-1607*'
 
-
-# init
-$destFolder = 'E:\Hyper-V\'
-$ExportPath = 'C:\Export\'
-$adminPassword = 'Pa55w.rd'
-$timezone = 'W. Europe Standard Time'
 
 $switch = Get-VMSwitch | Select -first 1
 if ($switch.count -lt 1) { throw 'No VMSwitch found!' }
-Install-Module Dimmo   # tbv New-VMFromBaseDisk
 
 # create client
 New-VMFromBaseDisk -VMName LON-W10 -BaseDisk $clientbasedisk.fullname -VirtualSwitchName $switch.name -DestinationFolder $destFolder
@@ -61,7 +59,8 @@ New-VMFromBaseDisk -VMName LON-W10 -BaseDisk $clientbasedisk.fullname -VirtualSw
 }
 Get-VM LON-SV1 | Set-VMProcessor -Count 4
 Get-VM LON-SV1 | Set-VMMemory -StartupBytes 8GB
-Get-VM LON-SV1 | Get-VMDvdDrive | Set-VMDvdDrive -Path $scomPath
+Get-VM LON-SV1 | Get-VMDvdDrive | Set-VMDvdDrive -Path $sqlPath
+# Get-VM LON-SV1 | Get-VMDvdDrive | Set-VMDvdDrive -Path $scomPath
 
 # Create unattended files
 Get-VM | foreach {
@@ -85,8 +84,6 @@ Get-VM | foreach {
 Start-VM LON-DC1
 
 # start SQL/SCOM VM, becomes member of domain automatically
-Get-VM LON-SV1 | Start-VM
-vmconnect.exe $env:COMPUTERNAME LON-SV1
-Get-VM LON-SV1 | Get-VMDvdDrive | Set-VMDvdDrive -Path $sqlPath
-Get-VM LON-SV1 | Get-VMDvdDrive | Set-VMDvdDrive -Path $null
-
+# Start-VM LON-SV1
+# vmconnect.exe $env:COMPUTERNAME LON-SV1
+# Get-VM LON-SV1 | Get-VMDvdDrive | Set-VMDvdDrive -Path $null
