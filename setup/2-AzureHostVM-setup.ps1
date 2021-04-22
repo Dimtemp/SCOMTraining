@@ -6,12 +6,15 @@ $destinationFolder = 'C:\Hyper-V\'
 $adminPassword = 'Pa55w.rd'
 $timezone = 'W. Europe Standard Time'
 
-# Chocolatey  install
+# enable Tls12
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+
+# Chocolatey  install
 iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+choco feature enable -n allowGlobalConfirmation
 
 # install Dimmo module, required for New-VMFromBaseDisk
-Install-Module Dimmo
+Install-Module Dimmo -Force
 
 # Git setup
 choco install git
