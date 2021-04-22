@@ -1,7 +1,7 @@
 # init
 $students = 'student1', 'student2'
 $resourceGroupName = 'SCOMTraining'
-$vmsize = 'Standard D4s v3'
+$vmsize = 'Standard_D4s_v3'
 $location = 'westeurope'
 $containerName = 'files'
 $secStringPassword = ConvertTo-SecureString 'Pa55w.rd1234' -AsPlainText -Force
@@ -38,5 +38,7 @@ $students | Foreach-Object {
     [pscredential]$cred = New-Object System.Management.Automation.PSCredential ($_, $secStringPassword)
     
     # create VM
-    New-AzVM -ResourceGroupName $_  -Name $_ -Location $location -Size $vmsize -AllocationMethod Static -Credential $cred -Image 'Win2016Datacenter' # -OpenPorts 3389 -AsJob
+    # extensions!!!
+    # -AsJob
+    New-AzVM -ResourceGroupName $_  -Name $_ -Location $location -Size $vmsize -AllocationMethod Static -Credential $cred -Image 'Win2016Datacenter'
 }
