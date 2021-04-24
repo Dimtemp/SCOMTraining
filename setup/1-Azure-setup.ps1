@@ -3,7 +3,7 @@ $students = 'student1', 'student2'
 $resourceGroupName = 'SCOMTraining'
 $vmsize = 'Standard_D4s_v3'
 $location = 'westeurope'
-$containerName = 'files2'
+$containerName = 'files3'
 $secStringPassword = ConvertTo-SecureString 'Pa55w.rd1234' -AsPlainText -Force
 $sourceFilesPath = 'Q:\Images\SC2019'
 $sourceFiles = 'Q:\Images\Parent\Base17A-W10-1607.vhd', 'Q:\Images\Parent\Base17C-WS16-1607.vhd', 'Q:\Software\Microsoft\SQL\en_sql_server_2016_enterprise_with_service_pack_1_x64_dvd_9542382.iso', 'Q:\Software\Microsoft\System Center 2019\mu_system_center_operations_manager_2019_x64_dvd_b3488f5c.iso'
@@ -30,10 +30,12 @@ New-AzStorageContainer -Context $sa.Context -Name $containerName -Permission Con
 # generate SAS
 $StartTime = Get-Date
 $ExpiryTime = $startTime.AddDays(365)
-$blobSas = New-AzStorageContainerSASToken -Name $containerName -Permission rwd -StartTime $StartTime -ExpiryTime $ExpiryTime -context $sa.Context
+$blobSas = New-AzStorageContainerSASToken -Name $containerName -Permission w -StartTime $StartTime -ExpiryTime $ExpiryTime -context $sa.Context -Protocol HttpsOnly
+$blobSas = $sa.Context.BlobEndPoint + $containerName + $blobSas
+$blobSas
 
 # upload files to storage account
-AzCopy copy $sourceFilesPath $blobSas --recurse
+AzCopy copy $sourceFilesPath $blobSas --recursive
 $sourceFiles | Foreach { AzCopy copy $_ $blobSas }
 
 
@@ -47,3 +49,4 @@ $students | Foreach-Object {
     # -AsJob
     New-AzVM -ResourceGroupName $_  -Name $_ -Location $location -Size $vmsize -AllocationMethod Static -Credential $cred -Image 'Win2016Datacenter'
 }
+
