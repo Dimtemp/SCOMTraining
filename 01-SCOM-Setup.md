@@ -13,7 +13,7 @@ dir C:\Hyper-V\ *.msi -Recurse | foreach { Copy-VMFile -name LON-SV1 -SourcePath
 ```
 1. Open Hyper-V Manager, rightclick LON-SV1 and click Connect.
 1. Make sure you enable a full screen resolution.
-1. Log on as Adatum\Administrator.
+1. Log on as Adatum\Administrator with the password **Pa55w.rd**
 1. **Note!** If you're required to change your password, make sure you note down the new password somewhere! You're required to update a service with this password later.
 
 
