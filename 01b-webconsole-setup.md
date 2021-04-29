@@ -18,5 +18,3 @@ Install-WindowsFeature Web-Windows-Auth, Web-Asp-Net, Web-Request-Monitor, NET-W
   1. Note: If you are publishing the Web console to the Internet, select Use Network Authentication. Use Mixed Authentication only if you are using the Web console in intranet scenarios. 
 1. At the Web console Installation Summary page, review your selections. Take note of the Uniform Resource Locators (URLs) to be used for accessing the Web console and APM features. To continue, press Install.
 1. Setup is complete when all green checkmarks appear in the left column. Any component that failed to install is marked with a red “X.” 
-
-Now would be a great time to create a checkpoint (snapshot) of your virtual machines, so you can revert to the current situation in case of an emergency. Open Hyper-V Manager, select LON-DC1 and LON-SV1 and click Checkpoint. Verify that a snapshot has been created from these two machines.
