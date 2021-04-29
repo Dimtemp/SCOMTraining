@@ -8,12 +8,13 @@
 1. Click View, click Show Script pane.
 1. Run these commands:
 ```PowerShell
-Copy-VMFile -name lon-sv1 -SourcePath C:\Hyper-V\shared\SQLSysClrTypes.msi -DestinationPath c:\ -FileSource Host
-Copy-VMFile -name lon-sv1 -SourcePath C:\Hyper-V\shared\ReportViewer.msi -DestinationPath c:\ -FileSource Host
+Get-VM|Enable-VMIntegrationService -Name 'Guest Service Interface'
+dir C:\Hyper-V\ *.msi -Recurse | foreach { Copy-VMFile -name LON-SV1 -SourcePath $_.FullName -DestinationPath C:\ -FileSource Host }
 ```
 1. Open Hyper-V Manager, rightclick LON-SV1 and click Connect.
 1. Make sure you enable a full screen resolution.
 1. Log on as Adatum\Administrator.
+1. **Note!** If you're required to change your password, make sure you note down the new password somewhere! You're required to update a service with this password later.
 
 
 ## Prepare Active Directory
@@ -28,6 +29,7 @@ Copy-VMFile -name lon-sv1 -SourcePath C:\Hyper-V\shared\ReportViewer.msi -Destin
 ```
 1. Open Active Directory Users and Computers from the Administrative Tools.
 1. Verify the four service accounts you just created using PowerShell.
+
 
 ## Install prerequisites
 1. Run Windows Explorer.
