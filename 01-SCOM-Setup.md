@@ -142,3 +142,10 @@ After confirming readiness of the local Reporting Services instance, perform the
 ## Confirming Successful Deployment of the Reporting Server
 1, After the reporting server is deployed, it can take up to 30 minutes for reports to appear in the Reporting space of the Operations console. You also must close and reopen each open instance of the console to expose the Reporting button in the navigation pane of the console.
 1. After waiting a short while, close and reopen the Operations console and navigate to the Reporting space. Select the Microsoft ODR Report Library report folder in the navigation pane, and then double-click on any of the ODR reports in the central pane, such as Management Packs. The selected report is generated and displayed in a new window. Close the report window when done.
+
+
+## Create a checkpoint.
+1. Now would be a great time to create a checkpoint (snapshot) of your virtual machines, so you can revert to the current situation in case of an emergency.
+1. Minimize all Virtual Machine Connection sessions.
+1. Open Hyper-V Manager, select both the LON-DC1 and LON-SV1 VM. Click Action and click Checkpoint.
+1. Verify that a snapshot has been created from these two machines.
