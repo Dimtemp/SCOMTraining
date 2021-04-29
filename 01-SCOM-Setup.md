@@ -1,10 +1,11 @@
-# Chapter: Installing System Center Operations Manager
+# Chapter: Installing System Center Operations Manager 2019
 
 ## Prepare environment
 1. Open Hyper-V Manager.
 1. Make sure the LON-DC1 VM is running. If it is not, start it and wait for the boot procedure.
 1. Start LON-SV1 and log on as Adatum\Administrator.
-1. Open a PowerShell console.
+1. Click Start and click Windows PowerShell ISE.
+1. Click View, click Show Script pane.
 1. Run these commands:
 ```PowerShell
   New-ADOrganizationalUnit SCOM
@@ -24,9 +25,9 @@
 1. Navigate to C:\System Center Operations Manager 2019.
 1. Run setup.exe.
 1. From the splash screen click the large Install link to start the setup wizard.
-1. Select Management server and Operations console. Clicking the expand arrow to the right of a feature exposes a drop-down description of the feature. Click Next.
+1. Select Management server and Operations console. Click Next.
 1. On the next screen, select Installation location. Accept the default, and click Next.
-1. Setup continues with the message Verifying that your environment has the required hardware and software.  If there are issues, the message The Setup wizard cannot continue appears. This means additional hardware resources or software is required to continue.
+1. Setup continues with the message "Verifying that your environment has the required hardware and software".  If there are issues, the message The Setup wizard cannot continue appears. This means additional hardware resources or software is required to continue.
 1. Resolve any prerequisite issues (for instance, follow the link to install the Report Viewer).
 1. After resolving any prerequisite problems, click Verify Prerequisites Again. If the verification is successful, click Next. 
 1. At the Specify an installation option page, create the first management server in a new management group. Type this name for management group: OMGRP. After you create a management group, you cannot change its name without reinstalling the management group.
