@@ -2,9 +2,21 @@
 
 ## Prepare environment
 1. Open Hyper-V Manager.
-1. Make sure the LON-DC1 VM is running. If it is not, start it and wait for the boot procedure.
-1. Start LON-SV1 and log on as Adatum\Administrator.
-1. Click Start and click Windows PowerShell ISE.
+1. Start the LON-DC1 VM and wait for the boot procedure.
+1. Start the LON-SV1 VM and wait for the boot procedure.
+1. On the host, click Start and click Windows PowerShell ISE.
+1. Click View, click Show Script pane.
+1. Run these commands:
+```PowerShell
+Copy-VMFile -name lon-sv1 -SourcePath C:\Hyper-V\shared\SQLSysClrTypes.msi -DestinationPath c:\ -FileSource Host
+Copy-VMFile -name lon-sv1 -SourcePath C:\Hyper-V\shared\ReportViewer.msi -DestinationPath c:\ -FileSource Host
+```
+1. Open Hyper-V Manager, rightclick LON-SV1 and click Connect.
+1. Log on as Adatum\Administrator.
+
+
+## Prepare Active Directory
+1. When logged on to the LON-SV1, click Start and click Windows PowerShell ISE.
 1. Click View, click Show Script pane.
 1. Run these commands:
 ```PowerShell
@@ -15,9 +27,14 @@
 ```
 1. Open Active Directory Users and Computers from the Administrative Tools.
 1. Verify the four service accounts you just created using PowerShell.
-1. Open Windows Explorer.
-1. Navigate to the D: or E:-drive and find this file: SQLSysClrTypes.msi.
-1. Doubleclick the file and follow the wizard to install the SQL System CRL Types.
+
+## Install prerequisites
+1. Run Windows Explorer.
+3. Navigate to C:\
+6. Run this file: SQLSysClrTypes.msi.
+7. Follow the wizard to install the SQL System CRL Types.
+8. Run this file: ReportViewer.msi.
+9. Doubleclick the file and follow the wizard to install the SQL System CRL Types.
 
 
 ## Run the Operations Manager setup
