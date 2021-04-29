@@ -30,6 +30,7 @@ Active Directory Integration enables domain member computers to automatically fi
 4. To view members of this resource pool, navigate to **Administration -> Resource Pools**, right-click **AD Assignment Resource Pool**, and choose **View Resource Pool Members** (this should contain all management servers in the management group by default).
 5. To create the container Operations Manager uses to store information for AD Integration, open a command prompt (not PowerShell) and enter these commands:
 > **cd %ProgramFiles%\Microsoft System Center 2019\Operations Manager\Server**
+> 
 > **MOMADAdmin.exe OMGRP Adatum\ADIntegration Adatum\Administrator Adatum**
 1. The parameters are as follows:
     - Management group name. You can find the management group name by opening the Operations Manager console and looking at the name of the management group, shown on the title of the console.
