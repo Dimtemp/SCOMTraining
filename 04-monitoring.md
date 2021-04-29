@@ -1,4 +1,4 @@
-# Chapter: Monitoring with System Center 2012 Operations Manager 
+# Chapter: Monitoring with Operations Manager 
 
 ## Alert-Generating Rules
 The following procedure explains the process to create an alert rule by creating a basic Windows Event Log alert rule. The rule generates an alert if a Operating System crash has been detected. Follow these steps:
