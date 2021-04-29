@@ -37,7 +37,8 @@ Confirming that a change in the monitoring environment is confirmed by the agent
 1. Now repeat the procedure to confirm the management pack download
 1. Minimize the Virtual Machine connection window to return to the host server.
 1. In Hyper-V Manager, doubleclick **LON-DC1** to open a console window.
-1. Log on to LON-DC1 and click Start -> Shutdown. Enter a reason and click Ok. The reason is logged in the Windows Event Log and picked up by the Operations Manager Agent.
+1. Log on to LON-DC1 and click Start -> Shutdown. Enter a reason and click Ok. Wait for the VM to shut down and restart the VM.
+1. Return to the Operations Manager console. The reason for the shutdown is logged in the Windows Event Log and picked up by the Operations Manager Agent. It will appear in the Operations Manager console.
 
 > NOTE: CLOSING ALERTS
 > 
