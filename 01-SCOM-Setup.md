@@ -12,6 +12,7 @@ Copy-VMFile -name lon-sv1 -SourcePath C:\Hyper-V\shared\SQLSysClrTypes.msi -Dest
 Copy-VMFile -name lon-sv1 -SourcePath C:\Hyper-V\shared\ReportViewer.msi -DestinationPath c:\ -FileSource Host
 ```
 1. Open Hyper-V Manager, rightclick LON-SV1 and click Connect.
+1. Make sure you enable a full screen resolution.
 1. Log on as Adatum\Administrator.
 
 
@@ -30,36 +31,43 @@ Copy-VMFile -name lon-sv1 -SourcePath C:\Hyper-V\shared\ReportViewer.msi -Destin
 
 ## Install prerequisites
 1. Run Windows Explorer.
-3. Navigate to C:\
-6. Run this file: SQLSysClrTypes.msi.
-7. Follow the wizard to install the SQL System CRL Types.
-8. Run this file: ReportViewer.msi.
-9. Doubleclick the file and follow the wizard to install the SQL System CRL Types.
+1. Navigate to C:\
+1. Run this file: **SQLSysClrTypes.msi**.
+1. Follow the wizard to install the SQL System CRL Types.
+1. Run this file: **ReportViewer.msi**.
+1. Doubleclick the file and follow the wizard to install the SQL System CRL Types.
+
+
+## Update SQL Server Service password
+1. If you were required to change your password in a previous step, the SQL Server Service password needs to be updated. Only perform this procedure if you indeed changed the password.
+1. Open Server Manager.
+1. Click Tools, Services.
+1. In Services, scroll down to SQL Server.
+1. Open the SQL Server properties.
+1. Click the Log On tab and enter the updated password. Click OK.
+1. Restart the SQL Server service.
 
 
 ## Run the Operations Manager setup
-1. Open Windows Explorer.
 1. Navigate to C:\System Center Operations Manager 2019.
 1. Run setup.exe.
 1. From the splash screen click the large Install link to start the setup wizard.
 1. Select Management server and Operations console. Click Next.
 1. On the next screen, select Installation location. Accept the default, and click Next.
 1. Setup continues with the message "Verifying that your environment has the required hardware and software".  If there are issues, the message The Setup wizard cannot continue appears. This means additional hardware resources or software is required to continue.
-1. Resolve any prerequisite issues (for instance, follow the link to install the Report Viewer).
+1. Resolve any prerequisite issues.
 1. After resolving any prerequisite problems, click Verify Prerequisites Again. If the verification is successful, click Next. 
-1. At the Specify an installation option page, create the first management server in a new management group. Type this name for management group: OMGRP. After you create a management group, you cannot change its name without reinstalling the management group.
+1. At the Specify an installation option page, create the first management server in a new management group. Type this name for management group: **OMGRP**. After you create a management group, you cannot change its name without reinstalling the management group.
 1. Click Next.
 1. Accept the license agreement and click Next. 
-1. Configure the operational database. The setup process creates and configures the database:
-1. Type the server name (LON-SV1) of the SQL Server to be used for the operational database.
+1. Configure the operational database. Type the server name (**LON-SV1**) of the SQL Server to be used for the operational database.
 1. Click again in the server name or port number area to cause a validation process for the database server.
 1. If there is an error validating the SQL Server, a red “X” icon appears to the left of the server name. Hover over the icon to read the details on the database error. 
-1. Once Setup validates the SQL Server for the operational database, the Database name section of this page becomes modifiable. Leave the default database name of OperationsManager and size of 1000MB. Click Next. 
-1. Configure the data warehouse database.
-1. Type the server name and instance name of the SQL Server to be used for the data warehouse database: LON-SV1.
-1. Click again in the server name or port number area to initiate a validation process for the database server.
+1. Leave the default database name of OperationsManager and size of 1000MB. Click Next. 
+1. Type the **server name and instance name** of the SQL Server to be used for the data warehouse database: **LON-SV1**.
+1. Click in the port number area to initiate a validation process for the database server.
 1. If there is an error validating the SQL Server, a red “X” icon appears to the left of the server name. Hover over the icon to read the details on the database error. 
-1. Once Setup validates the SQL Server for the data warehouse database, the Database name section of the page becomes modifiable. For a new installation, leave the default database name of OperationsManagerDW and size of 1000MB. Click Next.
+1. Leave the default database name of OperationsManagerDW and size of 1000MB. Click Next.
 1. Configure the Operations Manager accounts. Use the service accounts you have previously created. You can copy and paste the following usernames:
   1. adatum\MSAA
   1. adatum\SDK
@@ -72,9 +80,7 @@ Copy-VMFile -name lon-sv1 -SourcePath C:\Hyper-V\shared\ReportViewer.msi -Destin
 1. The Data Reader and Data Writer accounts must be named domain user accounts. The Data Reader account is used to deploy reports; it is the user account Reporting Services uses to run queries against the data warehouse. The Data Reader account is also used as the Reporting Services IIS Application Pool account that connects to a management server.
 1. The Data Writer account reads data from the operational database and writes data from a management server to the data warehouse database.
 1. After clicking Next, Setup verifies whether a specified action account is a domain administrator account. If this is the case, click OK on the warning to proceed with the setup.
-1. At the Help improve System Center Operations Manager page, indicate your desire to participate in these programs. These settings can be changed after installation in the Operations console at Administration -> Settings -> General -> Privacy.
-1. Customer Experience Improvement Program: Participating anonymously helps Microsoft collect data about your use of OpsMgr to identify possible improvements for the product. An example is which menu items get used the most, and in what order.
-1. Error Reporting: Participating anonymously helps Microsoft identify common issues with OpsMgr when an error occurs.
+1. Turn Microsoft Update **Off**. Click Next.
 1. At the Management Server Installation Summary page, review your selections for the features you are installing. To continue, select Install.
 
 # Here are the main activities that occur during setup
@@ -94,6 +100,7 @@ https://docs.microsoft.com/en-us/system-center/scom/release-notes-om?view=sc-om-
 1. Setup is complete when all green checkmarks appear in the left column. Any component that failed to install is marked with a red “X.”
 1. Make sure you don’t install updates. Click Close to complete the wizard.
 
+
 ## Confirming Installation Readiness of the Reporting Server
 Verify that Reporting Services is configured correctly and running before attempting to install the OpsMgr Reporting server feature. Spending several minutes confirming readiness can save a significant amount of time recovering from a setup failure. Follow these steps to install a reporting server running SQL Server Reporting Services:
 1. Open a PowerShell console and run this command:
@@ -106,6 +113,7 @@ Verify that Reporting Services is configured correctly and running before attemp
 1. Confirm the Report Service Status is Started in the central pane. In the navigation pane, select Report Manager URL. This displays the Report Server virtual directory Uniform Resource Locator (URL) as a hyperlink in the central pane.
 1. Click on the Report Manager URL hyperlink such as http://LON-SV1:80/Reports. You may be prompted to enter your domain credentials again to open the Report Manager web page.
 1. If you are able to view an empty but functional Reporting Services home page, you are ready to install the OpsMgr Reporting service role.
+
 
 ## Install the Operations Manager Reporting Server
 After confirming readiness of the local Reporting Services instance, perform the following steps from the Operations Manager Setup.
@@ -127,6 +135,7 @@ After confirming readiness of the local Reporting Services instance, perform the
   1. If you agree to send operational data reports to Microsoft, ODR reports are generated weekly from the data in the Operations Manager data warehouse and the information sent to Microsoft. Select Yes to participate anonymously and automatically send your operational data reports, or No to not participate. Click Next.
 1. At the Installation Summary page, review your selections for the feature you are installing. To continue, press Install.
 1. Setup is complete when all green checkmarks appear in the left column. Any component that failed to install is marked with a red “X.”
+
 
 ## Confirming Successful Deployment of the Reporting Server
 1, After the reporting server is deployed, it can take up to 30 minutes for reports to appear in the Reporting space of the Operations console. You also must close and reopen each open instance of the console to expose the Reporting button in the navigation pane of the console.
