@@ -10,6 +10,7 @@ First introduced with OpsMgr 2007 R2, you can download MPs using the Administrat
     - IIS
     - Active Directory
 > Please make sure that you don’t select any localized management packs that you don’t use, like Chinese, Japanese, French, etc…
+
 The wizard will alert you if there are dependencies on other management packs or versions; you can download those also to resolve the issue. Once you complete your selection, select OK to view the download list. Select Download to initiate the download process.
 
 ## If time permits: Viewing the contents of a Management Pack
