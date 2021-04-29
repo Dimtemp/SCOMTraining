@@ -28,18 +28,21 @@ OpsMgr’s default configuration rejects manually installed agents. Change this 
 
 
 ## Configuring Active Directory Integration
-Active Directory Integration creates a container in the domain root of Active Directory named OperationsManager, this is used by clients to determine the management group and management server with which they will communicate.
+Active Directory Integration enables domain member computers to automatically find a management server. It creates a container in the domain root of Active Directory named OperationsManager. This container is used by clients to determine the management group and management server with which they will communicate.
+
+### Preparing Active Directory
 1. In Active Directory, create a new global security group (e.g. ADIntegration) that contains the computer accounts belonging to the AD Assignment Resource Pool (LON-SV1). To view members of this resource pool, navigate to Administration -> Resource Pools, right-click AD Assignment Resource Pool, and choose View Resource Pool Members (this should contain all management servers in the management group by default).
-2. To create the container OpsMgr 2012 uses to store information for AD Integration, open a command prompt and change directory to %ProgramFiles%\Microsoft System Center 2012 R2\Operations Manager\Server.
-Run the MOMADAdmin.exe program, passing it this information:
-▶ Management group name: determine the management group name by opening the Operations Manager console and looking at the name of the management group, shown on the title of the console.
-▶ MOMAdminSecurity group name: ADIntegrationGroup, this is the group created in step 1.
-▶ RunAs account name: Specify the account that is used for rules to run on the agent; determine this by navigating in the Operations Manager console to Administration -> Run As Configuration -> Accounts -> Type of Action Account.
-▶ Domain in which to create the container.
-Example:
-MOMADAdmin.exe OMGRP Adatum\ADIntegration Adatum\Administrator Adatum
-A successful run of MOMADAdmin indicates it successfully created the container and added the appropriate security group to the container.
-3. From the Administration pane, create rules for AD Integration that indicate which servers communicate with a given management server. Configure AD Integration per management server in Administration -> Device Management -> Management Servers by right-clicking a server and choosing Properties.
+1. To create the container OpsMgr 2012 uses to store information for AD Integration, open a command prompt and change directory to %ProgramFiles%\Microsoft System Center 2019\Operations Manager\Server.
+Run the MOMADAdmin.exe program like this: **MOMADAdmin.exe OMGRP Adatum\ADIntegration Adatum\Administrator Adatum**
+1. The parameters are as follows:
+  - Management group name. You can find the management group name by opening the Operations Manager console and looking at the name of the management group, shown on the title of the console.
+  - MOMAdminSecurity group name: ADIntegrationGroup, this is the group created in the first step.
+  - RunAs account name: Specify the account that is used for rules to run on the agent. You can find this by navigating in the Operations Manager console to **Administration -> Run As Configuration -> Accounts -> Type of Action Account**.
+  - Domain in which to create the container.
+1. A successful run of MOMADAdmin indicates it successfully created the container and added the appropriate security group to the container.
+
+### Configuring Operations Manager
+1. From the Administration pane, create rules for AD Integration that indicate which servers communicate with a given management server. Configure AD Integration per management server in **Administration -> Device Management -> Management Servers** by right-clicking a server and choosing Properties.
 Click Add to start the Agent Assignment and Failover Wizard, which specifies the domain and defines the inclusion, exclusion, and failover criteria:
 ▶ Inclusion criteria: On the Inclusion criteria page, define those systems that will report to this management server. LDAP queries can be created based on a naming convention, or an OU or group membership. Use the * wildcard in this exercise.
 ▶ Exclusion criteria: On the Exclusion page, define any systems that will not report to this management server. This works similarly to the inclusion page; here you can write an LDAP query to exclude systems from reporting to this management server. Leave this step blank.
