@@ -49,7 +49,7 @@ The wizard will alert you if there are dependencies on other management packs or
 
 ## If time permits: Listing All Management Packs Associated with a Server
 You can use PowerShell to list all management packs associated with a server using the Get-SCOMRule cmdlet. Follow these steps to extract the list:
-1. Open the Operations Manager Shell (click Start -> Microsoft System Center)
+1. Open the Operations Manager Shell (click Start -> Microsoft System Center -> Operations Manager Shell)
 2. In the command window, type the following:
 ```powershell
 Get-SCOMRule | Select-Object @{Name="MP";Expression={ Foreach-Object { $_.GetManagementPack().DisplayName }}}, DisplayName | Sort-Object MP
