@@ -52,4 +52,5 @@ You can use PowerShell to list all management packs associated with a server usi
 1. Open the Operations Manager Shell (Start -> Microsoft System Center 2019 -> Operations Manager)
 2. In the command window, type the following:
 ```powershell
-Get-SCOMRule | Select-Object @{Name="MP";Expression={ foreach { $_.GetManagementPack().DisplayName }}}, DisplayName | Sort-Object MP```
+Get-SCOMRule | Select-Object @{Name="MP";Expression={ Foreach-Object { $_.GetManagementPack().DisplayName }}}, DisplayName | Sort-Object MP
+```
