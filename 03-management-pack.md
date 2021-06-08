@@ -33,7 +33,7 @@ The wizard will alert you if there are dependencies on other management packs or
 
 ## Verifying a succesfull import.
 1. Rightclick **Start** and select **Run**.
-2. Enter this command: **\\LON-DC1\C$**
+2. Enter this command: **```\\LON-DC1\C$```**
 3. Windows Explorer opens the root of the C-Drive from the LON-DC1 server.
 4. Open the Program Files folder
 5. Open the Microsoft Monitoring Agent folder
