@@ -31,8 +31,24 @@ The wizard will alert you if there are dependencies on other management packs or
 13. Repeat step 6 - 12 for all other folders.
 
 
+## Verifying a succesfull import.
+1. Rightclick **Start** and select **Run**.
+2. Enter this command: **\\LON-DC1\C$**
+3. Windows Explorer opens the root of the C-Drive from the LON-DC1 server.
+4. Open the Program Files folder
+5. Open the Microsoft Monitoring Agent folder
+6. Open the Agent folder
+7. Open the Health Service State folder
+8. Open the Management Packs folder
+### Notice that some SQL files are present in this folder on the domain controller. These management packs contain discoveries for SQL Server. Since there is no SQL Server on the Domain Controller, it will not be monitored. As Soon as a SQL server is installed on the domain controller it will be monitored. This behaviour is by design.
+9. Open the SCOM Console.
+10. Open the Monitoring workspace
+11. Scroll down to the Microsoft SQL Server folder.
+12. Inspect the various views within the SQL Server folder. At least on server should appear that runs the SQL Server service.
+
+
 ## If time permits: Listing All Management Packs Associated with a Server
 You can use PowerShell to list all management packs associated with a server using the Get-SCOMRule cmdlet. Follow these steps to extract the list:
-1. Open the Operations Manager Shell (Start -> All Programs -> Microsoft System Center 2019 -> Operations Manager)
+1. Open the Operations Manager Shell (Start -> Microsoft System Center 2019 -> Operations Manager)
 2. In the command window, type the following:
-> Get-SCOMRule | Select-Object @{Name="MP";Expression={ foreach { $_.GetManagementPack().DisplayName }}}, DisplayName | Sort MP
+```Get-SCOMRule | Select-Object @{Name="MP";Expression={ foreach { $_.GetManagementPack().DisplayName }}}, DisplayName | Sort-Object MP```
