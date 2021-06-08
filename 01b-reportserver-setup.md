@@ -8,10 +8,11 @@ Verify that Reporting Services is configured correctly and running before attemp
 ```
 1. Open Services from the Administrative Tools.
 1. Verify that the SQL Server Agent Service is running and set to automatic.
-1. Click Start -> Programs -> Microsoft SQL Server -> Configuration Tools -> Reporting Services Configuration Manager. Connect to the instance on which you installed Reporting Services (LON-SV1).
-1. Confirm the Report Service Status is Started in the central pane. In the navigation pane, select Report Manager URL. This displays the Report Server virtual directory Uniform Resource Locator (URL) as a hyperlink in the central pane.
-1. Click on the Report Manager URL hyperlink such as http://LON-SV1:80/Reports. You may be prompted to enter your domain credentials again to open the Report Manager web page.
-1. If you are able to view an empty but functional Reporting Services home page, you are ready to install the OpsMgr Reporting service role.
+1. Click Start -> Microsoft SQL Server -> Reporting Services Configuration Manager.
+2. Connect to the instance on which you installed Reporting Services (LON-SV1).
+3. Confirm the Report Service Status is Started in the central pane. In the navigation pane, select Report Manager URL. This displays the Report Server virtual directory Uniform Resource Locator (URL) as a hyperlink in the central pane.
+4. Click on the Report Manager URL hyperlink such as http://LON-SV1:80/Reports. You may be prompted to enter your domain credentials again to open the Report Manager web page.
+5. If you are able to view an empty but functional Reporting Services home page, you are ready to install the OpsMgr Reporting service role.
 
 
 ## Install the Operations Manager Reporting Server
