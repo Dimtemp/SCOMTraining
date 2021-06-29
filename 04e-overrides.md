@@ -23,6 +23,8 @@ Repeat the previous procedure (Creating an override) with the following paramete
 -	Monitor name: Print Spooler Service Monitor
 -	Override the Monitor: for a group: Windows Server 2016 Computers
 -	Enabled: true
+
+## Another override
 Repeat the previous procedure (Creating an override) with the following parameters:
 -	Monitor name: Server Time out of Sync
 -	Override the Monitor: for a group: Windows Server 2016 Computers
