@@ -10,5 +10,5 @@ This section looks at the process for creating a TCP port monitor. Follow these 
 
 ## Viewing the TCP Port Performance Data
 Similar to the other synthetic transactions discussed in this chapter, the TCP Port monitor synthetic transaction collects performance data. View this information using the process described here:
-1. Navigate to the Monitoring -> Synthetic Transaction -> TCP Port Checks State view. Displayed on the right-hand side is the TCP port monitors configured in the “Creating a TCP Port Monitor” section. Right-click an object, then select Open Performance View.
+1. Navigate to the Monitoring -> Synthetic Transaction -> TCP Port Checks State view. Displayed on the right-hand side is the TCP port monitors configured in the previous section. Right-click an object, then select Open Performance View.
 2. The Performance view opens, with the only performance counter available being the Connection Time counter for the TCP port being monitored. As the example configured additional watcher nodes, these nodes appear as separate counters, allowing you to compare the connection time from different watcher nodes.
