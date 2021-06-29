@@ -23,7 +23,7 @@ To configure agent proxying on an agent-managed computer, follow these steps:
 
 ## Determining the SQL Server Port
 To identify the port, follow these steps:
-1. Run SQL Server Configuration Manager on the system hosting the SQL Server (Start -> All Programs -> Microsoft SQL Server 2012 -> Configuration Tools -> SQL Server Configuration Manager).
+1. Run SQL Server Configuration Manager on the system hosting the SQL Server (Start -> All Programs -> Microsoft SQL Server ## -> Configuration Tools -> SQL Server Configuration Manager).
 2. In the left-hand pane of the console, expand SQL Server Network Configuration.
 3. Select Protocols for < instance name >.
 4. In the right-hand pane, double-click on TCP/IP.
@@ -32,7 +32,8 @@ To identify the port, follow these steps:
 
 ## Agents Across a Firewall
 If you are installing agents on any computer running the Windows Firewall, it is necessary to modify the default firewall configuration. This is also true for computers utilizing the agentless managed feature of OpsMgr.
-Use the Group Policy Management Console (GPMC) to create and deploy an OpsMgr firewall exceptions GPO in the domain where OpsMgr will manage computers.
+### Use the Group Policy Management Console (GPMC) to create and deploy an OpsMgr firewall exceptions GPO in the domain where OpsMgr will manage computers.
+1. Click Start, select Administrative tools, and click Group Policy Management Console (GPMC).
 1. Right-click Group Policy Objects node, select New, and create a new GPO named OpsMgr Policy.
 2. Right-click the new GPO and select Edit.
 3. Navigate to the Computer Configuration -> Policies -> Administrative Templates -> Network -> Network Connections -> Windows Firewall -> Domain Profile node.
