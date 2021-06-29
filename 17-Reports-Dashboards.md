@@ -51,20 +51,20 @@ b.	Subscription beginning: Five minutes from the current time
 
 ## Reports to explore
 Consider the following reports to explore:
-•	Microsoft Generic / Availability
-o	E.g. Windows Servers
-•	Microsoft Generic / Configuration changes
-o	E.g. Configuration Changes on SCOM Servers/Agents or SQL Servers
-•	Microsoft Generic / Most common alerts
-•	Microsoft Generic / Overrides
-•	SQL Server / SQL DB Space
-o	Specify the SQL DB Engine group
-•	Windows Server 2016 / OS Performance
-o	CPU, Memory, Disk
-•	Windows Server Operating System / Performance by System (or Utilization)
-•	System Center Core / Data Volume by MP
-o	All Management Packs
-•	System Center Core / Data Volume by Workflow
+- Microsoft Generic / Availability
+  - E.g. Windows Servers
+- Microsoft Generic / Configuration changes
+  - E.g. Configuration Changes on SCOM Servers/Agents or SQL Servers
+- Microsoft Generic / Most common alerts
+- Microsoft Generic / Overrides
+- SQL Server / SQL DB Space
+  - Specify the SQL DB Engine group
+- Windows Server 2016 / OS Performance
+  - CPU, Memory, Disk
+- Windows Server Operating System / Performance by System (or Utilization)
+- System Center Core / Data Volume by MP
+  - All Management Packs
+- System Center Core / Data Volume by Workflow
  
 ## Dashboards
 1. Select the My Workspace pane in the SCOM Console. Right click Favorite Views and select New  Dashboard View.
