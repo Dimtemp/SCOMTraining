@@ -20,16 +20,16 @@ This section looks at the process for creating an override against a monitor. He
 ## Other overrides
 Overrides are often used to change threshold values. Other examples of the use of overrides is enabling or disabling a certain rule or monitor for a class, group or specific object. For example: you can enable a disabled monitor (previously created) for a specific group of servers.
 Repeat the previous procedure (Creating an override) with the following parameters:
-•	Monitor name: Print Spooler Service Monitor
-•	Override the Monitor: for a group: Windows Server 2016 Computers
-•	Enabled: true
+-	Monitor name: Print Spooler Service Monitor
+-	Override the Monitor: for a group: Windows Server 2016 Computers
+-	Enabled: true
 Repeat the previous procedure (Creating an override) with the following parameters:
-•	Monitor name: Server Time out of Sync
-•	Override the Monitor: for a group: Windows Server 2016 Computers
-•	Enabled: true
+-	Monitor name: Server Time out of Sync
+-	Override the Monitor: for a group: Windows Server 2016 Computers
+- Enabled: true
 
 ## Locate overrides
 Try these three methods when locating overrides:
-•	Operations console  Authoring  Management Pack Objects -> Overrides.
-•	Operations console  Reporting  Microsoft Generic Report Library -> Overrides.
-•	PowerShell  Get-SCOMOverride. More information on the Operations Manager Shell can be found in Chapter 23, “PowerShell and Operations Manager.”
+-	Operations console  Authoring  Management Pack Objects -> Overrides.
+-	Operations console  Reporting  Microsoft Generic Report Library -> Overrides.
+-	PowerShell  Get-SCOMOverride. More information on the Operations Manager Shell can be found in Chapter 23, “PowerShell and Operations Manager.”
