@@ -1,16 +1,14 @@
 # Chapter: Security and Compliance
 
-Log on to LON-SV1 and start a PowerShell console.
-Run this command:
-New-ADUser Joe
-
 ## Operators
-To create the user role, log on as an OpsMgr Administrator and navigate to the Administration space in the Operations console. Follow these steps:
-1. In the Administration pane, select Security and right-click User Roles. Select New User role, and then select the Advanced Operator profile.
-2. On the General page of the wizard, enter a name for the User role such as Adatum_Advanced_Operators and click Add in the User role members section of the page. In the Select User or Groups dialog box, specify Joe and click OK to return to the General page. Click Next. Note that the following screens of the Create User Role Wizard will vary based on the profile type to which this user role is assigned.
-3. The Group Scope page asks you to approve groups. Members of this user role can set overrides and monitor objects in approved groups. By default, the entire management group is selected. Unchecking this lets you select specific groups. Click Next when you complete group selection.
-4. The Tasks page asks you to Approve tasks members of this user role can execute. All tasks are automatically approved by default. Alternatively, you can select Only tasks explicitly added to the ‘Approved tasks’ grid are approved and press Add to add approved tasks to open the Select Tasks dialog, where you can check the tasks you wish to add. You can view the tasks to select either by task name or management pack order. For this example, the default of All tasks are automatically approved was used. Click Next when finished selecting tasks.
-5. The Dashboards and Views page of the wizard lets you define the views and dashboards members of this user role can access. The default is All dashboards and views are automatically approved. If you select Only the dashboards and views selected in each tab are approved, you can select specific dashboards and views in the Monitoring Tree and Task Pane.
+1. Log on to LON-SV1 and start Active Directory Users and Computers.
+1. Open the Users container and create a new user with the name **Joe**. User this password: Pa$$w0rd
+2. To create the user role, open the Operations console and navigate to the Administration space.
+3. In the Administration pane, select Security and right-click User Roles. Select New User role, and then select the Advanced Operator profile.
+4. On the General page of the wizard, enter a name for the User role such as Adatum_Advanced_Operators and click Add in the User role members section of the page. In the Select User or Groups dialog box, specify Joe and click OK to return to the General page. Click Next. Note that the following screens of the Create User Role Wizard will vary based on the profile type to which this user role is assigned.
+5. The Group Scope page asks you to approve groups. Members of this user role can set overrides and monitor objects in approved groups. By default, the entire management group is selected. Unchecking this lets you select specific groups. Click Next when you complete group selection.
+6. The Tasks page asks you to Approve tasks members of this user role can execute. All tasks are automatically approved by default. Alternatively, you can select Only tasks explicitly added to the ‘Approved tasks’ grid are approved and press Add to add approved tasks to open the Select Tasks dialog, where you can check the tasks you wish to add. You can view the tasks to select either by task name or management pack order. For this example, the default of All tasks are automatically approved was used. Click Next when finished selecting tasks.
+7. The Dashboards and Views page of the wizard lets you define the views and dashboards members of this user role can access. The default is All dashboards and views are automatically approved. If you select Only the dashboards and views selected in each tab are approved, you can select specific dashboards and views in the Monitoring Tree and Task Pane.
 Selecting any dashboard under the Monitoring Tree tab gives members of this user role access to data in the data warehouse. Be aware that should you select specific dashboards and views, members of this security role will not automatically have permissions to new views and dashboards later added to OpsMgr unless you rerun the wizard. 
 Clicking the Task Pane tab allows you to add dashboards you would like members of this user role to access and view from the Tasks pane. 
 Click Next.
