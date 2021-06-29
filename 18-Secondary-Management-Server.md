@@ -34,7 +34,7 @@ http://go.microsoft.com/fwlink/?LinkID=239644
 
 ## PowerShell Configuration for Agent Failover
 PowerShell provides a quick way to determine the primary and failover management servers an agent is configured to use. The following command finds the primary management server for an agent:
-```Get-SCOMAgent | where { $_.DisplayName -eq "LON-DC1.Adatum.com"} | Format-List PrimaryManagementServerName```
+```Get-SCOMAgent | where DisplayName -eq "LON-DC1.Adatum.com" | Select PrimaryManagementServerName```
 You can also use PowerShell to configure primary and failover management servers in OpsMgr. The following PowerShell script assigns the agent to a variable, defines the primary and failover management servers as variables, and then uses the Set-SCOMParentManagementServer cmdlet to assign the primary and the failover server for the agent.
 ```
 $SCOMAgent = Get-SCOMAgent -Name "LON-DC1.Adatum.com"
