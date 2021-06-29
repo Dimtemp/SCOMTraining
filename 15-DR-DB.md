@@ -14,17 +14,17 @@
 5. Select Add under Destination. The wizard provides a default location. To enter the location and filename where the backup will be stored, click on the button with the ellipsis (...), and name the file OperationsManager_Full_OMGRP.bak. Click OK.
 6. SQL Server Management Studio next displays the Select Backup Destination dialog. Click OK to confirm the destination.
 7. After specifying the general requirements for the backup, select the Options page. You must decide whether you will override the backup set (file). By default, SQL Server appends the current backup to the end of the backup file if it already exists. Alternatively, you can overwrite (replace) the file. The option to truncate the transaction log is grayed out because the database recovery type is defined as simple (unless changed when configuring Log Shipping).
-6. Selecting the Script option at the top of the dialog box generates Transact SQL code you can use to schedule the backup rather than having to return to SQL Management Studio each time you want to back up the database. Once the script is generated, the progress status shows that scripting completed successfully.
-7. After generating the script, select the Script menu at the top of the panel (the down-arrow next to the script button) to bring up the scripting options. Sveral options appear:
+8. Selecting the Script option at the top of the dialog box generates Transact SQL code you can use to schedule the backup rather than having to return to SQL Management Studio each time you want to back up the database. Once the script is generated, the progress status shows that scripting completed successfully.
+9. After generating the script, select the Script menu at the top of the panel (the down-arrow next to the script button) to bring up the scripting options. Sveral options appear:
   - Script Action to New Query Window
   - Script Action to File
   - Script Action to Clipboard
   - Script Action to Job
-8. To schedule the backup as a SQL job, select the Script Action to Job option.
-9. Select the Schedules page and click New to add a new schedule.
-10. You can now define the details of the schedule. Create a Schedule type of Recurring with a backup frequency of Daily and a start time of 3:00:00 AM. Click OK to save the job.
-11. In SQL Server Management Studio, navigate to SQL Server Agent, Jobs, right click the job created in step 10 and click Start Job at Step…
-12. Confirm that the backup has successfully completed. Also verify the contents of the backup folder.
+10. To schedule the backup as a SQL job, select the Script Action to Job option.
+11. Select the Schedules page and click New to add a new schedule.
+12. You can now define the details of the schedule. Create a Schedule type of Recurring with a backup frequency of Daily and a start time of 3:00:00 AM. Click OK to save the job.
+13. In SQL Server Management Studio, navigate to SQL Server Agent, Jobs, right click the job created in step 10 and click Start Job at Step…
+14. Confirm that the backup has successfully completed. Also verify the contents of the backup folder.
 
 ## Performing Operations Manager Database Restores
 Follow these steps to restore the operational database:
