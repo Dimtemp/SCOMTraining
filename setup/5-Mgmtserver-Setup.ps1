@@ -9,6 +9,12 @@ if (Test-Path $scomSetup) {
     throw "SCOM Setup files not found! Aborting."
 }
 
+
+# check report viewer!
+$ReportViewerFiles = Get-ChildItem C:\Windows\Microsoft.NET\assembly\GAC_MSIL -Recurse -Filter *ReportViewer*
+if ($ReportViewerFiles.Count -eq 0) { Throw "ReportViewer not found! Please install." }
+
+
 # prepare AD
 New-ADOrganizationalUnit 'SCOM'
 $ADAccounts | foreach-object {
