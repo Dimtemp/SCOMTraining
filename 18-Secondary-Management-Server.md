@@ -2,7 +2,6 @@
 
 Perform a reboot on the LON-DC1 before beginning this lab. This is to prevent an issue with the certificate revocation role. Also, this lab requires an internet connection for the virtual machines, for the installation of the .NET Framework.
 
-## Additional Management Servers and Consoles
 ### Perform the following step on the host server:
 1. Open Hyper-V Manager and open the LON-SV2 virtual machine settings to mount the SCOM DVD from the **C:\Hyper-V\files** folder.
 
@@ -41,11 +40,11 @@ Perform a reboot on the LON-DC1 before beginning this lab. This is to prevent an
 
 
 ## PowerShell Configuration for Agent Failover
-PowerShell provides a quick way to determine the primary and failover management servers an agent is configured to use. The following command finds the primary management server for an agent:
+PowerShell provides a quick way to determine the primary and failover management servers an agent is configured to use. The following command finds the primary management server for an agent. Open a PowerShell window and enter this command:
 ```powershell
 Get-SCOMAgent | where DisplayName -eq "LON-DC1.Adatum.com" | Select PrimaryManagementServerName
 ```
-You can also use PowerShell to configure primary and failover management servers in OpsMgr. The following PowerShell script assigns the agent to a variable, defines the primary and failover management servers as variables, and then uses the Set-SCOMParentManagementServer cmdlet to assign the primary and the failover server for the agent.
+You can also use PowerShell to configure primary and failover management servers. The following PowerShell script assigns the agent to a variable, defines the primary and failover management servers, and then uses the Set-SCOMParentManagementServer command to assign the primary and the failover server for the agent.
 ```powershell
 $SCOMAgent = Get-SCOMAgent -Name "LON-DC1.Adatum.com"
 $Primary = Get-SCOMManagementServer -Name "LON-SV1.adatum.com"
