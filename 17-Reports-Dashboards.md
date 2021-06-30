@@ -37,12 +37,12 @@
 5.	Type Availability in the description.
 6.	Change the delivery method to File Share.
 7.	In the Delivery Window enter the following:
-a.	File name: Availability
-b.	Path: \\LON-SV1\SCOM-Reports
-c.	Render format: MHTML
-d.	Write mode: Autoincrement
-e.	User name: Administrator
-f.	Password: Pa$$w0rd
+  a.	File name: Availability
+  b.	Path: \\LON-SV1\SCOM-Reports
+  c.	Render format: MHTML
+  d.	Write mode: Autoincrement
+  e.	User name: Administrator
+  f.	Password: Pa$$w0rd
 8.	Click Next.
 9.	In the Schedule window enter the following:
 a.	Generate the report: Once
