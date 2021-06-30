@@ -39,3 +39,10 @@ Follow these steps to restore the operational database:
 4. If you have more than one backup, verify you selected the latest one for restore and click OK to begin the restore process. Depending on the size of your database, this may take several minutes.
 5. Open the Properties of the OperationsManager database, click Options and enable the broker (true). If you omit this step, eventually an alert about the SQL Broker will appear.
 6. Start the services you disabled on your management servers in step 1 and verify you can open the SCOM Console.
+
+## Optional exercise: backup the database using TSQL commands
+1. Open a command prompt.
+2. Enter this command to create a backup folder: ```mkdir c:\backup```
+3. Enter this command: ```sqlcmd```
+4. A SQLCMD prompt appears.
+5. Enter this command to start the backup: ```BACKUP DATABASE  OperationsManager TO DISK = 'C:\backup\opsmgr.bak'```
