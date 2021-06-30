@@ -47,6 +47,8 @@ Follow these steps to restore the operational database:
 3. Enter this command to open the interactive SQL utility: ```sqlcmd```
 4. A prompt appears.
 5. Enter this command to inspect the names of the existing databases: ```SELECT Name FROM sys.databases```
-5. Enter this command to start the backup of the primary Operations Manager database: ```BACKUP DATABASE  OperationsManager TO DISK = 'C:\Backup\opsmgr.bak'```
-5. Enter this command to start the backup of the primary Operations Manager database using compression: ```BACKUP DATABASE  OperationsManager TO DISK = 'C:\Backup\opsmgr_compressed.bak' WITH COMPRESSION```
-6. Inspect the contents of the C:\Backup folder. Notice the last backup will be a lot smaller.
+6. Enter this command to start execution: ```GO```
+7. Enter this command to start the backup of the primary Operations Manager database: ```BACKUP DATABASE  OperationsManager TO DISK = 'C:\Backup\opsmgr.bak'```
+8. Enter this command to start the backup of the primary Operations Manager database using compression: ```BACKUP DATABASE  OperationsManager TO DISK = 'C:\Backup\opsmgr_compressed.bak' WITH COMPRESSION```
+9. Enter this command to start execution: ```GO```
+10. Inspect the contents of the C:\Backup folder. Notice the last backup will be a lot smaller.
