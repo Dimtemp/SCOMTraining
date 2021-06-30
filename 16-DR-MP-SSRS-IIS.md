@@ -14,7 +14,7 @@ Get-SCOMManagementPack | Where Sealed -eq $false | Export-SCOMManagementPack -Pa
 ## If time permits: Backing Up Reporting Services Encryption Keys
 The Reporting Services setup process creates encryption keys that are used to secure credentials, connection information, and accounts used with server operations. If you should need to rebuild or repair your Reporting Services installation, you must apply the key to make the ReportServer database operational. If you cannot restore the key, database recovery will require deleting the encrypted data and re-specifying any values that require encryption. You can use the RSKeyMgmt.exe utility to extract a copy of the encryption key from the ReportServer database. The utility writes the key to a file you specify and scrambles the key using a password you provide. This file should be backed up as part of your backup and recovery procedures. You should also document the password used for the file.
 1. Use the following syntax to create a backup of the encryption key:
-1. RSKeyMgmt -e -fC:\Backup\rsdbkey.txt -p<password>
+```RSKeyMgmt -e -fC:\Backup\rsdbkey.txt -p<password>```
 1. Run RSKeyMgmt locally on the computer hosting the report server.
 
 ## If time permits: Backing Up the IIS Metabase
@@ -22,6 +22,8 @@ The IIS configuration is split between the web.config files and the applicationH
 1. Log on to the server hosting the Web console server.
 2. Open PowerShell using the Run As Administrator option.
 3. Type the following command to back up the configuration:
-4. CD C:\Windows\system32\inetsrv
-5.  .\appcmd add backup mybackup
+```
+CD C:\Windows\system32\inetsrv
+.\appcmd add backup mybackup
+```
 The backup is created in the folder C:\Windows\system32\inetsrv\backup. If you do not specify the name of the backup, the system will name it using a date/time format.
