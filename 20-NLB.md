@@ -7,9 +7,10 @@ Before we can use Network Load Balancing (NLB) on virtual machines we have to in
 3. Repeat this procedure for the LON-SV2.
 
 ### Install NLB
-1. From LON-SV1, Open Server Manager and install the Network Load Balancing Feature on each management server (LON-SV1 and LON-SV2).
-2. If you want to do this from PowerShell you can enter this command:
-```Install-WindowsFeature NLB -ComputerName LON-SV1, LON-SV2```
+1. From LON-SV1, install the Network Load Balancing Feature on each management server (LON-SV1 and LON-SV2) using PowerShell:
+```powershell
+Install-WindowsFeature NLB -ComputerName LON-SV1, LON-SV2
+```
 3. Still on LON-SV1, open the Network Load Balancing Manager from Administrative Tools.
 4. Select the **Cluster** Menu, and select New.
 5. Specify **LON-SV1** and click Connect and click Next.
