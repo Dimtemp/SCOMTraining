@@ -21,11 +21,11 @@
 
 ## Publish Reports
 1.	In the Availability Report window select File > Publish.
-2.	Change the name to My Availability.
+2.	Change the name to **My Availability**.
 3.	Do not close the report.
-4.	In the Operations Manager 2012 console, in the Reporting node, click on Authored Reports.
+4.	In the Operations Manager console, in the Reporting node, click on **Authored Reports**.
 5.	Locate the report you just published and run it. Notice that you do not have to fill in any information this time.
-6.	Close the My Availability report and return to the Availability Report.
+6.	Close the **My Availability** report and return to the **Availability** Report.
 7.	Click File, Save to management pack and select the Sample Management Pack.
 8.	Do not close the report.
 
