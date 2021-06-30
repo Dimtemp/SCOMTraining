@@ -1,14 +1,16 @@
 # Chapter: Reporting and Dashboarding
 
 ## Edit and Run a Preconfigured Windows Server Report
-1.	On LON-SV1 in the Operations Manager 2012 R2 console, select the Monitoring node.
-2.	Click Active Alerts and select any alert.
-3.	On the right side of the console, select the Availability report. If there’s no link to the Availability report, select another alert and try again.
-4.	Fill in the following: From – Yesterday
-5.	Select Run.
-6.	Notice that there is a red section indicating DOWN (downtime).
-7.	Click on the Availability Tracker link.
-8.	Review the report.
+1.	On LON-SV1 in the Operations Manager console, select the Monitoring node.
+2.	Click the Active Alerts view.
+3.	Click the View menu. If Tasks are off, then click it to display the tasks window on the right side of the screen.
+4.	Select any alert.
+5.	On the right side of the console, select the Availability report. If there’s no link to the Availability report, select another alert and try again.
+6.	Fill in the following: From – Yesterday
+7.	Select Run.
+8.	Notice that there is a red section indicating DOWN (downtime).
+9.	Click on the Availability Tracker link.
+10.	Review the report.
 
 ## Export a Report
 1.	In the Availability Report window select the Export drop-down box.
