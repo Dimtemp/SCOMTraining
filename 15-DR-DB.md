@@ -1,14 +1,19 @@
 # Chapter: Backup and Recovery
 
 ## Preparation
-1. Log on to LON-SV1 as Adatum\Administrator.
-1. If the VM has an internet connection: open a web browser and download the SQL Management Studio from this URL: https://go.microsoft.com/fwlink/?linkid=2043154.
-1. If the VM doesn't have an internet connection your instructor will provide the file.
+1. Log on to the lab server using RDP and open an internet browser.
+2. Download the SQL Server Management Studio to your desktop from this URL: https://go.microsoft.com/fwlink/?linkid=2043154.
+3. If the download is ready, right click the file on the desktop and select copy.
+4. Open Hyper-V Manager and open a connection to the LON-SV1 VM. Make sure you're using Enhanced session.
+5. Log on to LON-SV1 as Adatum\Administrator.
+6. In the LON-SV1 VM, right click the desktop and click paste.
+7. When the file has been pasted, doubleclick it to install SQL Server Management Studio. 
+8. Follow the wizard to install SQL Server Management Studio.
 
-## Operations Manager Database Backups
+## Operations Manager Database Backups using SQL Server Management Studio
 1. Open SQL Server Management Studio and navigate to Databases -> OperationsManager.
 2. Right-click the OperationsManager database, select Tasks, and then choose Back Up to bring up the Back up Database General page.
-3. The default backup type is Full, which is the backup type used for the OperationsManager database. This backup type backs up the entire database file, rather than just those changes since the previous backup.
+3. The default backup type is Full, which is the backup type used for the OperationsManager database. This backup type backs up the entire database file, rather than just the changes since the previous backup.
   - Because the OpsMgr databases have a simple recovery model by default, the transaction log is truncated as each transaction completes, meaning you cannot do an transaction log backup unless you change the recovery model in the database options to Full.
 4. Under Destination, select the backup destination as Disk, which is the default.
 5. Select Add under Destination. The wizard provides a default location. To enter the location and filename where the backup will be stored, click on the button with the ellipsis (...), and name the file OperationsManager_Full_OMGRP.bak. Click OK.
