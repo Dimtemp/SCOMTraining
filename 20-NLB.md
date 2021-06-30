@@ -2,9 +2,11 @@
 
 Before we can use Network Load Balancing (NLB) on virtual machines we have to inform the hypervisor that MAC addresses can be spoofed.
 ### Perform this procedure from the host server
-1. Open Hyper-V Manager
-2. Open the Settings of the LON-SV1, select the Network adapter, select Advanced Features and select Enable MAC address spoofing.
-3. Repeat this procedure for the LON-SV2.
+1. Open PowerShell and enter the following commands:
+```powershell
+Set-VMNetworkAdapter -MacAddressSpoofing 1 -VMName lon-sv1
+Set-VMNetworkAdapter -MacAddressSpoofing 1 -VMName lon-sv2
+```
 
 ### Install NLB
 1. From LON-SV1, install the Network Load Balancing Feature on each management server (LON-SV1 and LON-SV2) using PowerShell:
@@ -12,6 +14,7 @@ Before we can use Network Load Balancing (NLB) on virtual machines we have to in
 Install-WindowsFeature NLB -ComputerName LON-SV1
 Install-WindowsFeature NLB -ComputerName LON-SV2
 ```
+2. Reboot any server if required. Log back on after the reboot.
 3. Still on LON-SV1, open the Network Load Balancing Manager from Administrative Tools.
 4. Select the **Cluster** Menu, and select New.
 5. Specify **LON-SV1** and click Connect and click Next.
