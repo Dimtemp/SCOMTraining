@@ -1,5 +1,14 @@
 # Chapter: Implementing the Gateway server (optional)
 
+Perform a reboot on the LON-DC1 before beginning this lab. This is to prevent an issue with the certificate revocation role. Also, this lab requires an internet connection for the virtual machines, for the installation of the .NET Framework.
+
+### Optional?
+1. The Microsoft System CLR Types for Microsoft SQL Server are required before installing a second Management Server. Please install this
+2. SCOM does not check on the existence of .NET Framework. Don’t forget to enable  .NET Framework 3.5.1 before beginning installation!
+3. To install .NET Framework using Server Manager, select **Add roles and features** from the Dashboard.
+4. To install .NET Framework using PowerShell, enter this command: ```Install-WindowsFeature NET-Framework-Core```
+
+
 The following exercises are about deploying agents through gateway servers, combined with a Public Key Infrastructure (PKI) for certificate authentication. It consists of the following sections:
 1.	Configuring DNS on LON-DC1 and NYC-DC1
 2.	Deploying the Certificate Authority
