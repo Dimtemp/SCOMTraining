@@ -4,15 +4,15 @@ Before we can use Network Load Balancing (NLB) on virtual machines we have to in
 ### Perform this procedure from the host server
 1. Open PowerShell and enter the following commands:
 ```powershell
-Set-VMNetworkAdapter -MacAddressSpoofing 1 -VMName lon-sv1
-Set-VMNetworkAdapter -MacAddressSpoofing 1 -VMName lon-sv2
+Set-VMNetworkAdapter -MacAddressSpoofing 1 -VMName LON-SV1
+Set-VMNetworkAdapter -MacAddressSpoofing 1 -VMName LON-SV2
 ```
 
 ### Install NLB
 1. From LON-SV1, install the Network Load Balancing Feature on each management server (LON-SV1 and LON-SV2) using PowerShell:
 ```powershell
-Install-WindowsFeature NLB -ComputerName LON-SV1
-Install-WindowsFeature NLB -ComputerName LON-SV2
+Install-WindowsFeature NLB -ComputerName LON-SV1 -IncludeManagementTools
+Install-WindowsFeature NLB -ComputerName LON-SV2 -IncludeManagementTools
 ```
 2. Reboot any server if required. Log back on after the reboot.
 3. Still on LON-SV1, open the Network Load Balancing Manager from Administrative Tools.
