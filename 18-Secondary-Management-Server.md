@@ -1,7 +1,5 @@
 # High available management servers
 
-Perform a reboot on the LON-DC1 before beginning this lab. This is to prevent an issue with the certificate revocation role. Also, this lab requires an internet connection for the virtual machines, for the installation of the .NET Framework.
-
 ### Perform the following step on the host server:
 1. Open Hyper-V Manager and open the LON-SV2 virtual machine settings to mount the SCOM DVD from the **C:\Hyper-V\files** folder.
 
@@ -52,10 +50,3 @@ $Failover = Get-SCOMManagementServer -Name "LON-SV2.adatum.com"
 Set-SCOMParentManagementServer -Agent $scomAgent -PrimaryServer $Primary
 Set-SCOMParentManagementServer -Agent $scomAgent -FailoverServer $Failover
 ```
-
-
-### Only required for SCOM 2012
-1. The Microsoft System CLR Types for Microsoft SQL Server are required before installing a second Management Server. Please install this
-2. SCOM does not check on the existence of .NET Framework. Don’t forget to enable  .NET Framework 3.5.1 before beginning installation!
-3. To install .NET Framework using Server Manager, select **Add roles and features** from the Dashboard.
-4. To install .NET Framework using PowerShell, enter this command: ```Install-WindowsFeature NET-Framework-Core```
