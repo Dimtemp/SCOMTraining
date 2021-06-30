@@ -1,18 +1,19 @@
 # Chapter: Complex Configurations (optional)
 
-Perform a reboot on the LON-DC1 before beginning this lab. This is to prevent an issue with the certificate revocation role.
+Perform a reboot on the LON-DC1 before beginning this lab. This is to prevent an issue with the certificate revocation role. Also, this lab requires an internet connection for the virtual machines, for the installation of the .NET Framework.
 
 ## Additional Management Servers and Consoles
 Perform the following step on LON-SV1:
 1. Open the Windows Firewall and create a rule that allows TCP port 1433 traffic.
+2. If you're not sure how to create the firewall rule, just disable the firewall for all three profiles (public, private, domain). Don't worry. This is a lab environment. No one will enter your VM from the lab network.
 
 Perform the following step on the host server:
-1. Open Hyper-V Manager and open the LON-SV2 virtual machine settings to mount the SCOM DVD from the C:\HyperV folder.
+1. Open Hyper-V Manager and open the LON-SV2 virtual machine settings to mount the SCOM DVD from the C:\Hyper-V\files folder.
 
 Perform the following steps on LON-SV2:
-1. SCOM 2012 / R2 does not check on the existence of .NET Framework. Don’t forget to enable  .NET Framework 3.5.1 under Features in Server Manager before beginning installation!
-1. You can also install the .NET Framework with PowerShell using this command:
-1. Import-Module ServerManager; Add-WindowsFeature NET-Framework-Core
+1. SCOM does not check on the existence of .NET Framework. Don’t forget to enable  .NET Framework 3.5.1 before beginning installation!
+2. To install .NET Framework using Server Manager, select Feature.
+3. To install .NET Framework using PowerShell, enter this command: ```Install-WindowsFeature NET-Framework-Core```
 
 The Microsoft System CLR Types for Microsoft SQL Server 2012 are required before installing a second Management Server. Please download and install this from the following URL:
 http://go.microsoft.com/fwlink/?LinkID=239644
