@@ -31,7 +31,8 @@
 13. In SQL Server Management Studio, navigate to SQL Server Agent, Jobs, right click the job created in step 10 and click Start Job at Step…
 14. Confirm that the backup has successfully completed. Also verify the contents of the backup folder.
 
-## Performing Operations Manager Database Restores
+## Optional exercise: Performing Operations Manager Database Restores
+### Warning! This exercise might cause your environment to malfunction. Proceed with care.
 Follow these steps to restore the operational database:
 1. Stop both System Center * services and the Microsoft Monitoring Agent Service on your management server to ensure Operations Manager will not try to write data to the database.
 2. Before performing a full restore for a SQL Server database, you must delete the existing database. Launch SQL Server Management Studio -> Databases -> OperationsManager. Right-click the database and select Delete. Uncheck the option to delete and back up and restore history information from the database; check the option to close existing connections; then click OK to delete the operational database.
@@ -42,7 +43,10 @@ Follow these steps to restore the operational database:
 
 ## Optional exercise: backup the database using TSQL commands
 1. Open a command prompt.
-2. Enter this command to create a backup folder: ```mkdir c:\backup```
-3. Enter this command: ```sqlcmd```
-4. A SQLCMD prompt appears.
-5. Enter this command to start the backup: ```BACKUP DATABASE  OperationsManager TO DISK = 'C:\backup\opsmgr.bak'```
+2. Enter this command to create a backup folder: ```mkdir C:\Backup```
+3. Enter this command to open the interactive SQL utility: ```sqlcmd```
+4. A prompt appears.
+5. Enter this command to inspect the names of the existing databases: ```SELECT Name FROM sys.databases```
+5. Enter this command to start the backup of the primary Operations Manager database: ```BACKUP DATABASE  OperationsManager TO DISK = 'C:\Backup\opsmgr.bak'```
+5. Enter this command to start the backup of the primary Operations Manager database using compression: ```BACKUP DATABASE  OperationsManager TO DISK = 'C:\Backup\opsmgr_compressed.bak' WITH COMPRESSION```
+6. Inspect the contents of the C:\Backup folder. Notice the last backup will be a lot smaller.
