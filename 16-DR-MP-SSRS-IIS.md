@@ -6,7 +6,7 @@ The Operations console only allows you to export unsealed management packs. To u
 4. Open the file you just created in the C:\Backup folder and verify it’s a XML file.
 
 ## Backing Up Management Packs from PowerShell
-You can back up (export) unsealed management packs in an ad-hoc manner using the Operations console. This technique is discussed in Chapter 13, “Administering Management Packs.” For purposes of regularly scheduled jobs, the authors recommend you back up your unsealed management packs in a batch mode, using PowerShell cmdlets to export the management packs. As sealed management packs are not modified, you should only need to export unsealed management packs. Open the Operations Manager Shell from Start -> All Programs -> Microsoft System Center 2012 -> Operations Manager. From the Operations Manager Shell execute this command:
+You can back up (export) unsealed management packs in an ad-hoc manner using the Operations console. This technique is discussed in Chapter 13, “Administering Management Packs.” For purposes of regularly scheduled jobs, the authors recommend you back up your unsealed management packs in a batch mode, using PowerShell cmdlets to export the management packs. As sealed management packs are not modified, you should only need to export unsealed management packs. Open the Operations Manager Shell from Start -> All Programs -> Microsoft System Center -> Operations Manager. From the Operations Manager Shell execute this command:
 ```powershell
 Get-SCOMManagementPack | Where Sealed -eq $false | Export-SCOMManagementPack -Path C:\Backup
 ```
