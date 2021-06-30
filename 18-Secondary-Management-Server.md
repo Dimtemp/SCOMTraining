@@ -1,4 +1,4 @@
-# Chapter: Complex Configurations (optional)
+# High available management servers
 
 Perform a reboot on the LON-DC1 before beginning this lab. This is to prevent an issue with the certificate revocation role. Also, this lab requires an internet connection for the virtual machines, for the installation of the .NET Framework.
 
