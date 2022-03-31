@@ -121,8 +121,9 @@ Install-Module Dimmo -Force
 
 # Git setup, not required anymore? Include this script in PowerShell Gallery?
 choco install git
-cd\
+cd $env:ProgramFiles\Git\cmd\   # git not in path after install
 git clone https://github.com/Dimtemp/SCOMTraining/
+cd\
 
 # git clone https://github.com/Azure/azure-devtestlab.git
 # Hyper-V setup
@@ -138,6 +139,7 @@ if (-not (Get-RunningAsAdministrator)) { Write-Error "Please re-run this script 
 
 # Install HyperV service and client tools
 Write-Output "Installing Hyper-V, if needed."
+# todo: check if virtualiation extensions are present. How?
 Install-HypervAndTools
 
 # Pin Hyper-V to the user's desktop.
@@ -215,4 +217,3 @@ Start-VM LON-DC1
 # Start-VM LON-SV1
 # vmconnect.exe $env:COMPUTERNAME LON-SV1
 # Get-VM LON-SV1 | Get-VMDvdDrive | Set-VMDvdDrive -Path $null
-
