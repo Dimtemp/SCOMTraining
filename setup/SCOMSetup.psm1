@@ -276,8 +276,9 @@ function AzureHostVMSetupPhase3 {
 
     # copy files from storage account using AzCopy
     mkdir $destinationFolder
-    $blobSas = 'https://scomtraining.blob.core.windows.net/files?sp=rl&st=2021-04-22T13:56:59Z&se=2022-04-22T21:56:59Z&spr=https&sv=2020-02-10&sr=c&sig=F93BqRUWDH9Fvn%2FmyinE%2Bqj6%2FfQjPfLWbz39vM8MlTA%3D'
-    AzCopy.exe copy $blobSas $destinationFolder --recursive   # blobsas!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    throw "sas not implemented yet"
+    $blobSas = 'https://scomtraining.blob.core.windows.net/files?sp=rl&s......' # todo: retrieve SAS!!!
+    AzCopy.exe copy $blobSas $destinationFolder --recursive
 
     # required files:
     # Base17C-WS16-1607
