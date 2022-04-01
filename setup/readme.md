@@ -1,2 +1,2 @@
-# These files have moved!
-New local location: C:\Docs\PowerShell\Modules\SCOMSetup
+# SCOM Training setup module
+Load this file into your PowerShell environment with Import-Module.
