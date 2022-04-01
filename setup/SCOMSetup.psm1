@@ -1,235 +1,11 @@
 ﻿<#
 Run these commands in order to setup a SCOM environment. Only run the last file if you want to run an unattended SCOM setup. Don't run the last file if students need to run SCOM setup themselves.
+
+TO DO
+- setup VMs + SCOM on hyper-v on local PC
+- upload VHD files to Azure storage account
+- mount in Azure VM
 #>
-
-function 1a-New-SCOMSetupFilesInAzure {
-    param(
-        $resourceGroupName = 'SCOMTraining',
-        $location = 'westeurope',   # centralindia   eastus2
-        $containerName = 'files',
-        $sourceFilesPath = 'Q:\Images\SC2019'
-    )
-
-    Write-Progress -Activity $activity -Status 'Checking prerequisites'
-    $sourceFiles = 'Q:\Images\Parent\Base17A-W10-1607.vhd', 'Q:\Images\Parent\Base17C-WS16-1607.vhd', 'Q:\Software\Microsoft\SQL\en_sql_server_2016_enterprise_with_service_pack_1_x64_dvd_9542382.iso', 'Q:\Software\Microsoft\System Center 2019\mu_system_center_operations_manager_2019_x64_dvd_b3488f5c.iso'
-    $activity = 'Setting up SCOM training in Azure'
-
-
-    # check input files
-    $sourceFiles | foreach-object { if (!(Test-Path $_)) { Throw "Source file does not exist! Terminating... $_" } }
-    if (!(Test-Path $sourceFilesPath)) { Throw "Source file does not exist! Terminating... $_" }
-
-
-    # check for AzCopy existence
-    if (!(Get-Command AzCopy.exe)) { throw "AzCopy does not exist! Terminating." }
-
-
-    # check for Azure PowerShell modules
-    if (!(Get-Module Az.Resources -ListAvailable)) { throw "Az.Resources module not installed. Terminating" }
-    if (!(Get-Module Az.Storage -ListAvailable)) { throw "Az.Storage module not installed. Terminating" }
-
-    # create resource group
-    # already exists?
-    New-AzResourceGroup -Name $resourceGroupName -Location $location -ErrorAction Stop
-
-
-    # create storage account
-    $sa = Get-AzStorageAccount -ResourceGroupName $resourceGroupName
-    if ($null -eq $sa) {
-        $sa = New-AzStorageAccount -ResourceGroupName $resourceGroupName -Name "stor$(Get-Random)" -SkuName Standard_LRS -Location 'westeurope' -Kind StorageV2
-    }
-
-    New-AzStorageContainer -Context $sa.Context -Name $containerName -Permission Container
-
-    # generate SAS
-    $StartTime = Get-Date
-    $ExpiryTime = $startTime.AddDays(365)
-    $blobSas = New-AzStorageContainerSASToken -Name $containerName -Permission w -StartTime $StartTime -ExpiryTime $ExpiryTime -context $sa.Context -Protocol HttpsOnly
-    $blobSas = $sa.Context.BlobEndPoint + $containerName + $blobSas
-    $blobSas
-
-    # upload files to storage account
-    Write-Progress -Activity $activity -Status "Copying $sourceFilesPath"
-    AzCopy copy $sourceFilesPath $blobSas --recursive  # --overwrite ifSourceNewer
-
-    Write-Progress -Activity $activity -Status "Copying $($sourceFiles.tostring())"
-    $sourceFiles | Foreach {
-        AzCopy copy $_ $blobSas   # --overwrite ifSourceNewer
-    }
-
-
-
-    Write-Progress -Activity $activity -Completed
-}
-
-
-function 1b-New-AzVMasSCOMHost {
-
-    param(
-        $resourceGroupName = 'SCOMTraining',
-        $location = 'westeurope',   # centralindia   eastus2
-        $vmsize = 'Standard_D4s_v3',  # b-sizes mogen niet wegens gebrek aan neste virtualization
-        $Password = 'Pa55w.rd1234',
-        $students = 'student1b' #, 'student2'    
-    )
-
-    # check for Azure PowerShell modules
-    if (!(Get-Module Az.Resources -ListAvailable)) { throw "Az.Resources module not installed. Terminating" }
-    if (!(Get-Module Az.Compute -ListAvailable)) { throw "Az.Compute module not installed. Terminating" }
-
-    $secStringPassword = ConvertTo-SecureString $Password -AsPlainText -Force
-
-    # create VM in Azure for each student
-    $students | Foreach-Object {
-        Write-Progress -Activity $activity -Status "Creating VM $_"
-        # create credential object
-        [pscredential]$cred = New-Object System.Management.Automation.PSCredential ($_, $secStringPassword)
-        
-        # extensions!!! auto shut down, perform setup
-        # -AsJob
-        $AzVMProps = @{
-            ResourceGroupName = $_
-            Name = $_
-            Location = $location
-            Size = $vmsize
-            # AllocationMethod = Static is dit reden dat public ip niet aanwezig was? Blijkbaar niet.
-            Credential = $cred
-            Image = 'Win2016Datacenter'
-        }
-        New-AzVM @AzVMProps
-    }
-}
-
-
-
-
-function 2-Azure-Host-VM-Setup {
-
-    # or CreateSCOMHostServer
-    # Run this script from the host VM
-    # Set-ExecutionPolicy Bypass -Scope Process -Force
-
-    # init
-    $destinationFolder = 'C:\Hyper-V\'
-    $adminPassword = 'Pa55w.rd'
-    $timezone = 'W. Europe Standard Time'
-
-
-
-    # enable Tls12
-    [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
-
-    # Chocolatey  install
-    Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-    choco.exe feature enable -n allowGlobalConfirmation
-
-    # install Dimmo module, required for New-VMFromBaseDisk
-    Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
-    Install-Module Dimmo -Force
-
-    # Git setup, not required anymore? Include this script in PowerShell Gallery?
-    choco.exe install git
-    cd $env:ProgramFiles\Git\cmd\   # git not in path after install
-    git clone https://github.com/Dimtemp/SCOMTraining/
-    cd\
-
-    # git clone https://github.com/Azure/azure-devtestlab.git
-    # Hyper-V setup
-    # always includes DHCP! Maybe do this different?
-    # cd \azure-devtestlab\samples\ClassroomLabs\Scripts\HyperV\
-    # Set-ExecutionPolicy bypass -force
-    # .\SetupForNestedVirtualization.ps1   # No DHCP?!?!?!? Provided by LON-DC1
-
-
-    # Check that script is being run with Administrator privilege.
-    Write-Output "Verify running as administrator."
-    if (-not (Get-RunningAsAdministrator)) { Write-Error "Please re-run this script as Administrator." }
-
-    # Install HyperV service and client tools
-    Write-Output "Installing Hyper-V, if needed."
-    # todo: check if virtualiation extensions are present. How?
-    Install-HypervAndTools
-
-    # Pin Hyper-V to the user's desktop.
-    Write-Output "Creating shortcut to Hyper-V Manager on desktop."
-    $Shortcut = (New-Object -ComObject WScript.Shell).CreateShortcut($(Join-Path "$env:UserProfile\Desktop" "Hyper-V Manager.lnk"))
-    $Shortcut.TargetPath = "$env:SystemRoot\System32\virtmgmt.msc"
-    $Shortcut.Save()
-
-
-
-    # download and install AzCopy
-    Invoke-WebRequest -Uri 'https://aka.ms/downloadazcopy-v10-windows' -OutFile AzCopy.zip -UseBasicParsing
-    Expand-Archive ./AzCopy.zip
-    Get-ChildItem ./AzCopy/*/azcopy.exe | Move-Item -Destination $env:windir
-
-    # copy files from storage account using AzCopy
-    mkdir $destinationFolder
-    $blobSas = 'https://scomtraining.blob.core.windows.net/files?sp=rl&st=2021-04-22T13:56:59Z&se=2022-04-22T21:56:59Z&spr=https&sv=2020-02-10&sr=c&sig=F93BqRUWDH9Fvn%2FmyinE%2Bqj6%2FfQjPfLWbz39vM8MlTA%3D'
-    AzCopy.exe copy $blobSas $destinationFolder --recursive   # blobsas!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-    # required files:
-    # Base17C-WS16-1607
-    # Base17A-W10-1607
-    # en_sql_server_2016_enterprise_with_service_pack_1_x64_dvd_9542382.iso
-    # mu_system_center_operations_manager_2019_x64_dvd_b3488f5c.iso
-
-    # requirements
-    $sqlIso         = Get-ChildItem $destinationFolder -recurse -filter 'en_sql_server_2016_enterprise_with_service_pack_1_x64_dvd_9542382.iso'
-    $scomIso        = Get-ChildItem $destinationFolder -recurse -filter 'mu_system_center_operations_manager_2019_x64_dvd_b3488f5c.iso'
-    $serverbasedisk = Get-ChildItem $destinationFolder -recurse -filter 'Base17C-WS16-1607*'
-    $clientbasedisk = Get-ChildItem $destinationFolder -recurse -filter 'Base17A-W10-1607*'
-
-
-
-    if ((Get-VMSwitch).count -lt 1) { New-VMSwitch -Name 'Switch1' -SwitchType Internal }
-    $switch = Get-VMSwitch | Select-Object -first 1
-
-
-    # create client
-    New-VMFromBaseDisk -VMName LON-W10 -BaseDisk $clientbasedisk.fullname -VirtualSwitchName $switch.name -DestinationFolder $destinationFolder
-
-    # create servers
-    'LON-DC1', 'LON-SV1', 'LON-SV2' | ForEach-Object {
-        New-VMFromBaseDisk -VMName $_ -BaseDisk $serverbasedisk.fullname -VirtualSwitchName $switch.name -DestinationFolder $destinationFolder -CpuCount 2 -MemoryStartupBytes 2GB
-    }
-    Get-VM LON-SV1 | Set-VMProcessor -Count 4
-    Get-VM LON-SV1 | Set-VMMemory -StartupBytes 8GB
-    Get-VM LON-SV1 | Get-VMDvdDrive | Set-VMDvdDrive -Path $sqlIso.FullName
-    # Get-VM LON-SV1 | Get-VMDvdDrive | Set-VMDvdDrive -Path $scomPath
-
-    # Create unattended files
-    Get-VM | ForEach-Object {
-
-        Write-Host "Processing $($_.Name)"
-        if ($_.name -match 'DC') {
-            $unattend = New-UnattendXML -ComputerName $_.Name -AdminPassword $adminPassword -Timezone $timezone
-        } else {
-            $unattend = New-UnattendXML -ComputerName $_.Name -AdminPassword $adminPassword -Timezone $timezone -DomainName 'adatum.msft' -DomainAccount 'Administrator' -DomainPassword $adminPassword
-        }
-
-        # mount VHD and write unattend.xml
-        $VHDFromVM = $_.HardDrives.Path
-        Write-Verbose "Writing unattended file to $VHDFromVM"
-        $DriveLetter = (Mount-VHD -Path $VHDFromVM -Passthru | Get-Disk | Get-Partition | Where-Object Size -gt 1GB).DriveLetter
-        $unattend | Out-File ($DriveLetter + ':\unattend.xml') -Encoding utf8
-        $unattend | Out-File ($DriveLetter + ':\unattend-original.xml') -Encoding utf8   # debug output
-        Dismount-VHD $VHDFromVM
-    }
-
-
-    # start DC
-    # Start-VM LON-DC1
-
-    # start SQL/SCOM VM, becomes member of domain automatically
-    # Start-VM LON-SV1
-    # vmconnect.exe $env:COMPUTERNAME LON-SV1
-    # Get-VM LON-SV1 | Get-VMDvdDrive | Set-VMDvdDrive -Path $null
-
-}
-
-
-
 
 
 ###################################################################################################
@@ -334,7 +110,239 @@ function Install-HypervAndToolsClient {
 ###################################################################################################
 
 
-function 3-DC-VM-Setup {
+
+function SCOMSetupFilesInAzurePhase1 {
+    param(
+        $resourceGroupName = 'SCOMTraining',
+        $location = 'westeurope',   # centralindia   eastus2
+        $containerName = 'files',
+        $sourceFilesPath = 'Q:\Images\SC2019'
+    )
+
+    Write-Progress -Activity $activity -Status 'Checking prerequisites'
+    $sourceFiles = 'Q:\Images\Parent\Base17A-W10-1607.vhd', 'Q:\Images\Parent\Base17C-WS16-1607.vhd', 'Q:\Software\Microsoft\SQL\en_sql_server_2016_enterprise_with_service_pack_1_x64_dvd_9542382.iso', 'Q:\Software\Microsoft\System Center 2019\mu_system_center_operations_manager_2019_x64_dvd_b3488f5c.iso'
+    $activity = 'Setting up SCOM training in Azure'
+
+
+    # check input files
+    $sourceFiles | foreach-object { if (!(Test-Path $_)) { Throw "Source file does not exist! Terminating... $_" } }
+    if (!(Test-Path $sourceFilesPath)) { Throw "Source file does not exist! Terminating... $_" }
+
+
+    # check for AzCopy existence
+    if (!(Get-Command AzCopy.exe)) { throw "AzCopy does not exist! Terminating." }
+
+
+    # check for Azure PowerShell modules
+    if (!(Get-Module Az.Resources -ListAvailable)) { throw "Az.Resources module not installed. Terminating" }
+    if (!(Get-Module Az.Storage -ListAvailable)) { throw "Az.Storage module not installed. Terminating" }
+
+    # create resource group
+    # already exists?
+    New-AzResourceGroup -Name $resourceGroupName -Location $location -ErrorAction Stop
+
+
+    # create storage account
+    $sa = Get-AzStorageAccount -ResourceGroupName $resourceGroupName
+    if ($null -eq $sa) {
+        $sa = New-AzStorageAccount -ResourceGroupName $resourceGroupName -Name "stor$(Get-Random)" -SkuName Standard_LRS -Location 'westeurope' -Kind StorageV2
+    }
+
+    New-AzStorageContainer -Context $sa.Context -Name $containerName -Permission Container
+
+    # generate SAS
+    $StartTime = Get-Date
+    $ExpiryTime = $startTime.AddDays(365)
+    $blobSas = New-AzStorageContainerSASToken -Name $containerName -Permission w -StartTime $StartTime -ExpiryTime $ExpiryTime -context $sa.Context -Protocol HttpsOnly
+    $blobSas = $sa.Context.BlobEndPoint + $containerName + $blobSas
+    $blobSas
+
+    # upload files to storage account
+    Write-Progress -Activity $activity -Status "Copying $sourceFilesPath"
+    AzCopy copy $sourceFilesPath $blobSas --recursive  # --overwrite ifSourceNewer
+
+    Write-Progress -Activity $activity -Status "Copying $($sourceFiles.tostring())"
+    $sourceFiles | Foreach {
+        AzCopy copy $_ $blobSas   # --overwrite ifSourceNewer
+    }
+
+
+
+    Write-Progress -Activity $activity -Completed
+}
+
+
+
+
+function AzVMSCOMHostPhase2 {
+
+    param(
+        $resourceGroupName = 'SCOMTraining',
+        $location = 'westeurope',   # centralindia   eastus2
+        $vmsize = 'Standard_D4s_v3',  # b-sizes mogen niet wegens gebrek aan neste virtualization
+        $Password = 'Pa55w.rd1234',
+        $students = 'student1b' #, 'student2'    
+    )
+
+    # check for Azure PowerShell modules
+    if (!(Get-Module Az.Resources -ListAvailable)) { throw "Az.Resources module not installed. Terminating" }
+    if (!(Get-Module Az.Compute -ListAvailable)) { throw "Az.Compute module not installed. Terminating" }
+
+    $secStringPassword = ConvertTo-SecureString $Password -AsPlainText -Force
+
+    # create VM in Azure for each student
+    $students | Foreach-Object {
+        Write-Progress -Activity $activity -Status "Creating VM $_"
+        # create credential object
+        [pscredential]$cred = New-Object System.Management.Automation.PSCredential ($_, $secStringPassword)
+        
+        # extensions!!! auto shut down, perform setup
+        # -AsJob
+        $AzVMProps = @{
+            ResourceGroupName = $_
+            Name = $_
+            Location = $location
+            Size = $vmsize
+            # AllocationMethod = Static is dit reden dat public ip niet aanwezig was? Blijkbaar niet.
+            Credential = $cred
+            Image = 'Win2016Datacenter'
+        }
+        New-AzVM @AzVMProps
+    }
+}
+
+
+
+
+function AzureHostVMSetupPhase3 {
+
+    # or CreateSCOMHostServer
+    # Run this script from the host VM
+    # Set-ExecutionPolicy Bypass -Scope Process -Force
+
+    # init
+    $destinationFolder = 'C:\Hyper-V\'
+    $adminPassword = 'Pa55w.rd'
+    $timezone = 'W. Europe Standard Time'
+
+
+
+    # enable Tls12
+    [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+
+    # Chocolatey  install
+    Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+    choco.exe feature enable -n allowGlobalConfirmation
+
+    # install Dimmo module, required for New-VMFromBaseDisk
+    Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+    Install-Module Dimmo -Force
+
+    # Git setup, not required anymore? Include this script in PowerShell Gallery?
+    choco.exe install git
+    #cd $env:ProgramFiles\Git\cmd\   # git not in path after install
+    #git.exe clone https://github.com/Dimtemp/SCOMTraining/
+    #cd\
+
+    # git clone https://github.com/Azure/azure-devtestlab.git
+    # Hyper-V setup
+    # always includes DHCP! Maybe do this different?
+    # cd \azure-devtestlab\samples\ClassroomLabs\Scripts\HyperV\
+    # Set-ExecutionPolicy bypass -force
+    # .\SetupForNestedVirtualization.ps1   # No DHCP?!?!?!? Provided by LON-DC1
+
+
+    # Check that script is being run with Administrator privilege.
+    Write-Output "Verify running as administrator."
+    if (-not (Get-RunningAsAdministrator)) { Write-Error "Please re-run this script as Administrator." }
+
+    # Install HyperV service and client tools
+    Write-Output "Installing Hyper-V, if needed."
+    # todo: check if virtualiation extensions are present. How?
+    Install-HypervAndTools
+
+    # Pin Hyper-V to the user's desktop.
+    Write-Output "Creating shortcut to Hyper-V Manager on desktop."
+    $Shortcut = (New-Object -ComObject WScript.Shell).CreateShortcut($(Join-Path "$env:UserProfile\Desktop" "Hyper-V Manager.lnk"))
+    $Shortcut.TargetPath = "$env:SystemRoot\System32\virtmgmt.msc"
+    $Shortcut.Save()
+
+
+
+    # download and install AzCopy
+    Invoke-WebRequest -Uri 'https://aka.ms/downloadazcopy-v10-windows' -OutFile AzCopy.zip -UseBasicParsing
+    Expand-Archive ./AzCopy.zip
+    Get-ChildItem ./AzCopy/*/azcopy.exe | Move-Item -Destination $env:windir
+
+    # copy files from storage account using AzCopy
+    mkdir $destinationFolder
+    $blobSas = 'https://scomtraining.blob.core.windows.net/files?sp=rl&st=2021-04-22T13:56:59Z&se=2022-04-22T21:56:59Z&spr=https&sv=2020-02-10&sr=c&sig=F93BqRUWDH9Fvn%2FmyinE%2Bqj6%2FfQjPfLWbz39vM8MlTA%3D'
+    AzCopy.exe copy $blobSas $destinationFolder --recursive   # blobsas!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+    # required files:
+    # Base17C-WS16-1607
+    # Base17A-W10-1607
+    # en_sql_server_2016_enterprise_with_service_pack_1_x64_dvd_9542382.iso
+    # mu_system_center_operations_manager_2019_x64_dvd_b3488f5c.iso
+
+    # requirements
+    $sqlIso         = Get-ChildItem $destinationFolder -recurse -filter 'en_sql_server_2016_enterprise_with_service_pack_1_x64_dvd_9542382.iso'
+    $scomIso        = Get-ChildItem $destinationFolder -recurse -filter 'mu_system_center_operations_manager_2019_x64_dvd_b3488f5c.iso'
+    $serverbasedisk = Get-ChildItem $destinationFolder -recurse -filter 'Base17C-WS16-1607*'
+    $clientbasedisk = Get-ChildItem $destinationFolder -recurse -filter 'Base17A-W10-1607*'
+
+
+
+    if ((Get-VMSwitch).count -lt 1) { New-VMSwitch -Name 'Switch1' -SwitchType Internal }
+    $switch = Get-VMSwitch | Select-Object -first 1
+
+
+    # create client
+    New-VMFromBaseDisk -VMName LON-W10 -BaseDisk $clientbasedisk.fullname -VirtualSwitchName $switch.name -DestinationFolder $destinationFolder
+
+    # create servers
+    'LON-DC1', 'LON-SV1', 'LON-SV2' | ForEach-Object {
+        New-VMFromBaseDisk -VMName $_ -BaseDisk $serverbasedisk.fullname -VirtualSwitchName $switch.name -DestinationFolder $destinationFolder -CpuCount 2 -MemoryStartupBytes 2GB
+    }
+    Get-VM LON-SV1 | Set-VMProcessor -Count 4
+    Get-VM LON-SV1 | Set-VMMemory -StartupBytes 8GB
+    Get-VM LON-SV1 | Get-VMDvdDrive | Set-VMDvdDrive -Path $sqlIso.FullName
+    # Get-VM LON-SV1 | Get-VMDvdDrive | Set-VMDvdDrive -Path $scomPath
+
+    # Create unattended files
+    Get-VM | ForEach-Object {
+
+        Write-Host "Processing $($_.Name)"
+        if ($_.name -match 'DC') {
+            $unattend = New-UnattendXML -ComputerName $_.Name -AdminPassword $adminPassword -Timezone $timezone
+        } else {
+            $unattend = New-UnattendXML -ComputerName $_.Name -AdminPassword $adminPassword -Timezone $timezone -DomainName 'adatum.msft' -DomainAccount 'Administrator' -DomainPassword $adminPassword
+        }
+
+        # mount VHD and write unattend.xml
+        $VHDFromVM = $_.HardDrives.Path
+        Write-Verbose "Writing unattended file to $VHDFromVM"
+        $DriveLetter = (Mount-VHD -Path $VHDFromVM -Passthru | Get-Disk | Get-Partition | Where-Object Size -gt 1GB).DriveLetter
+        $unattend | Out-File ($DriveLetter + ':\unattend.xml') -Encoding utf8
+        $unattend | Out-File ($DriveLetter + ':\unattend-original.xml') -Encoding utf8   # debug output
+        Dismount-VHD $VHDFromVM
+    }
+
+
+    # start DC
+    # Start-VM LON-DC1
+
+    # start SQL/SCOM VM, becomes member of domain automatically
+    # Start-VM LON-SV1
+    # vmconnect.exe $env:COMPUTERNAME LON-SV1
+    # Get-VM LON-SV1 | Get-VMDvdDrive | Set-VMDvdDrive -Path $null
+
+}
+
+
+
+
+function DCVMSetupPhase4 {
     # run this script from the domain controller
 
     # init
@@ -362,7 +370,7 @@ function 3-DC-VM-Setup {
 
 
 
-Function 4-SCOM-VM-Setup {
+Function SCOMVMSetupPhase5 {
     # run this script from the management server VM
 
     # run taskmgr and enable disk stats
@@ -395,7 +403,7 @@ Function 4-SCOM-VM-Setup {
 
 
 
-function 5-Mgmtserver-Setup {
+function MgmtserverSetupPhase6 {
     #init
     $ADAccounts = 'MSAA', 'SDK', 'DRA', 'DWA'
     $pw = ConvertTo-SecureString 'Pa55w.rd' -AsPlainText -Force
@@ -444,3 +452,4 @@ function 5-Mgmtserver-Setup {
 
     Write-Host -fore green 'health service started!'
 }
+
