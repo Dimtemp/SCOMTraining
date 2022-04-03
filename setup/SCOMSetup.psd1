@@ -70,12 +70,12 @@ Description = 'This module can help in automation of a SCOM environment, optiona
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
 FunctionsToExport = @(
-'1a-New-SCOMSetupFilesInAzure',
-'1b-New-AzVMasSCOMHost',
-'2-Azure-Host-VM-Setup',
-'3-DC-VM-Setup',
-'4-SCOM-VM-Setup',
-'5-Mgmtserver-Setup'
+    'SCOMSetupFilesInAzurePhase1',
+    'AzVMSCOMHostPhase2',
+    'AzureHostVMSetupPhase3',
+    'DCVMSetupPhase4',
+    'SCOMVMSetupPhase5',
+    'MgmtserverSetupPhase6'
 )
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
