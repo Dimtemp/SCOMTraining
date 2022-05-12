@@ -1,4 +1,4 @@
-﻿<#
+<#
 Run these commands in order to setup a SCOM environment. Only run the last file if you want to run an unattended SCOM setup. Don't run the last file if students need to run SCOM setup themselves.
 
 TO DO
@@ -405,10 +405,12 @@ Function SCOMVMSetupPhase5 {
 
 
 function MgmtserverSetupPhase6 {
+    param(
+        [string]$password = (ConvertTo-SecureString 'Pa55w.rd' -AsPlainText -Force)
+    )
+
     #init
     $ADAccounts = 'MSAA', 'SDK', 'DRA', 'DWA'
-    $pw = ConvertTo-SecureString 'Pa55w.rd' -AsPlainText -Force
-    $scomSetup = 'C:\System Center Operations Manager 2019\Setup.exe'
 
     if (Test-Path $scomSetup) {
         Write-Host "SCOM Setup files found."
@@ -431,12 +433,47 @@ function MgmtserverSetupPhase6 {
 
     Get-Service SQLSERVERAGENT | Set-Service -StartupType Automatic -Passthru | Start-Service   # tbv Reporting
 
+}
+
+
+function MgmtserverSetupPhase7 {
+    <#
+    .SYNOPSIS
+    This command performs a SCOM setup.
+    #>
+
+    param(
+        [string]$scomSetup = 'C:\System Center Operations Manager 2019\Setup.exe',
+        [string]$password = 'Pa55w.rd',
+        [switch]$NoMonitoring
+    )
+
     Start-Job {
+        # to do: is start job neccesary? Setup is launched in separate process
         Start-Sleep 3   # wait for processmonitor
         Add-WindowsFeature Web-Metabase   # NLB
-        Start-Process -FilePath $scomSetup -ArgumentList '/silent /install /components:OMServer,OMConsole,OMReporting /ManagementGroupName:OM1 /SRSInstance:VAN-OM1 /SqlServerInstance:VAN-OM1 /DatabaseName:OperationsManager /DWSqlServerInstance:VAN-OM1 /DWDatabaseName:OperationsManagerDW /ActionAccountUser:Adatum\MSAA /ActionAccountPassword:Pa$$w0rd /DASAccountUser:Adatum\SDK /DASAccountPassword:Pa$$w0rd /DatareaderUser:Adatum\DRA /DatareaderPassword:Pa$$w0rd /DataWriterUser:Adatum\DWA /DataWriterPassword:Pa$$w0rd /EnableErrorReporting:Always /SendODRReports:1 /SendCEIPReports:0 /UseMicrosoftUpdate:1 /AcceptEndUserLicenseAgreement:1'
+        Start-Process -FilePath $using:scomSetup -ArgumentList " /install /components:OMServer,OMConsole,OMReporting /ManagementGroupName:OM1 /SRSInstance:LON-SV1 /SqlServerInstance:LON-SV1 /DatabaseName:OperationsManager /DWSqlServerInstance:LON-SV1 /DWDatabaseName:OperationsManagerDW /ActionAccountUser:Adatum\MSAA /ActionAccountPassword:$using:password /DASAccountUser:Adatum\SDK /DASAccountPassword:$using:password /DatareaderUser:Adatum\DRA /DatareaderPassword:$using:password /DataWriterUser:Adatum\DWA /DataWriterPassword:$using:password /EnableErrorReporting:Always /SendODRReports:1 /SendCEIPReports:0 /UseMicrosoftUpdate:1 /AcceptEndUserLicenseAgreement:1"
+        # /silent
+        # passwords updated
+        # using:
     }
 
+
+    if ($NoMonitoring) {
+        Write-Host 'Setup started...'
+    } else {
+        ProcessMonitor
+    }
+}
+
+
+
+
+function ProcessMonitor {
+    <#
+    .SYNOPSIS
+    This command monitors processes.
+    #>
 
     $start = Get-Date
     $p1 = Get-Process
@@ -451,6 +488,8 @@ function MgmtserverSetupPhase6 {
         $p1 = $p2
     } until ( $p2 | Where-Object { $_.name -match 'monitoringhost' } )
 
-    Write-Host -fore green 'health service started!'
+    Write-Host -ForegroundColor Green 'health service started!'
 }
+
+# MgmtserverSetupPhase7 -NoMonitoring
 
