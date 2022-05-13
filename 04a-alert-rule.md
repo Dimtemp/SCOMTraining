@@ -19,14 +19,16 @@ The following procedure explains the process to create an alert rule by creating
 
 ## Confirm that a changed management pack is downloaded by the agent
 Confirming that a change in the monitoring environment is confirmed by the agent is an extremely important and usefull procedure. You will use it a lot during the training, as well as in real life.
-1. Open the Event Viewer.
-1. From Event Viewer, connect to LON-DC1.
-1. Open the **Applications and Services** node, click the **Operations Manager** log and search for event id **1201**.
-1. Minimize the Virtual Machine connection window to return to the host server.
-1. In Hyper-V Manager, right click **LON-DC1** and click **Turn Off**.
-1. By turning off the server, instead of shutting down, we simulate an Operating System crash.
-1. After the DC has been turned off, turn it back on, and wait for the boot procedure.
-1. Return to the LON-SV1 Virtual Machine Connection window and open the Operations Manager console and wait for the alert to appear.
+1. Open a PowerShell prompt.
+2. Run this command from the PowerShell prompt: ```Invoke-Command -ComputerName LON-DC1 { Get-NetFirewallRule | where { $_.displayname -like '*access (dcom-in)' -or $_.displaygroup -eq 'Remote Event Log Management' } | Enable-NetFirewallRule }```
+3. 1. Open the Event Viewer.
+4. From Event Viewer, connect to LON-DC1.
+5. Open the **Applications and Services** node, click the **Operations Manager** log and search for event id **1201**.
+6. Minimize the Virtual Machine connection window to return to the host server.
+7. In Hyper-V Manager, right click **LON-DC1** and click **Turn Off**.
+8. By turning off the server, instead of shutting down, we simulate an Operating System crash.
+9. After the DC has been turned off, turn it back on, and wait for the boot procedure.
+10. Return to the LON-SV1 Virtual Machine Connection window and open the Operations Manager console and wait for the alert to appear.
 
 ## Alert-Generating Rules
 1. Repeat the first procedure with the following parameters: 
