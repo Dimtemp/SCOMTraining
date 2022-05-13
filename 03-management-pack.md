@@ -30,7 +30,7 @@ The wizard will alert you if there are dependencies on other management packs or
 14. Select the folder that contains the Windows Server management packs.
 15. Select all the MP files that exist in that folder and click **Open**.
 16. Click **Install** and wait for the import. This might take a minute or two.
-17. Repeat step 6 - 12 for all other folders.
+17. Repeat step 8 - 14 for all other folders.
 
 
 ## Verifying a succesfull import.
@@ -42,7 +42,7 @@ The wizard will alert you if there are dependencies on other management packs or
 6. Open the Agent folder
 7. Open the Health Service State folder
 8. Open the Management Packs folder
-### Notice that some SQL files are present in this folder on the domain controller. These management packs contain discoveries for SQL Server. Since there is no SQL Server on the Domain Controller, it will not be monitored. As Soon as a SQL server is installed on the domain controller it will be monitored. This behaviour is by design.
+### Notice that some SQL files might be present in this folder on the domain controller. These management packs contain discoveries for SQL Server. Since there is no SQL Server on the Domain Controller, it will not be monitored. As soon as a SQL server is installed on the domain controller it will be monitored. This behaviour is by design.
 9. Open the SCOM Console.
 10. Open the Monitoring workspace
 11. Scroll down to the Microsoft SQL Server folder.
