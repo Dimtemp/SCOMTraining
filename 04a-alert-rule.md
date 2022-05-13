@@ -28,19 +28,20 @@ Confirming that a change in the monitoring environment is confirmed by the agent
 7. In Hyper-V Manager, right click **LON-DC1** and click **Turn Off**.
 8. By turning off the server, instead of shutting down, we simulate an Operating System crash.
 9. After the DC has been turned off, turn it back on, and wait for the boot procedure.
-10. Return to the LON-SV1 Virtual Machine Connection window and open the Operations Manager console and wait for the alert to appear.
+10. Return to the **LON-SV1 Virtual Machine Connection** window and open the **Operations Manager** console and wait for the alert to appear.
 
 ## Alert-Generating Rules
 1. Repeat the first procedure with the following parameters: 
-  - Name: Reason for expected shutdown.
+  - Name: Reason for unexpected shutdown.
   - Log: System
-  - Event ID: 1074 
+  - Event ID: 1076
   - Source: USER32
-1. Now repeat the procedure to confirm the management pack download
+1. Now repeat the procedure to confirm the management pack download using the Event Viewer.
 1. Minimize the Virtual Machine connection window to return to the host server.
 1. In Hyper-V Manager, doubleclick **LON-DC1** to open a console window.
-1. Log on to LON-DC1 and click Start -> Shutdown. Enter a reason and click Ok. Wait for the VM to shut down and restart the VM.
-1. Return to the Operations Manager console. The reason for the shutdown is logged in the Windows Event Log and picked up by the Operations Manager Agent. It will appear in the Operations Manager console.
+1. Log on to LON-DC1 and specify the reason for the unexpected shutdown.
+1. Return to the **LON-SV1 Virtual Machine Connection** window and open the **Operations Manager** console and wait for the alert to appear.
+
 
 > NOTE: CLOSING ALERTS
 > 
