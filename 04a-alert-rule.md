@@ -34,8 +34,8 @@ Confirming that a change in the monitoring environment is confirmed by the agent
 1. Repeat the first procedure with the following parameters: 
   - Name: Reason for expected shutdown.
   - Log: System
-  - Source: USER32
   - Event ID: 1074 
+  - Source: USER32
 1. Now repeat the procedure to confirm the management pack download
 1. Minimize the Virtual Machine connection window to return to the host server.
 1. In Hyper-V Manager, doubleclick **LON-DC1** to open a console window.
