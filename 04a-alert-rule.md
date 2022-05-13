@@ -21,7 +21,7 @@ The following procedure explains the process to create an alert rule by creating
 Confirming that a change in the monitoring environment is confirmed by the agent is an extremely important and usefull procedure. You will use it a lot during the training, as well as in real life.
 1. Open a PowerShell prompt.
 2. Run this command from the PowerShell prompt: ```Invoke-Command -ComputerName LON-DC1 { Get-NetFirewallRule | where { $_.displayname -like '*access (dcom-in)' -or $_.displaygroup -eq 'Remote Event Log Management' } | Enable-NetFirewallRule }```
-3. 1. Open the Event Viewer.
+3. Open the Event Viewer.
 4. From Event Viewer, connect to LON-DC1.
 5. Open the **Applications and Services** node, click the **Operations Manager** log and search for event id **1201**.
 6. Minimize the Virtual Machine connection window to return to the host server.
