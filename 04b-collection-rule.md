@@ -14,17 +14,18 @@ As Windows Performance collection rules are most often used, this section discus
 7. Under rule target, click **Select**.
 8. Click **View all targets**.
 9. Target the most specific existing class for this example, which is the **MSSQL on Windows: DB Enginge**
-10. Use the Select-button to select the **Process -> % Processor Time counter** for the **sqlservr** process (select instance from list).
-11. At the Performance Object, Counter, and Instance page, change the collection interval to **1 minute**.
-12. Click Next to continue to the final page of the wizard.
-13. The last page of the wizard allows you to configure optimized collections. Optimized collection reduces the amount of disk space a performance counter collection uses in the data warehouse. Leave it unselected.
-14. Click Create to create the performance collection rule.
-15. Confirm that the changed management pack is downloaded by the agent (see previous exercise).
+10. Click Next.
+11. Use the Select-button to select the **Process -> % Processor Time counter** for the **sqlservr** process (select instance from list).
+12. At the Performance Object, Counter, and Instance page, change the collection interval to **1 minute**.
+13. Click Next to continue to the final page of the wizard.
+14. The last page of the wizard allows you to configure optimized collections. Optimized collection reduces the amount of disk space a performance counter collection uses in the data warehouse. Leave it unselected.
+15. Click Create to create the performance collection rule.
+16. Confirm that the changed management pack is downloaded by the agent (see a previous exercise).
 
 ## Viewing the results of a collection rule
 1. Open the **My Workspace** pane. Right click **Favorite Views** and select **New -> Performance View**.
 1. Enter the following name: **SQL Server process performance**.
-1. Under Select conditions, click **collected by specific rule**.
+1. Under Select conditions, click **collected by specific rules**.
 1. Under criteria descritpion, click the blue **specific** hyperlink.
 1. In the list that appears, select the rule with the name you specified previously: **SQL Server process CPU Time**.
 1. Click Ok to close the wizard.
