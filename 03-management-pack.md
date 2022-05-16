@@ -16,21 +16,24 @@ The wizard will alert you if there are dependencies on other management packs or
 
 ## Importing Management Packs from disk
 ### Note: follow this procedure if your lab environment doesn't have an internet connection.
-1. Return to the host VM and open the Windows Explorer.
-2. Navigate to: C:\Hyper-V\files\SC2019\Lib\Management Packs.
-5. Copy the zip file to the desktop of the LON-SV1 virtual machine.
-6. Unzip the zip file and open the folder with the unzipped contents.
-7. Run every MSI that is in the folder to extract the contents of the Management Pack. Accept the license agreement and leave all other options to their default setting.
-8. Now open the SCOM Console.
-9. Open the **Administration** workspace.
-10. Right click **Management Packs** and select **Import Management Packs**.
-11. Click **Add**, and **then Add from disk...**
-12. Select **No** to skip the depency check.
-13. Browse to C:\Programm Files (x86)\System Center Management Packs.
-14. Select the folder that contains the Windows Server management packs.
-15. Select all the MP files that exist in that folder and click **Open**.
-16. Click **Install** and wait for the import. This might take a minute or two.
-17. Repeat step 8 - 14 for all other folders.
+1. Return to the host machine, open Hyper-V Manager, and open a console session the LON-SV1 VM.
+2. Make sure Enhanced session is turned on by clicking the **View** menu.
+3. Minimize the LON-SV1 Virtual Machine Connection window and return to the host machine.
+4. Open Windows Explorer.
+5. Navigate to: **C:\Hyper-V\files\SC2019\Lib\Management Packs**.
+6. Copy the **Management Packs.zip** file to the desktop of the LON-SV1 virtual machine.
+7. Unzip the zip file and open the folder with the unzipped contents.
+8. Run every MSI that is in the folder to extract the contents of the Management Pack. Accept the license agreement and leave all other options to their default setting.
+9. Now open the SCOM Console.
+10. Open the **Administration** workspace.
+11. Right click **Management Packs** and select **Import Management Packs**.
+12. Click **Add**, and **then Add from disk...**
+13. Select **No** to skip the depency check.
+14. Browse to C:\Programm Files (x86)\System Center Management Packs.
+15. Select the folder that contains the Windows Server management packs.
+16. Select all the MP files that exist in that folder and click **Open**.
+17. Click **Install** and wait for the import. This might take a minute or two.
+18. Repeat step 8 - 14 for all other folders.
 
 
 ## Verifying a succesfull import.
