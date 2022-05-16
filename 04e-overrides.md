@@ -2,7 +2,8 @@
  
 ## Creating an Override
 This section looks at the process for creating an override against a monitor. Here are the steps to create an override from the Authoring pane in Operations Manager. Overrides can also be created in the Monitoring or My Workspace panes.
-1. Navigate in the Operations console to Authoring -> Monitors.
+
+1. Navigate in the Operations console to Authoring -> Management Pack Objects. Monitors.
 2. Using one of the search methods discussed in the “Locating Rules and Monitors in the Operations Console” section, locate the monitor you wish to override. This example will override the Available Megabytes of Memory monitor located under the Windows Server 2016 Operating System class. Using the scoping bar, scope the console to this class. You will find this monitor under the Performance aggregate monitor.
 3. After locating the monitor, right-click and select Overrides. Next, choose Override the Monitor. Notice there is also the option to Disable the Monitor, which is a simple way to disable the monitor for an object, class, or group without going through the steps listed in this section. In OpsMgr 2007 using the disable option was not recommended, as disabling stored the override in the Default management pack. This is no longer the case since Operations Manager 2012. The Disable the Monitor option creates an override that sets the Enabled flag to False and stores it in the management pack that you specify.
 4. Choosing Override the Monitor opens a submenu with the following options:
