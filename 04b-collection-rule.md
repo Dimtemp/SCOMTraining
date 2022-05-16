@@ -1,5 +1,8 @@
 # Chapter: Monitoring with Operations Manager
 
+## Requirements
+For this exercise to succeed, you need to have the SQL Management Pack imported. This has been covered in exercise 03.
+
 ## Creating a Performance Collection Rule
 As Windows Performance collection rules are most often used, this section discusses the steps required to gather a performance counter not collected by OpsMgr by default. For this example, you will be collecting the **% Processor Time** counter for the **SQL Server database engine process (sqlservr.exe)**.
 1. In the Operations console, open the Authoring workspace.
