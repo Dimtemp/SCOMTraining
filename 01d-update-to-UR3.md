@@ -4,7 +4,7 @@
 2. Navigate to C:\Hyper-V\files\SC2019\Lib.
 3. Right-click the UR3 folder and select copy.
 4. Open Hyper-V manager, open a session to the LON-SV1 VM and log on as ADATUM\Administrator.
-5. Copy the files to the desktop.
+5. Right-click the desktop and select paste.
 7. Run the KB4594078-AMD64-Server.exe file first.
 8. Run the KB4594078-AMD64-Console.msp file next.
 9. Please notice this is a minimal update procedure for the training. Please inspect the URL at the end to determine if any other actions are needed in a regular, non-training, environment.
