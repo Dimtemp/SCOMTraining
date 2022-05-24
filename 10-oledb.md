@@ -1,7 +1,9 @@
-Creating an OLE DB Synthetic Transaction
+# Creating an OLE DB Synthetic Transaction
+
 Here are the steps for creating an OLE DB synthetic transaction:
 1. Open the Operations console and navigate to the Authoring space.
-2. Right-click the Management Pack Templates sub tree and select Add Monitoring Wizard. Select OLE DB Data Source and click Next.
+2. Right-click the Management Pack Templates sub tree and select Add Monitoring Wizard. 
+3. Select OLE DB Data Source and click Next.
 4. On the next page, input the name and a description for the synthetic transaction and select the management pack in which you want to create the transaction rules. For this example, the transaction name will be Operations Manager Database Monitor, and select the Sample management pack used elsewhere or another management pack you have created. Click Next to continue.
 5. On the Connection String page, click on Build.
 6. Select the appropriate Provider in the drop-down list. Because the OperationsManager database is a Microsoft SQL database data source, select Microsoft OLE DB Provider for SQL Server.
@@ -11,7 +13,7 @@ Here are the steps for creating an OLE DB synthetic transaction:
 10. On the Choose Watcher Nodes page, select one or more managed computers to act as watcher nodes, ideally from several different locations. It is generally best to select at least two watcher nodes for each OLE DB data source. This way, when you are alerted to a problem accessing the data source, you can more easily rule out individual watcher node failure. Each instance of a watcher node monitoring an OLE DB data source creates a new object in the OLE DB Data Source State view, which becomes usable by the Distributed Application (DA). The default interval to run the OLE DB data source query is every two minutes. Adjust the query interval as appropriate and click Next.
 11. On the summary page, click Create and wait several moments. You should then be able to locate the new OLE DB data source monitor(s) in the Monitoring -> Synthetic Transaction -> OLE DB Data Source State view folder. There will be one monitor for each watcher node.
 
-Viewing the OLE DB Transaction Performance Data
+## Viewing the OLE DB Transaction Performance Data
 After creating the OLE DB data source monitor and allowing sufficient time to pass to enable data to populate the reports, you can review the performance data related to the OLE DB data source monitor. Follow these steps:
 1. Navigate to the Monitoring space and expand the Synthetic Transaction folder in the navigation tree to open the OLE DB Data Source State view. Notice the OLE DB data source monitor displayed on the right-hand side. To pivot to the performance view, right-click the object and select Open -> Performance View.
 2. See the performance view for the OLE DB data source. The available performance counters are Connection Time, Execution Time, and Fetch Time. Select one or both of these counters and view the graph. If additional watcher nodes are configured, these appear as separate counters, so you can compare the open time and connection time from different watcher nodes.
