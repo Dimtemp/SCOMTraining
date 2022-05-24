@@ -4,7 +4,7 @@ In addition to the Web Application Transaction Monitoring template, OpsMgr 2012 
   - Web Application Availability Monitoring: You can add individual websites or paste in a large number of URLs from a CSV file. Additionally, you can specify either agents or a resource pool as a watcher node. This template does not include some of the advanced capabilities available in the Web Application Transaction Monitoring template such as recording a series of web pages.
 You can display the results in a dashboard map. Availability monitoring is best used to provide insights into how well a website is performing across a set of testing locations that are geographically dispersed. This is the best choice when determining if a website is available.
   - Web Application Transaction Monitoring: You can record web transactions and perform advanced configurations with the Web Application Availability Monitoring template. Transaction monitoring is best used to test internal website functionality and validate the website is functioning as expected. This is the best monitoring option when opening the website is insufficient as a test.
-  - 
+
 To create a web application availability monitor, perform the following steps:
 1. Launch the Operations console and navigate to the Authoring space.
 2. Right-click the Management Pack Templates sub tree and select the Add Monitoring Wizard.
