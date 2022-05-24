@@ -33,6 +33,6 @@ Repeat the previous procedure (Creating an override) with the following paramete
 
 ## Locate overrides
 Try these three methods when locating overrides:
--	Operations console  Authoring  Management Pack Objects -> Overrides.
--	Operations console  Reporting  Microsoft Generic Report Library -> Overrides.
--	PowerShell  Get-SCOMOverride. More information on the Operations Manager Shell can be found in Chapter 23, “PowerShell and Operations Manager.”
+-	Operations console -> Authoring -> Management Pack Objects -> Overrides.
+-	Operations console -> Reporting -> Microsoft Generic Report Library -> Overrides.
+-	PowerShell -> Get-SCOMOverride. More information on the Operations Manager Shell can be found in Chapter 23, “PowerShell and Operations Manager.”
