@@ -1,4 +1,4 @@
-# Creating a Web Application Transaction Monitoring (Synthetic)
+# Web Application Transaction Monitoring (Synthetic Transactions)
 
 This section looks at the process to monitor a web application using the Web Application Transaction Monitoring template. Configuring a web application synthetic transaction is quite straightforward; a wizard allows you to configure basic monitoring, and OpsMgr includes a Web Application Designer that allows you to configure advanced settings such as login information for the website. The designer also makes it easy to configure the website for monitoring, providing a web recorder you can use to record the synthetic transaction you will create using Internet Explorer. 
 
