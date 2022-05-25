@@ -1,4 +1,4 @@
-# Creating a Web Application Availability Monitoring
+# Web Application Availability Monitoring
 
 In addition to the Web Application Transaction Monitoring template, Operations Manager provides a Web Application Availability Monitoring template. Here are the major differences between these two templates:
   - Web Application Availability Monitoring: You can add individual websites or paste in a large number of URLs from a CSV file. Additionally, you can specify either agents or a resource pool as a watcher node. This template does not include some of the advanced capabilities available in the Web Application Transaction Monitoring template such as recording a series of web pages. With the Global Service Monitoring (GSM) functionality, web applications availability monitoring can perform synthetic tests for your websites from Microsoft Azure cloud locations around the world. You can display the results in a dashboard map. Availability monitoring is best used to provide insights into how well a website is performing across a set of testing locations that are geographically dispersed. This is the best choice when determining if a website is available.
