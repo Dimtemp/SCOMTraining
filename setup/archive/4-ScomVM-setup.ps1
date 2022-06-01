@@ -10,8 +10,14 @@ D:\SCOM_2019.exe
 # install AD Tools
 Install-WindowsFeature RSAT-AD-Tools
 
+# create SQL service account
+$pw = ConvertTo-SecureString 'Pa55w.rd' -AsPlainText -Force
+New-ADUser -Name SQLService -AccountPassword $pw -Enabled
+
+# ADD-ADGroupMember -Identity 'Domain Admins' -Members 'SQLService'
+
 # install SQL
-D:\Setup.exe /q /ACTION=Install /FEATURES=SQLEngine,FullText,RS /INSTANCENAME=MSSQLSERVER /SQLSVCACCOUNT="adatum\administrator" /SQLSVCPASSWORD="Pa55w.rd" /SQLSYSADMINACCOUNTS="adatum\domain admins" /AGTSVCACCOUNT="NT AUTHORITY\Network Service" /IACCEPTSQLSERVERLICENSETERMS
+D:\Setup.exe /q /ACTION=Install /FEATURES=SQLEngine,FullText,RS /INSTANCENAME=MSSQLSERVER /SQLSVCACCOUNT="ADATUM\SQLService" /SQLSVCPASSWORD="Pa55w.rd" /SQLSYSADMINACCOUNTS="adatum\domain admins" /AGTSVCACCOUNT="NT AUTHORITY\Network Service" /IACCEPTSQLSERVERLICENSETERMS
 
 <#
 /FEATURES=SQLEngine,FullText	Installs the Database Engine and full-text.
