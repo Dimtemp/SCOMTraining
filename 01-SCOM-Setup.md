@@ -1,4 +1,4 @@
-# Chapter: Installing System Center Operations Manager 2019
+# Chapter: Installing System Center Operations Manager
 
 ## Prepare environment
 1. Open Hyper-V Manager.
@@ -51,7 +51,7 @@ dir C:\Hyper-V\ *.msi -Recurse | foreach { Copy-VMFile -name LON-SV1 -SourcePath
 
 
 ## Run the Operations Manager setup
-1. Navigate to C:\System Center Operations Manager 2019.
+1. Navigate to C:\System Center Operations Manager.
 1. Run setup.exe.
 1. From the splash screen click the large Install link to start the setup wizard.
 1. Select Management server and Operations console. Click Next.
@@ -99,7 +99,7 @@ dir C:\Hyper-V\ *.msi -Recurse | foreach { Copy-VMFile -name LON-SV1 -SourcePath
 
 ### TIP: CHECK OUT THE ONLINE RELEASE NOTES DURING SETUP
 During setup (which may take some time), click the link to review the online release notes:
-https://docs.microsoft.com/en-us/system-center/scom/release-notes-om?view=sc-om-2019
+https://docs.microsoft.com/en-us/system-center/scom/release-notes-om
 1. Setup is complete when all green checkmarks appear in the left column. Any component that failed to install is marked with a red “X.”
 1. Make sure you don’t install updates. Click Close to complete the wizard.
 
