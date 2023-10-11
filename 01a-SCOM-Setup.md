@@ -2,6 +2,7 @@
 
 ## Prepare environment
 1. Open Hyper-V Manager.
+1. Verify the LON-SV1 VM has at least 8 GB of RAM. If it has less the open the **Settings* for the VM, select Memory, and specify at least 8 GB of RAM.
 1. Start the LON-DC1 VM and wait for the boot procedure.
 1. Start the LON-SV1 VM and wait for the boot procedure.
 1. On the host, click Start and click Windows PowerShell ISE.
@@ -13,41 +14,27 @@ dir C:\Hyper-V\ *.msi -Recurse | foreach { Copy-VMFile -name LON-SV1 -SourcePath
 ```
 1. Open Hyper-V Manager, rightclick LON-SV1 and click Connect.
 1. Make sure you enable a full screen resolution.
-1. Log on as Adatum\Administrator with the password **Pa55w.rd**
+1. Log on as ADATUM\Administrator with the password **Pa55w.rd**
 1. **Note!** If you're required to change your password, make sure you note down the new password somewhere! You're required to update a service with this password later.
 
 
 ## Prepare Active Directory
-1. When logged on to the LON-SV1, click Start and click Windows PowerShell ISE.
+1. When logged on to the LON-SV1, click Start and click Windows PowerShell.
+1. Run this command: ```ping LON-DC1 -t```
+1. It is advised to keep this window running for the rest of the training.
+1. Start and click Windows PowerShell ISE.
 1. Click View, click Show Script pane.
 1. Run these commands:
 ```PowerShell
   New-ADOrganizationalUnit SCOM
   $pw = ConvertTo-SecureString 'Pa55w.rd' -AsPlainText -Force
-  'MSAA', 'SDK', 'DRA', 'DWA' | foreach { New-ADUser -AccountPassword $pw -Name $_ -Path 'OU=SCOM,DC=Adatum,DC=msft' -Enabled $true }
+  'MSAA', 'SDK', 'DRA', 'DWA' | foreach { New-ADUser -AccountPassword $pw -Name $_ -Path 'OU=SCOM,DC=ADATUM,DC=msft' -Enabled $true }
   ADD-ADGroupMember -Identity 'Domain Admins' -Members 'MSAA', 'SDK'
 ```
+1. Leave the PowerShell window open.
 1. Open Active Directory Users and Computers from the Administrative Tools.
 1. Verify the four service accounts you just created using PowerShell.
-
-
-## Install prerequisites
-1. Run Windows Explorer.
-1. Navigate to C:\
-1. Run this file: **SQLSysClrTypes.msi**.
-1. Follow the wizard to install the SQL System CRL Types.
-1. Run this file: **ReportViewer.msi**.
-1. Doubleclick the file and follow the wizard to install the SQL System CRL Types.
-
-
-## Update SQL Server Service password
-1. If you were required to change your password in a previous step, the SQL Server Service password needs to be updated. Only perform this procedure if you indeed changed the password.
-1. Open Server Manager.
-1. Click Tools, Services.
-1. In Services, scroll down to SQL Server.
-1. Open the SQL Server properties.
-1. Click the Log On tab and enter the updated password. Click OK.
-1. Restart the SQL Server service.
+1. Return to the PowerShell window and execute this command to verify the SQL Server evaluation expiration date: ```sqlcmd -Q "SELECT CREATE_DATE INSTALLDATE, DATEADD(DD, 180, CREATE_DATE) AS EXPIRYDATE FROM SYS.SERVER_PRINCIPALS WHERE SID = 0X010100000000000512000000"```
 
 
 ## Run the Operations Manager setup
@@ -76,7 +63,7 @@ dir C:\Hyper-V\ *.msi -Recurse | foreach { Copy-VMFile -name LON-SV1 -SourcePath
   1. adatum\DRA
   1. adatum\DWA
   1. All service accounts use the following password: Pa55w.rd
-1. In practice, it is not advised to re-use the same password for all services. For sake of simplicity we use just one password.
+1. **NOTE.** In practice, it is not advised to re-use the same password for all services. For sake of simplicity we use just one password.
 1. The management server action account is typically a named domain user account. This account is used to gather operational data from providers and perform actions such as installing and uninstalling agents on managed computers. This example uses MSAA as the management server action account, which must be a member of the local Administrators group on the management server.
 1. The System Center Configuration service and System Center Data Access service account can run as Local System if the SQL Server for the operational and data warehouse databases is installed locally on the management server (a single server deployment). This credential reads and updates information in the operational database and is assigned the sdk_user role in this database. This example uses SDK as the System Center Configuration service and System Center Data Access service account. Like the management server action account (MSAA), this account must be a member of the local Administrators group on the management server.
 1. The Data Reader and Data Writer accounts must be named domain user accounts. The Data Reader account is used to deploy reports; it is the user account Reporting Services uses to run queries against the data warehouse. The Data Reader account is also used as the Reporting Services IIS Application Pool account that connects to a management server.
@@ -85,7 +72,8 @@ dir C:\Hyper-V\ *.msi -Recurse | foreach { Copy-VMFile -name LON-SV1 -SourcePath
 1. Turn Microsoft Update **Off**. Click Next.
 1. At the Management Server Installation Summary page, review your selections for the features you are installing. To continue, select Install.
 
-# Here are the main activities that occur during setup
+
+# Main activities that occur during setup
 1. An Installation progress page provides status on components as they are installed and configured.
 1. The operational and data warehouse databases are created in their respective SQL instances. SQL security roles such as apm_datareader and sdk_users are created in the operational database, and roles OpsMgrReader and OpsMgrWriter in the data warehouse database.
 1. Primary management packs are imported into both databases.
@@ -99,8 +87,8 @@ dir C:\Hyper-V\ *.msi -Recurse | foreach { Copy-VMFile -name LON-SV1 -SourcePath
 
 ### TIP: CHECK OUT THE ONLINE RELEASE NOTES DURING SETUP
 During setup (which may take some time), click the link to review the online release notes:
-https://docs.microsoft.com/en-us/system-center/scom/release-notes-om
-1. Setup is complete when all green checkmarks appear in the left column. Any component that failed to install is marked with a red “X.”
+https://learn.microsoft.com/en-us/system-center/scom/release-notes-om
+1. Setup is complete when all green checkmarks appear in the left column. Any component that failed to install is marked with a red "X".
 1. Make sure you don’t install updates. Click Close to complete the wizard.
 
 

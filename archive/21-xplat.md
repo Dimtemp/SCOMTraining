@@ -72,7 +72,7 @@ OpsMgr 2012 includes many views for exploring the state, performance, and alerts
 
 ## UNIX/Linux Log File Template
 The Log File template does exactly as its name suggests and enables you to configure monitoring a log file hosted on a UNIX/Linux system. As with other management pack templates, creating a new log file monitor is simple and wizard-based. Choosing to create a new log file monitor presents the standard rule/monitor creation dialogs where you provide the log file monitor a name and select a management pack in which to store it. Follow these steps:
-1. Navigate to the Authoring pane in the SCOM console, select Management Pack Templates and start the UNIX/Linux Log File Monitoring Wizard.
+1. Navigate to the **Authoring** pane in the SCOM console, select Management Pack Templates and start the UNIX/Linux Log File Monitoring Wizard.
 2. Enter a friendly name in the textbox provided and using the drop-down, select a management pack in which to save your custom monitor, then click Next. The authors suggest using a dedicated management pack for the output of the UNIX and Linux monitoring templates.
 3. This opens a dialog where you will configure the log file monitor as follows:
 ▶ Monitoring target: Select either a specific UNIX/Linux computer or computer group to target the monitor.
@@ -107,7 +107,7 @@ Address:192.168.1.76
 To make this command easier to read on your monitor (and this page), you can do a bit of pipeline parsing:
 nslookup linux.adatum.com 127.0.0.1|egrep "^Name:.*linux.adatum.com"|wc -l
 This shell command returns a value of 1 if the line: Name: linux.adatum.com is found in StdOut and a value of 0 otherwise. Therefore, a value of 1 means the name resolution attempt succeeded, and a value of 0 means it failed. Here are the steps to create a monitor using this command:
-1. In the Operations console, navigate to Authoring -> Management Pack Objects and right-click Monitors. Select Create a Monitor -> Unit Monitor.
+1. In the Operations console, navigate to **Authoring** -> Management Pack Objects and right-click Monitors. Select Create a Monitor -> Unit Monitor.
 2. Expand Scripting -> Generic, select UNIX/Linux Shell Command Two State Monitor, and select the Sample management pack. Click Next
 3. Input a name, description, and target ( UNIX/Linux Computer ) for the monitor. Select a Parent monitor ( Availability ) and uncheck Monitor is enabled. Click Next.
 4. Configure a schedule interval. For performance optimization, this should be as large of a value as reasonable; 10 or 15 minutes should be sufficient for most purposes. Click Next.
@@ -129,13 +129,13 @@ The BIND DNS server: $Tar-get/Property
 [Type="MicrosoftUnixLibrary7320040!Microsoft.Unix.Computer"]
 /NetworkName$ failed a name resolution test. StdErr
 10. Click Create to complete the monitor creation.
-11. As this monitor targets all UNIX and Linux computers, it was created without being enabled by default. Use an override to enable it for the group of BIND servers. Navigate to Authoring -> Management Pack Objects, Monitors. Click Change Scope, and check Linux Computers. Find the monitor just created (BIND Name Resolution Check).
+11. As this monitor targets all UNIX and Linux computers, it was created without being enabled by default. Use an override to enable it for the group of BIND servers. Navigate to **Authoring** -> Management Pack Objects, Monitors. Click Change Scope, and check Linux Computers. Find the monitor just created (BIND Name Resolution Check).
 12. Right-click the monitor, click Overrides -> Override the Monitor -> For a Group. Select the Linux BIND servers group created previously and click OK.
 13. Override the Enabled property to equal True and click OK. 
 
 ## UNIX/Linux Shell Command Performance Collection Rule
 This example creates a DNS name resolution time performance collection rule using the new UNIX/Linux Shell Command Performance Collection Rule in OpsMgr 2012. Perform the following steps:
-1. In the Authoring pane of the console, right-click Rules, and select Create a new rule.
+1. In the **Authoring** pane of the console, right-click Rules, and select Create a new rule.
 2. Under Collection Rules -> Probe Based, select UNIX/Linux Shell Command (Performance) and select the Sample management pack. Click Next.
 3. Input the Name and Description for the rule. Select the Rule target ( UNIX/Linux Computer ) and uncheck Rule is enabled. Click Next.
 4. Configure a schedule interval. For performance optimization, this should be as large a value as reasonable; 10 or 15 minutes should be sufficient for most purposes. Click Next to continue.
@@ -143,13 +143,13 @@ This example creates a DNS name resolution time performance collection rule usin
 6. The next page provides the opportunity to filter the output before mapping to performance data. Performance data mapping can only occur if the value is a valid double value, so the default expression syntax uses a RegExp to validate StdOut is a numeric value, and also filters that ReturnCode = 0, indicating a successful execution.
 While the default configuration is valid for most scenarios, the time command used in this shell command actually outputs its value to StdErr. So in this case, the first line of the filter should be modified to use a Parameter Name of //*[localname()="StdErr"]. Click Next.
 7. Configure the performance mapping information. Object, Counter, and Instance are arbitrary values used to identify the performance metric in performance views and reports. The default value of $Data///*[localname()=“StdOut”]$ is the variable syntax for the returned StdOut, which is appropriate for most cases. This needs to be modified here because the time command used in this example outputs to StdErr. The StdErr variable is $Data///*[localname()='StdErr']$. Click Create.
-8. As this rule targets all UNIX and Linux computers, it was created without being enabled by default. Use an override to enable it for the group of BIND servers. Navigate to Authoring -> Management Pack Objects -> Rules. In the top-right of the Rules pane, click Change Scope, and check UNIX/Linux Computer from the Scope Management Pack Objects dialog. Find the rule just created (BIND Name Resolution Test Time in Seconds) in the UNIX/Linux Shell Command Performance Collection Rule created in this procedure.
+8. As this rule targets all UNIX and Linux computers, it was created without being enabled by default. Use an override to enable it for the group of BIND servers. Navigate to **Authoring** -> Management Pack Objects -> Rules. In the top-right of the Rules pane, click Change Scope, and check UNIX/Linux Computer from the Scope Management Pack Objects dialog. Find the rule just created (BIND Name Resolution Test Time in Seconds) in the UNIX/Linux Shell Command Performance Collection Rule created in this procedure.
 9. To enable the rule, right-click the rule, click Overrides -> Override the Monitor -> For a Group. Select a group containing the BIND servers (which must have been created previously) and click OK.
 10. Override the Enabled property to equal True and click OK.
 
 ## Creating a UNIX/Linux Shell Command (BIND Restart Task)
 The Run a UNIX/Linux Shell Command task wizard is the simplest of the shell command templates, and relatively easy even for those OpsMgr administrators new to UNIX/Linux shell scripting. These steps result in a task that restarts the BIND daemon on a Linux computer from the Operations console. Follow these steps:
-1. Navigate to Authoring -> Management Pack Objects and right-click Tasks. Select Create a New Task.
+1. Navigate to **Authoring** -> Management Pack Objects and right-click Tasks. Select Create a New Task.
 2. Select Run a UNIX/Linux Shell Command from the Agent Tasks list, and select the Sample management pack. Click Next.
 3. Input this name for the task: Restart BIND Daemon, and select the target Linux Computer. Click Next.
 4. The command to restart the BIND daemon is service named restart. Type this into the shell command entry pane. Restarting a daemon is a privileged operation, so select the UNIX/Linux Privileged Account Run As profile. The default timeout of 120 seconds should be sufficient, so click Create.

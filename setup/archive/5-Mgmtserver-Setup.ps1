@@ -16,13 +16,15 @@ if ($ReportViewerFiles.Count -eq 0) { Throw "ReportViewer not found! Please inst
 
 
 # prepare AD
+# optionally remove SCOM OU
+# Remove-ADOrganizationalUnit -Identity 'SCOM' -Confirm:$false
 New-ADOrganizationalUnit 'SCOM'
-$ADAccounts | foreach-object {
-    New-ADUser -AccountPassword $pw -Name $_ -Path 'OU=SCOM,DC=Adatum,DC=msft' -Enabled $true
-}
+foreach($ADAccount in $ADAccounts) { New-ADUser -AccountPassword $pw -Name $_ -Path 'OU=SCOM,DC=Adatum,DC=msft' -Enabled $true -PasswordNeverExpires $true }
 ADD-ADGroupMember -Identity 'Domain Admins' -Members 'MSAA', 'SDK'
 
+
 Get-Service SQLSERVERAGENT | Set-Service -StartupType Automatic -Passthru | Start-Service   # tbv Reporting
+
 
 Start-Job {
     Start-Sleep 3   # wait for processmonitor

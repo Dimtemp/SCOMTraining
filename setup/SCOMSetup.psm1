@@ -305,7 +305,7 @@ function New-VEHost {
         # Update-AzDisk naar 
         [string]$VMSize = 'Standard_D4s_v3',  # deze werkte goed: Standard_D4s_v3
 
-        # TO DO: not implemented?!?!?!?!?!??!?!?!?!?!??!?!?!??!
+        # TO DO: not implemented?!?!?!?!?!??!?!?!?!?!??!?!?!??!  Update with w2022
         [ValidateSet('Win10', 'Win2012R2Datacenter', 'Win2016Datacenter', 'Win2019Datacenter')]
         [string]$Image = 'Win2016Datacenter',
 

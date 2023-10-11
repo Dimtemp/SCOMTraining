@@ -50,7 +50,7 @@ Open the Operations Manager console and navigate to the AEM view.
 NOTE   To perform the following the exercise download and install the Windows Client management pack from the Microsoft website. This management pack cannot be directly imported from the Operations Manager console. Make sure that you import the MP files and the XML file included in the MSI. Download from:
 http://www.microsoft.com/en-us/download/details.aspx?id=15700
 Business Critical Monitoring is the most comprehensive client monitoring solution with OpsMgr. This is the only level of monitoring that can watch client computers individually and generate alerts. Adding client computers to Business Critical Monitoring requires more overhead than other types of client monitoring. You can only bring client computers into Business Critical Monitoring after discovery takes place and the clients have an agent installed on them. This means that client computers must first be made Collective Monitoring clients; then they can be promoted to Business Critical Monitoring status. Here are the steps to perform to add client computers to Business Critical Monitoring:
-1. Navigate to Authoring -> Groups.
+1. Navigate to **Authoring** -> Groups.
 2. Type Business Critical in the Look for box and click Find Now.
 3. Select the appropriate group for the operating system of the client computers to add. For example, to add Windows 7 client computers, select the All Business Critical Windows 7 Clients group. Right-click the group and select Properties.
 4. On the Explicit Members tab, select Add/Remove Objects.

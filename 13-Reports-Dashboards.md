@@ -1,4 +1,5 @@
-# Chapter: Reporting and Dashboarding
+# Chapter: Reports and Dashboards
+
 
 ## Edit and Run a Preconfigured Windows Server Report
 1.	On LON-SV1 in the Operations Manager console, select the Monitoring node.
@@ -12,14 +13,16 @@
 9.	Click on the Availability Tracker link.
 10.	Review the report.
 
-## Export a Report
+
+## Export a report
 1.	In the Availability Report window select the Export drop-down box.
 2.	Select MHTML.
 3.	Save the report to the desktop.
 4.	Open the MHTML file on the desktop and verify the report.
 5.	Close the MHTML report.
 
-## Publish Reports
+
+## Publish a report
 1.	In the Availability Report window select File > Publish.
 2.	Change the name to **My Availability**.
 3.	Do not close the report.
@@ -28,6 +31,7 @@
 6.	Close the **My Availability** report and return to the **Availability** Report.
 7.	Click File, Save to management pack and select the Sample Management Pack.
 8.	Do not close the report.
+
 
 ## Schedule a Report
 1.	Open Windows Explorer on LON-SV1 and create a folder: C:\SCOM-Reports.
@@ -51,6 +55,7 @@ b.	Subscription beginning: Five minutes from the current time
 11.	Click Finish on the Parameters window.
 12.	Look for the report to appear in the share
 
+
 ## Reports to explore
 Consider the following reports to explore:
 - Microsoft Generic / Availability
@@ -67,6 +72,7 @@ Consider the following reports to explore:
 - System Center Core / Data Volume by MP
   - All Management Packs
 - System Center Core / Data Volume by Workflow
+
  
 ## Dashboards
 1. Select the My Workspace pane in the SCOM Console. Right click Favorite Views and select New  Dashboard View.

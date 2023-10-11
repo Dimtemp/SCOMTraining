@@ -2,17 +2,17 @@
 Active Directory Integration enables domain member computers to automatically find a management server. It creates a container in the domain root of Active Directory named OperationsManager. This container is used by clients to determine the management group and management server with which they will communicate.
 
 ## Preparing Active Directory
-1. Open the **Active Directory Users and Computers program**.
-2. In Active Directory, create a new global security group with the name **ADIntegration**.
+1. Open the **Active Directory Users and Computers** program.
+2. In Active Directory, navigate to the SCOM OU and create a new global security group with the name **ADIntegration**.
 3. Add the computer accounts belonging to the AD Assignment Resource Pool: **LON-SV1**.
-4. To view members of this resource pool, navigate to **Administration -> Resource Pools**, right-click **AD Assignment Resource Pool**, and choose **View Resource Pool Members** (this should contain all management servers in the management group by default).
-5. To create the container Operations Manager uses to store information for AD Integration, open a command prompt (not PowerShell) and enter these commands:
-> **cd %ProgramFiles%\Microsoft System Center 2019\Operations Manager\Server**
+4. To view members of this resource pool, open the Operations Manager console and navigate to **Administration -> Resource Pools**, right-click **AD Assignment Resource Pool**, and choose **View Resource Pool Members** (this should contain all management servers in the management group by default).
+5. To create the container Operations Manager uses to store information for AD Integration, open a command prompt and enter these commands:
+> **cd %ProgramFiles%\Microsoft System Center\Operations Manager\Server**
 > 
-> **MOMADAdmin.exe OMGRP Adatum\ADIntegration Adatum\Administrator Adatum**
+> **MOMADAdmin.exe OMGRP ADATUM\ADIntegration ADATUM\Administrator ADATUM**
 1. The parameters are as follows:
     - Management group name. You can find the management group name by opening the Operations Manager console and looking at the name of the management group, shown on the title of the console.
-    - MOMAdminSecurity group name: ADIntegrationGroup, this is the group created in the first step.
+    - MOMAdminSecurity group name: ADIntegrationGroup, this is the group created in a previous step.
     - RunAs account name: Specify the account that is used for rules to run on the agent. You can find this by navigating in the Operations Manager console to **Administration -> Run As Configuration -> Accounts -> Type of Action Account**.
     - Domain in which to create the container.
 1. A successful run of MOMADAdmin indicates it successfully created the container and added the appropriate security group to the container.
@@ -32,6 +32,9 @@ Active Directory Integration enables domain member computers to automatically fi
 ## Verification
 After configuring AD Integration, you must validate it is functional. There are multiple steps associated with validation, including checking AD, agent event logs, and the registry key on the agent.
 > NOTE: Since the AD Integration rule that is responsible for the correct configuration only runs once per hour you can skip the following three verification steps. Make sure you perform the following three steps after one hour.
-1. Open **Active Directory Users and Computers**. Select **View -> Advanced Features**. Don’t forget to click Refresh. Within the container there should be another container matching the name of the management group, and within the management group-named folder a **HealthServiceSCP** folder and a domain local security group. After defining the AD auto assignment information, a container with the name of the management server and _SCP on the end, and two domain local security groups based on the management server name (with _PrimarySG_# and _SecondarySG_#) are added to the container for the management group.
+1. Open **Active Directory Users and Computers**. Select **View -> Advanced Features**. Don’t forget to click Refresh.
+1. A new container matching the name of the management group should be visible, and within the management group-named folder a **HealthServiceSCP** folder and a domain local security group. After defining the AD auto assignment information, a container with the name of the management server and _SCP on the end, and two domain local security groups based on the management server name (with _PrimarySG_# and _SecondarySG_#) are added to the container for the management group.
+
+## Perform these step on a Windows computer where an unconfigured agent is installed. We will perform this later in the course if time permits. The following steps are provided as a reference only.
 1. Agent Event Logs: An agent must be installed without specifying management group information to use Active Directory Integration. When the System Center Management service starts, events are logged to the Operations Manager event log, indicating AD Integration is configured and that the agent is able to identify its management server.
 1. Registry Key: A registry key is created on the agent indicating AD Integration is configured for the agent. This key is named EnableADIntegration. Open the registry editor and navigate to **HKLM\System\CurrentControlSet\Services\HealthService\Parameters\ConnectorManager**. A value of 0 indicates Active Directory Integration is turned off, and a value of 1 indicates that Active Directory Integration is turned on. This value can be changed on an agent, but do not manipulate this registry key on a management server.
