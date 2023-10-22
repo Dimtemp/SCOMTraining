@@ -5,16 +5,9 @@
 1. Verify the LON-SV1 VM has at least 8 GB of RAM. If it has less the open the **Settings* for the VM, select Memory, and specify at least 8 GB of RAM.
 1. Start the LON-DC1 VM and wait for the boot procedure.
 1. Start the LON-SV1 VM and wait for the boot procedure.
-1. On the host, click Start and click Windows PowerShell ISE.
-1. Click View, click Show Script pane.
-1. Run these commands:
-```PowerShell
-Get-VM|Enable-VMIntegrationService -Name 'Guest Service Interface'
-dir C:\Hyper-V\ *.msi -Recurse | foreach { Copy-VMFile -name LON-SV1 -SourcePath $_.FullName -DestinationPath C:\ -FileSource Host }
-```
 1. Open Hyper-V Manager, rightclick LON-SV1 and click Connect.
 1. Make sure you enable a full screen resolution.
-1. Log on as ADATUM\Administrator with the password **Pa55w.rd**
+1. Log on as ADATUM\Admin with the password **Pa55w.rd**
 1. **Note!** If you're required to change your password, make sure you note down the new password somewhere! You're required to update a service with this password later.
 
 
@@ -22,11 +15,11 @@ dir C:\Hyper-V\ *.msi -Recurse | foreach { Copy-VMFile -name LON-SV1 -SourcePath
 1. When logged on to the LON-SV1, click Start and click Windows PowerShell.
 1. Run this command: ```ping LON-DC1 -t```
 1. It is advised to keep this window running for the rest of the training.
-1. Start and click Windows PowerShell ISE.
+1. Click Start, and run Windows PowerShell **ISE** elevated (Run as administrator).
 1. Click View, click Show Script pane.
 1. Run these commands:
 ```PowerShell
-  New-ADOrganizationalUnit SCOM
+  Get-ADUser -Filter * | Where-Object Name -match 'MSAA|SDK|DRA|DWA' | Remove-ADUser
   $pw = ConvertTo-SecureString 'Pa55w.rd' -AsPlainText -Force
   'MSAA', 'SDK', 'DRA', 'DWA' | foreach { New-ADUser -AccountPassword $pw -Name $_ -Path 'OU=SCOM,DC=ADATUM,DC=msft' -Enabled $true }
   ADD-ADGroupMember -Identity 'Domain Admins' -Members 'MSAA', 'SDK'
@@ -39,7 +32,7 @@ dir C:\Hyper-V\ *.msi -Recurse | foreach { Copy-VMFile -name LON-SV1 -SourcePath
 
 ## Run the Operations Manager setup
 1. Navigate to C:\System Center Operations Manager.
-1. Run setup.exe.
+1. Run setup.exe in elevated mode (Run as Administrator).
 1. From the splash screen click the large Install link to start the setup wizard.
 1. Select Management server and Operations console. Click Next.
 1. On the next screen, select Installation location. Accept the default, and click Next.

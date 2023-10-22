@@ -1,3 +1,12 @@
+## Copy source files
+1. On the host, click Start and click Windows PowerShell ISE.
+1. Click View, click Show Script pane.
+1. Run these commands:
+```PowerShell
+Get-VM|Enable-VMIntegrationService -Name 'Guest Service Interface'
+dir C:\Hyper-V\ *.msi -Recurse | foreach { Copy-VMFile -name LON-SV1 -SourcePath $_.FullName -DestinationPath C:\ -FileSource Host }
+```
+
 
 ## Install prerequisites
 1. Run Windows Explorer.
