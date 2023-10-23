@@ -5,7 +5,7 @@ Importing management packs tells Operations Manager how to monitor a wide range 
 ## Importing Management Packs from disk
 1. Open Hyper-V Manager, and open a console session the LON-SV1 VM.
 1. Open Windows Explorer.
-1. Navigate to: **E:\Lib\Management Packs**.
+1. Navigate to: **E:\Management Packs**.
 1. Run the first MSI that is in the folder to extract the contents of the Management Pack.
 1. **Note.** If an error message appears about a remote desktop conneciton, click **View**, and **unselect** Enhanced Session form the VM Connection window.
 1. Accept the license agreement and leave all other options to their default setting.
