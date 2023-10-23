@@ -32,7 +32,7 @@ An installation might take 10-20 minutes at the and of this exercise. That might
 Follow these steps to configure the SQL Server Agent service, which is a requirement for the Operations Manager reporting feature:
 1. Open an elevated PowerShell console (Run as Administrator) and run this command:
 ```PowerShell
-> Get-Service SQLSERVERAGENT | Set-Service -StartupType Automatic -Passthru | Start-Service -Passthru
+Get-Service SQLSERVERAGENT | Set-Service -StartupType Automatic -Passthru | Start-Service -Passthru
 ```
 1. Verify that the SQL Server Agent Service is running. If it is not, repeat the previous PowerShell command.
 
