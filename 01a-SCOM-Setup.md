@@ -1,8 +1,10 @@
 # Chapter: Installing System Center Operations Manager
 
 ## Prepare environment
+1. Open an elevated PowerShell window (Run as Administrator).
+1. Run this command: ```Get-VM | Set-VMMemory -StartupBytes 4GB; Get-VM LON-SV1 | Set-VMMemory -StartupBytes 8GB```
 1. Open Hyper-V Manager.
-1. Verify the LON-SV1 VM has at least 8 GB of RAM. If it has less the open the **Settings* for the VM, select Memory, and specify at least 8 GB of RAM.
+1. Verify the LON-SV1 VM has at least 8 GB of RAM.
 1. Start the LON-DC1 VM and wait for the boot procedure.
 1. Start the LON-SV1 VM and wait for the boot procedure.
 1. Open Hyper-V Manager, rightclick LON-DC1 and click Connect.
