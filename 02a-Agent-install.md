@@ -2,8 +2,9 @@
 
 ## Prerequisistes
 1. Open the LON-DC1 VM.
-1. From the LON-DC1 VM, open the Windows Explorer.
-1. Enter this in the address bar: ```\\LON-SV1\E$```
+1. From the LON-DC1 VM, open a PowerShell window.
+1. Run this command from the PowerShell prompt: Invoke-Command -ComputerName LON-SV1 { Get-NetFirewallRule | Where-Object DisplayGroup -match print | Enable-NetFirewallRule }
+1. Open Windows Explorer and enter this in the address bar: ```\\LON-SV1\E$```
 1. Navigate to the Lib folder and start the .NET Framework setup by double clicking this file: **ndp472-kb4054530-x86-x64-allos-enu**.
 1. Follow the wizard using all default values.
 1. Switch to the LON-SV1 VM Connection window.
