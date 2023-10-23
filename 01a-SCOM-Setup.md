@@ -5,10 +5,14 @@
 1. Verify the LON-SV1 VM has at least 8 GB of RAM. If it has less the open the **Settings* for the VM, select Memory, and specify at least 8 GB of RAM.
 1. Start the LON-DC1 VM and wait for the boot procedure.
 1. Start the LON-SV1 VM and wait for the boot procedure.
+1. Open Hyper-V Manager, rightclick LON-DC1 and click Connect.
+1. Log on as ADATUM\Admin with the password **Pa55w.rd**
+1. **Note!** If you're required to change your password, make sure you note down the new password somewhere! You're required to update a service with this password later.
+1. Reboot the LON-DC1 server to confirm it will be rearmed.
+1. Wait for the reboot and log on again.
 1. Open Hyper-V Manager, rightclick LON-SV1 and click Connect.
 1. Make sure you enable a full screen resolution.
 1. Log on as ADATUM\Admin with the password **Pa55w.rd**
-1. **Note!** If you're required to change your password, make sure you note down the new password somewhere! You're required to update a service with this password later.
 
 
 ## Prepare Active Directory
