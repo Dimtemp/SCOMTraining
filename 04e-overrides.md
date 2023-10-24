@@ -27,6 +27,7 @@ Repeat the previous procedure (Creating an override) with the following paramete
 -	Monitor name: Print Spooler Service Monitor
 -	Override the Monitor: for a group: Windows Server 2016 and above Computer Group
 -	Enabled: true
+
 **Note.** You cannot select any other management pack than the sample management pack. This is because the (custom) monitor is stored in an unsealed management pack. Since dependencies between unsealed management packs are not allowed, this override is forced to be stored in the same management pack.
 
 
