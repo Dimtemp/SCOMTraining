@@ -32,7 +32,8 @@ Importing management packs tells Operations Manager how to monitor a wide range 
 1. Open the Management Packs folder
 1. Verify the existence of Microsoft.Windows.Server files.
 
-### Notice that some SQL files might be present in this folder on the domain controller. These management packs contain discoveries for SQL Server. Since there is no SQL Server on the Domain Controller, it will not be monitored. As soon as a SQL server is installed on the domain controller it will be monitored. This behaviour is by design.
+### Discoveries
+Notice that some SQL files might be present in this folder on the domain controller. These management packs contain discoveries for SQL Server. Since there is no SQL Server on the Domain Controller, it will not be monitored. As soon as a SQL server is installed on the domain controller it will be monitored. This behaviour is by design.
 1. Open the SCOM Console.
 1. Open the Monitoring workspace
 1. Scroll down to the Microsoft Windows Server folder.
