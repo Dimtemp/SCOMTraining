@@ -2,6 +2,8 @@
 
 This section looks at the process to monitor a web application using the Web Application Transaction Monitoring template. Configuring a web application synthetic transaction is quite straightforward; a wizard allows you to configure basic monitoring, and OpsMgr includes a Web Application Designer that allows you to configure advanced settings such as login information for the website. The designer also makes it easy to configure the website for monitoring, providing a web recorder you can use to record the synthetic transaction you will create using Internet Explorer. 
 
+**Note!** It appears that Microsoft is not supporting the web recorder plug in after 2012. The web recorder plug-in works in Internet Explorer 32-bit and 64-bit. More info: https://learn.microsoft.com/en-us/answers/questions/965899/web-application-transaction-monitoring
+
 Follow these steps to create a web application synthetic transaction:
 1. Start a PowerShell console and run this command: ```Add-WindowsFeature Web-WebServer, Web-Mgmt-Console```
 2. Launch the Operations console and navigate to the **Authoring** space.
