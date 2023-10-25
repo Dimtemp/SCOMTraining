@@ -3,12 +3,11 @@
 # Prerequisites
 1. In Hyper-V Manager, select the LON-SV1 VM and mount the Windows 2019 ISO.
 1. Log on to the LON-SV1 VM using the ADATUM\Admin account.
-1. Install dotnet 3.5 using this command: ```Dism.exe /online /enable-feature /featurename:NetFX3 /All /Source:D:\sources\sxs /LimitAccess```
+1. Open an elevated PowerShell console (Run as Administrator) and install dotnet 3.5 using this command:
+1. ```Dism.exe /online /enable-feature /featurename:NetFX3 /All /Source:D:\sources\sxs /LimitAccess```
 1. This might take several minutes.
-1. Open an elevated PowerShell console and enter this command:
-```PowerShell
-Install-WindowsFeature Web-Asp-Net, Web-Windows-Auth, Web-Request-Monitor, Web-Metabase, Web-Mgmt-Console, NET-WCF-HTTP-Activation45
-```
+1. Install IIS using this command:
+```Install-WindowsFeature Web-Asp-Net, Web-Windows-Auth, Web-Request-Monitor, Web-Metabase, Web-Mgmt-Console, NET-WCF-HTTP-Activation45```
 1. This might take several minutes.
 
 
