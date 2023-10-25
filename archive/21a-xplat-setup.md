@@ -56,12 +56,12 @@ With the UNIX/Linux Run As configuration complete, you can import the appropriat
 Discovering a UNIX/Linux system is a relatively straightforward, wizard-driven process, although discovery without root is a bit more nuanced. Follow these steps to discover UNIX/Linux systems:
 1. Navigate to Administration -> Device Management -> Agent Managed and right click to select the Discovery Wizard. The wizard defaults to Windows computers, but select the UNIX/Linux computers option and click Next.
 2. On the Discovery Criteria page, select the Add button. In the Discovery Criteria dialog, enter the following information: 
-  ▶ Discovery Scope: < IP address or FQDN > and SSH port number of the target host. To add additional hosts, click Add row and enter additional IP addresses and fully qualified domain names (FQDNs) as necessary, using one line per IP address or FQDN.
-  ▶ Discovery type: Select All computers.
+  - ▶ Discovery Scope: < IP address or FQDN > and SSH port number of the target host. To add additional hosts, click Add row and enter additional IP addresses and fully qualified domain names (FQDNs) as necessary, using one line per IP address or FQDN.
+  - ▶ Discovery type: Select All computers.
 3. Click Set credentials to launch the Credential Settings dialog.
 4. Select the User name and password radio button and enter the following values:
-  ▶ User name: root
-  ▶ Password & confirm password: Pa55w.rd
+  - ▶ User name: root
+  - ▶ Password & confirm password: Pa55w.rd
 5. Click Discover to start the discovery process.
 6. Ensure the Discovery Type is set to All computers, and discovery and installation should proceed successfully. Click Save.
 7. The discovery process will take from several seconds to a few minutes, depending on the number of hosts in the list. When the process is complete, a list of UNIX and Linux computers is displayed.
