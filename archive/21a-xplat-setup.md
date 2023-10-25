@@ -2,15 +2,12 @@
 
 ## Preparation
 Perform this procedure from the host server
+1. Download a supported Linux installation ISO (e.g. Debian, CentOS).
 1. Open Hyper-V Manager
-2. Open the settings of the VAN-LNX virtual machine.
-3. Double click Network Adapter and select Advanced Features.
-4. Select Static MAC address and enter this address: 00-15-5D-2F-1C-08
-
-Perform this procedure from the LON-SV1
-1. Open Administrative Tools, DNS Manager. Open Forward Lookup Zones and select Adatum.com.
-2. Open the Action menu and select “New Host (A or AAAA)”.
-3. Name: VAN-LNX, IP address: 10.10.0.40. Click Add Host. Click Ok and click done.
+1. Create a new VM with the name LON-LNX.
+1. Open the settings of the LON-LNX virtual machine and connect the downloaded ISO.
+1. Start the VM and follow the OS installation procedure.
+1. Use this password for the root user: Pa55w.rd
 
 ## Configuring Accounts and Profiles
 Perform the following steps from the LON-SV1 to create each UNIX/Linux action account:
@@ -64,7 +61,7 @@ Discovering a UNIX/Linux system is a relatively straightforward, wizard-driven p
 3. Click Set credentials to launch the Credential Settings dialog.
 4. Select the User name and password radio button and enter the following values:
   ▶ User name: root
-  ▶ Password & confirm password: Pa$$w0rd
+  ▶ Password & confirm password: Pa55w.rd
 5. Click Discover to start the discovery process.
 6. Ensure the Discovery Type is set to All computers, and discovery and installation should proceed successfully. Click Save.
 7. The discovery process will take from several seconds to a few minutes, depending on the number of hosts in the list. When the process is complete, a list of UNIX and Linux computers is displayed.
