@@ -10,7 +10,7 @@ To create a web application availability monitor, perform the following steps:
 1. Right-click the Management Pack Templates and select the Add Monitoring Wizard.
 1. Select **Web Application Availability Monitoring** as the monitoring type, and click Next.
 1. On the following page, input the name and a description for the synthetic transaction, and select the management pack in which to create the transaction rules. For this example call the transaction Bing and select the Sample management pack used previously. Click Next to continue.
-1. The next page is used to add URLs to monitor with this synthetic transaction. You can add bulk URLs by importing a CSV file in the format of Name, URL (include http:// or https:// as part of the URL). For this example, add a single URL named Bing with a URL value of http://localhost. Click Next.
+1. The next page is used to add URLs to monitor with this synthetic transaction. You can add bulk URLs by importing a CSV file in the format of Name, URL (include http:// or https:// as part of the URL). For this example, add a single URL named Bing with a URL value of http://lon-sv1. Click Next.
 1. The next page configures which resource pools or agents will function as watcher nodes for this synthetic transaction. A resource pool and agents can both be configured as watcher nodes. Add **LON-SV1** and click Next to continue.
 1. The next page provides an option to run a test or change the configuration for the tests. Click **Change Configuration**.
 1. The default configuration is to run each of the tests on a frequency of every 10 minutes. 
