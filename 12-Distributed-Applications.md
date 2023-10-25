@@ -13,6 +13,7 @@
 1. Right click the PowerShell icon and select **Run as different user**.
 1. Use these credentials: Administrator, Pa55w.rd
 1. Run this command: ```sqlcmd -Q 'CREATE DATABASE Webshop'```
+1. Optionally, you can force to run the discovery process on the agent by restarting the Microsoft Monitoring Agent (a.k.a. HealthService): ```Restart-Service healthservice```
 1. Leave this PowerShell window open.
 1. Open the **Monitoring** pane.
 1. Navigate to Microsoft SQL Server, SQL Server Database Engines, Database Engines.
