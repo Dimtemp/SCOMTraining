@@ -17,26 +17,26 @@ Perform the following steps from the LON-SV1 to create each UNIX/Linux action ac
 4. On the General Properties page, provide a name and description for the account. The description is optional, but a good way to ensure other OpsMgr administrators of the account’s intended purpose.
 5. On the Account Credentials page, provide account credentials that can be used for the Run As account type that you selected. Select Next to continue.
 6. Configure distribution of the Run As account: On the Distribution Security page, define whether these credentials will be stored in a less- or more-secure configuration:
-  •	More secure: With the more-secure approach, you select the computers that will receive the credentials.
-  •	Less secure: With the less-secure option, the credentials are sent automatically to all managed computers.
+  - More secure: With the more-secure approach, you select the computers that will receive the credentials.
+  - Less secure: With the less-secure option, the credentials are sent automatically to all managed computers.
   The more-secure approach is strongly recommended, targeting the Cross Platform Resource Group for distribution.
 
 Complete this procedure for the UNIX/Linux privileged monitoring account, the unprivileged monitoring account, and agent maintenance accounts.
 
 After creating the Run As accounts, add each Run As account to the applicable profile.
 There are three profiles to configure:
-  •	UNIX/Linux Action Account: Add a monitoring Run As account to this profile that has unprivileged credentials.
-  •	UNIX/Linux Privileged Account: Add a monitoring Run As account to this profile that has privileged credentials or credentials to be elevated.
-  •	UNIX/Linux Agent Maintenance Account: Add a monitoring Run As account to this profile that has privileged credentials or credentials to be elevated.
+  - UNIX/Linux Action Account: Add a monitoring Run As account to this profile that has unprivileged credentials.
+  - UNIX/Linux Privileged Account: Add a monitoring Run As account to this profile that has privileged credentials or credentials to be elevated.
+  - UNIX/Linux Agent Maintenance Account: Add a monitoring Run As account to this profile that has privileged credentials or credentials to be elevated.
 
 To configure these profiles, perform the following steps:
 1. In the Operations console, navigate to Administration -> Run As Configuration -> Profiles.
 2. In the list of profiles, right-click and select Properties on one of the following profiles:
-  •	UNIX/Linux Action Account
-  •	UNIX/Linux Privileged Account
-  •	UNIX/Linux Agent Maintenance Account
-3. In the Run As Profile Wizard, click Next until you get to the Run As Accounts page.
-4. On the Run As Accounts page, click Add to add a Run As account you created. Select the class, group, or object that will be accessed using the credentials in the Run As account. Click OK and Save.
+  - UNIX/Linux Action Account
+  - UNIX/Linux Privileged Account
+  - UNIX/Linux Agent Maintenance Account
+4. In the Run As Profile Wizard, click Next until you get to the Run As Accounts page.
+5. On the Run As Accounts page, click Add to add a Run As account you created. Select the class, group, or object that will be accessed using the credentials in the Run As account. Click OK and Save.
 
 Repeat each of these steps for the three profiles with their matching Run As accounts.
 
