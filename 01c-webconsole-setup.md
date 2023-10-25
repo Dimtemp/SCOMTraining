@@ -7,7 +7,7 @@
 1. ```Dism.exe /online /enable-feature /featurename:NetFX3 /All /Source:D:\sources\sxs /LimitAccess```
 1. This might take several minutes.
 1. Install IIS using this command:
-```Install-WindowsFeature Web-Asp-Net, Web-Windows-Auth, Web-Request-Monitor, Web-Metabase, Web-Mgmt-Console, NET-WCF-HTTP-Activation45```
+```Install-WindowsFeature NET-WCF-HTTP-Activation45,Web-Static-Content,Web-Default-Doc,Web-Dir-Browsing,Web-Http-Errors,Web-Http-Logging,Web-Request-Monitor,Web-Filtering,Web-Stat-Compression,Web-Mgmt-Console,Web-Metabase,Web-Asp-Net,Web-Windows-Auth # -Restart```
 1. This might take several minutes.
 
 
