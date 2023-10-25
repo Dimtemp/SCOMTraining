@@ -5,7 +5,7 @@ This section looks at the process to monitor a web application using the Web App
 **Note!** It appears that Microsoft is not supporting the web recorder plug-in after 2012. The web recorder plug-in works in Internet Explorer 32-bit and 64-bit. More info: https://learn.microsoft.com/en-us/answers/questions/965899/web-application-transaction-monitoring
 
 Follow these steps to create a web application synthetic transaction:
-1. Start a PowerShell console and run this command: ```Add-WindowsFeature Web-WebServer, Web-Mgmt-Console```
+1. Start a PowerShell console and run this command: ```Add-WindowsFeature Web-WebServer, Web-Mgmt-Console; '<html><body><a href="http://lon-sv1/subdir"><img src="iisstart.png"/></a></body></html>'|out-file C:\inetpub\wwwroot\index.htm; mkdir C:\inetpub\wwwroot\subdir```
 2. Launch the Operations console and navigate to the **Authoring** space.
 3. Right-click **Management Pack Templates** and select **Add Monitoring Wizard**. From this page, select Web Application Transaction Monitoring as the monitoring type, and then click Next.
 4. On the following page, input the name and a description for the synthetic transaction, and select the management pack in which to create the transaction rules. For this example call the transaction **Website** and select the **Sample** management pack used elsewhere, or another one you have already created. Click Next to continue.
