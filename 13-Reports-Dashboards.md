@@ -42,7 +42,7 @@
 6.	Change the delivery method to File Share.
 7.	In the Delivery Window enter the following:
   -	File name: Availability
-  -	Path: \\LON-SV1\SCOM-Reports
+  -	Path: \\\LON-SV1\SCOM-Reports
   -	Render format: MHTML
   -	Write mode: Autoincrement
   -	User name: ADATUM\Admin
