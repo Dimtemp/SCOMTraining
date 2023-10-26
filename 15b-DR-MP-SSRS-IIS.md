@@ -17,7 +17,7 @@ The Reporting Services setup process creates encryption keys that are used to se
 2. Use the following syntax to create a backup of the encryption key:
 ```powershell
 cd C:\Program Files\Microsoft SQL Server Reporting Services\Shared Tools
-RSKeyMgmt -e -fC:\Backup\rsdbkey.txt -p<password>
+RSKeyMgmt -e -i SSRS -fC:\Backup\rsdbkey.txt -p<password>
 ```
 1. Run RSKeyMgmt locally on the computer hosting the report server.
 
