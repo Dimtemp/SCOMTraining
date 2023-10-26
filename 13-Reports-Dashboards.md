@@ -45,6 +45,7 @@
   -	Path: \\\LON-SV1\SCOM-Reports
   -	Render format: MHTML
   -	Write mode: Autoincrement
+  -	File Extension: enabled
   -	User name: ADATUM\Admin
   -	Password: Pa55w.rd
 8.	Click Next.
