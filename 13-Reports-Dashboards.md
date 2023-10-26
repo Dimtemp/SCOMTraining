@@ -45,8 +45,8 @@
   -	Path: \\LON-SV1\SCOM-Reports
   -	Render format: MHTML
   -	Write mode: Autoincrement
-  -	User name: Administrator
-  -	Password: Pa$$w0rd
+  -	User name: ADATUM\Admin
+  -	Password: Pa55w.rd
 8.	Click Next.
 9.	In the Schedule window enter the following:
 a.	Generate the report: Once
