@@ -86,6 +86,6 @@ Consider the following reports to explore:
 9. Finish the wizard.
 10. Optionally reconfigure the widget with the gear symbol in the top right corner of the graph.
 11. Repeat step 6 – 9 for the remaining widgets. Try at least these widgets:
-•	Alert widget on all active alerts
-•	Objects by performance to display most heavily used servers
-•	State widget to show the state of your databases (not database servers)
+  - Alert widget on all active alerts
+  - Objects by performance to display most heavily used servers
+  - State widget to show the state of your databases (not database servers)
