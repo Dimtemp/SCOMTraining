@@ -23,10 +23,10 @@ Install-SCOMAgent  –Name "LON-W10.Adatum.msft" –PrimaryManagementServer $Svr
 ## Uninstalling Agents Using PowerShell
 The following is a PowerShell script that uninstalls agents based upon matching a naming convention. This example identifies a unique naming for the computers such as those named with “CL” indicating they are a client computer:
 ```powershell
-Get-SCOMAgent -DNSHostName CL*.adatum.msft | Disable-SCOMAgentProxy
-$credential = Get-Credential
-Get-SCOMAgent -DNSHostName CL*.adatum.msft |
-Foreach { Uninstall-SCOMAgent –Agent $_ -ActionAccount $credential }
+Get-SCOMAgent -DNSHostName LON-W10.adatum.msft | Disable-SCOMAgentProxy
+$Account = Get-Credential -UserName 'ADATUM\Admin' -Message 'Enter password'
+Get-SCOMAgent -DNSHostName LON-W10.adatum.msft |
+Foreach { Uninstall-SCOMAgent –Agent $_ -ActionAccount $Account }
 ```
 
 ## Using Repair-SCOMAgent
