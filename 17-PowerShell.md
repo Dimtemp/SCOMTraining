@@ -85,21 +85,21 @@ By updating the end time to the current time, you can effectively end maintenanc
 ## Using Get-SCOMAlert
 Before PowerShell can take action on an alert, an alert or collection of alerts must be identified. Get-SCOMAlert does just that; it fetches specified alerts. The Get-SCOMAlert cmdlet has many parameters due to the number of attributes defined in an alert.
 Here are examples using the ResolutionState parameter for the Get-SCOMAlert cmdlet:
-•	Get new alerts: ```Get-SCOMAlert -ResolutionState 0```
-•	Get closed alerts: ```Get-SCOMAlert -ResolutionState 255```
+- Get new alerts: ```Get-SCOMAlert -ResolutionState 0```
+- Get closed alerts: ```Get-SCOMAlert -ResolutionState 255```
 Examples using the Severity parameter for the Get-SCOMAlert cmdlet:
-•	Get severity informational alerts: ```Get-SCOMalert -severity 0```
-•	Get alerts of severity warning: ```Get-SCOMalert -severity 1```
-•	Get alerts of severity error: ```Get-SCOMalert -severity 2```
+- Get severity informational alerts: ```Get-SCOMalert -severity 0```
+- Get alerts of severity warning: ```Get-SCOMalert -severity 1```
+- Get alerts of severity error: ```Get-SCOMalert -severity 2```
 Examples using Priority parameter for Get-SCOMAlert cmdlet:
-•	Get low priority alerts: ```Get-SCOMAlert -Priority 0```
-•	Get normal priority alerts: ```Get-SCOMAlert -Priority 1```
-•	Get high priority alerts: ```Get-SCOMAlert -Priority 2```
+- Get low priority alerts: ```Get-SCOMAlert -Priority 0```
+- Get normal priority alerts: ```Get-SCOMAlert -Priority 1```
+- Get high priority alerts: ```Get-SCOMAlert -Priority 2```
 It is possible to combine several parameters together in one line to get some specific information, illustrated in the following examples:
-•	Gets a list of new alerts with a error severity: ```Get-SCOMAlert -ResolutionState 0 -Severity 2```
-•	Gets a list of closed alerts with high priority: ```Get-SCOMAlert -ResolutionState 255 -Priority 2```
-•	Gets a list of new alerts with severity of error and high:
-o	```Get-SCOMAlert -ResolutionState 0 -Severity 2 -Priority 2```
+- Gets a list of new alerts with a error severity: ```Get-SCOMAlert -ResolutionState 0 -Severity 2```
+- Gets a list of closed alerts with high priority: ```Get-SCOMAlert -ResolutionState 255 -Priority 2```
+- Gets a list of new alerts with severity of error and high:
+```Get-SCOMAlert -ResolutionState 0 -Severity 2 -Priority 2```
 
 ## Setting Alert Resolution State with Resolve-SCOMAlert
 The Resolve-SCOMAlert cmdlet does one thing; it sets the ResolutionState on an alert sent to it to closed (255). This is the same action that occurs with Set-SCOMAlert -ResolutionState 255. The cmdlet has many parameters similar to those available with Set-SCOMAlert; in essence, you could resolve alerts in bulk and modify the properties of the alert at the same time as in these examples:
