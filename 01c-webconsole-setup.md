@@ -3,6 +3,7 @@
 # Prerequisites
 1. In Hyper-V Manager, select the LON-SV1 VM and mount the Windows 2019 ISO.
 1. Log on to the LON-SV1 VM using the ADATUM\Admin account.
+1. To install the Web-Asp-Net feature, we need dotnet 3.5.
 1. Open an elevated PowerShell console (Run as Administrator) and install dotnet 3.5 using this command:
 1. ```Dism.exe /online /enable-feature /featurename:NetFX3 /All /Source:D:\sources\sxs /LimitAccess```
 1. This might take several minutes.
