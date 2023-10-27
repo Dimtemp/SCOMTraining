@@ -8,7 +8,7 @@ Get-SCOMAgent | Where ManuallyInstalled -eq $True | FT Name
 ```
 
 ## PowerShell-Based Agent Installation
-Here is an example of syntax used to deploy an OpsMgr 2012 agent:
+Here is an example of syntax used to deploy an Operations Manager agent:
 ```powershell
 $Account = Get-Credential
 $MSvr = Get-SCOMManagementServer -Name "LON-SV1.Adatum.com"
@@ -106,14 +106,14 @@ Get-SCOMAlert -ResolutionState 0 -Severity 2 | Resolve-SCOMAlert -Comment 'Autom
 ```
 
 ## Retrieving License Information
-The Get-SCOMAccessLicense cmdlet retrieves license information about the management group to which your OpsMgr PowerShell session is connected. It returns DeviceID, WorkloadRoleName, information about role type for a given computer (management server, agent-managed computer, and so on), and whether the machine is virtualized. It also returns the LogicalProcessorCount and PhysicalProcessorCount; both are important pieces of information when dealing with System Center 2012 licensing.
+The Get-SCOMAccessLicense cmdlet retrieves license information about the management group to which your OpsMgr PowerShell session is connected. It returns DeviceID, WorkloadRoleName, information about role type for a given computer (management server, agent-managed computer, and so on), and whether the machine is virtualized. It also returns the LogicalProcessorCount and PhysicalProcessorCount; both are important pieces of information when dealing with System Center licensing.
 Here is an example of a one-liner report that gives a sum of both of the processor counts and physical process count for the management group to which the OpsMgr PowerShell console is currently connected:
 ```powershell
 Get-SCOMAccessLicense | measure-object -property LogicalProcessorCount,PhysicalProcessorCount -sum | foreach{$_.Property + " Total : " + $_.Sum}
 ```
 
 ## Upgrading from an Evaluation Copy
-If a management group was installed using an evaluation copy of Operations Manager 2012, Set-SCOMLicense enables an administrator to run this cmdlet with a valid product key and remove the evaluation expiration timeout. The following example is only to show proper syntax and is taken directly from the help file.
+If a management group was installed using an evaluation copy of Operations Manager, Set-SCOMLicense enables an administrator to run this cmdlet with a valid product key and remove the evaluation expiration timeout. The following example is only to show proper syntax and is taken directly from the help file.
 ```powershell
 Set-SCOMLicense -ProductId 'C97A1C5E-6429-4F71-8B2D-3525E237BF62'
 ```
@@ -182,7 +182,7 @@ One behavior to be aware of when using the Set-SCOMParentManagementServer cmdlet
 With a bit of effort, you can update agent failover settings in bulk as described in the article on updating agent failover settings from a spreadsheet with PowerShell at http://www.systemcentercentral.com/tabid/143/indexid/95393/default.aspx
 
 ## Balancing the Agent Load
-While resource pools are a fantastic addition to OpsMgr 2012, one important item they do not address is balancing the agent load across management servers in the resource pool. For example, if you have two management servers and you discover and install 2,500 agents with the Discovery Wizard, all 2,500 will use the same management server as their primary. This is not a very efficient use of resources to say the least! 
+While resource pools were a fantastic addition to Operations Manager 2012, one important item they do not address is balancing the agent load across management servers in the resource pool. For example, if you have two management servers and you discover and install 2,500 agents with the Discovery Wizard, all 2,500 will use the same management server as their primary. This is not a very efficient use of resources to say the least! 
 Fortunately, with the OpsMgr Shell, you can easily balance the agent load across multiple management servers. The sample script referenced in this section evenly distributes agents across two or more management servers. Running this script as part of a schedule task can ensure the agent load is balanced as your environment grows and evolves.
 While it is relatively easy to balance agents across two management servers with PowerShell, the script logic becomes significantly more complex when you need to support 2– N management servers. Fortunately, that did not bother Andreas Zuckerhut, who routinely writes PowerShell-based automation solutions for OpsMgr that rate at the high end of the complexity scale. You can find a copy of this community-developed solution in the OpsMgr by Example series at http://www.systemcentercentral.com/BlogDetails/tabid/143/IndexID/96292/Default.aspx .
 
@@ -196,10 +196,10 @@ Processing alerts in bulk may well be the most common use of the OpsMgr Shell an
 Get-SCOMAlert -criteria 'ResolutionState = ''0'' AND Severity = ''0''' |
 Set-SCOMAlert -ResolutionState 255
 ```
-Find a longer list of one-liners for processing alerts at Pete Zerger’s OpsMgr 2012 PowerShell article discussing an updated collection of one-liners at http://www.systemcentercentral.com/BlogDetails/tabid/143/IndexID/89870/Default.aspx
+Find a longer list of one-liners for processing alerts at Pete Zerger’s article discussing an updated collection of one-liners at http://www.systemcentercentral.com/BlogDetails/tabid/143/IndexID/89870/Default.aspx
 
 ## Overview of Installed Patches on Agent Machines
-This excellent one-liner shows the contents of the PatchList object. This is a great improvement from OpsMgr 2007 pre-SP 1 days, when an OpsMgr administrator had to keep track of individual patches via the version of files. The following one-liner shows the name of an agent and what is in the patch list.
+This excellent one-liner shows the contents of the PatchList object. It shows the name of an agent and what is in the patch list.
 ```powershell
 Get-SCOMAgent | sort {[string] $_.PatchList} | select Name, PatchList
 ```
