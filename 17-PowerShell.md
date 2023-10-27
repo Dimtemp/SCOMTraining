@@ -1,14 +1,19 @@
-# Chapter: PowerShell (optional)
+# Chapter: PowerShell
 
 ## Get-SCOMAgent
-1. Log on to LON-SV1 as Administrator and open the Operations Manager Shell. Make sure you start the Operations Manager Shell. If you start the ‘regular’ PowerShell then use this command to import the Operations Manager module: “import-module OperationsManager”.
-2. The Get-SCOMAgent cmdlets fetch the OpsMgr agent data into the PowerShell pipeline; then the Where-Object acts as a filter and only keeps information about the objects that meet the criteria of ManuallyInstalled = True. The result of the filter action is then piped to the following Format-Table cmdlet, which specifies that only the Name object should be displayed to the output.
+1. Log on to LON-SV1 as ADATUM\Admin.
+1. Click Start, navigate to Microsoft System Center, and open the Operations Manager Shell.
+1. The Get-SCOMAgent cmdlets fetch the OpsMgr agent data into the PowerShell pipeline; then the Where-Object acts as a filter and only keeps information about the objects that meet the criteria of ManuallyInstalled = True. The result of the filter action is then piped to the following Format-Table cmdlet, which specifies that only the Name object should be displayed to the output.
 ```powershell
-Get-SCOMAgent | Where ManuallyInstalled -eq $True | FT Name
+Get-SCOMAgent | Where-Object ManuallyInstalled -eq $True | FT Name
 ```
 
 ## PowerShell-Based Agent Installation
-Here is an example of syntax used to deploy an Operations Manager agent:
+1. Start the Windows 10 VM.
+1. Rename the computer to LON-W10, and make it a member of the Adatum.msft domain.
+1. Reboot the Windows 10 VM.
+1. Log on to the LON-SV1 VM using the ADATUM\Admin account.
+1. Run the following command on th eto deploy an Operations Manager agent:
 ```powershell
 $Account = Get-Credential -UserName 'ADATUM\Admin' -Message 'Enter password'
 $Svr = Get-SCOMManagementServer -Name "LON-SV1.Adatum.msft"
