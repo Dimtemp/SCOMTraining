@@ -10,25 +10,24 @@ Get-SCOMAgent | Where ManuallyInstalled -eq $True | FT Name
 ## PowerShell-Based Agent Installation
 Here is an example of syntax used to deploy an Operations Manager agent:
 ```powershell
-$Account = Get-Credential
-$MSvr = Get-SCOMManagementServer -Name "LON-SV1.Adatum.com"
-$PC = "LON-W10.Adatum.com"
-Install-SCOMAgent  –Name $PC  –PrimaryManagementServer $MSvr  –ActionAccount $Account
+$Account = Get-Credential -UserName 'ADATUM\Admin' -Message 'Enter password'
+$Svr = Get-SCOMManagementServer -Name "LON-SV1.Adatum.msft"
+Install-SCOMAgent  –Name "LON-W10.Adatum.msft" –PrimaryManagementServer $Svr  –ActionAccount $Account
 ```
 
 ## Uninstalling Agents Using PowerShell
 The following is a PowerShell script that uninstalls agents based upon matching a naming convention. This example identifies a unique naming for the computers such as those named with “CL” indicating they are a client computer:
 ```powershell
-Get-SCOMAgent -DNSHostName CL*.adatum.com | Disable-SCOMAgentProxy
+Get-SCOMAgent -DNSHostName CL*.adatum.msft | Disable-SCOMAgentProxy
 $credential = Get-Credential
-Get-SCOMAgent -DNSHostName CL*.adatum.com |
+Get-SCOMAgent -DNSHostName CL*.adatum.msft |
 Foreach { Uninstall-SCOMAgent –Agent $_ -ActionAccount $credential }
 ```
 
 ## Using Repair-SCOMAgent
 You can also repair an OpsMgr agent from the command line. Repair-SCOMAgent requires the agent object (not just the agent name) as input in order to perform the repair. The underlying repair process is the same; you are simply instantiating the repair from the PowerShell Shell.
 ```powershell
-Get-SCOMAgent -Name "LON-DC1.adatum.com" | Repair-SCOMAgent -verbose
+Get-SCOMAgent -Name "LON-DC1.adatum.msft" | Repair-SCOMAgent -verbose
 ```
 
 ## Enable-SCOMAgentProxy
@@ -60,7 +59,7 @@ Get-SCOMAgentApprovalSetting
 ## Starting Maintenance Mode
 As you might guess, the Start-SCOMMaintenanceMode cmdlet can be used to initiate maintenance mode for a monitored object. The following snippet starts maintenance mode for a computer.
 ```powershell
-$Instance = Get-SCOMClassInstance -Name LON-DC1.adatum.com
+$Instance = Get-SCOMClassInstance -Name LON-DC1.adatum.msft
 $Time = ((Get-Date).AddMinutes(10))
 Start-SCOMMaintenanceMode -Instance $Instance -EndTime $Time -Reason "Security
 Issue" -Comment "Applying software update"
@@ -127,7 +126,7 @@ Get-SCOMRMSEmulator
 ## Moving the RMS Emulator Role
 The Set-SCOMRMSEmulator cmdlet moves the RMSE to a specified management server. First retrieve the management server object (for the management server where you wish to move the role) using Get-SCOMManagementServer cmdlet. Then pass the output through the pipeline to Set-SCOMRMSEmulator to the variable.
 ```powershell
-Get-SCOMManagementServer -Name "LON-SV2.adatum.com" |
+Get-SCOMManagementServer -Name "LON-SV2.adatum.msft" |
 Set-SCOMRMSEmulator -verbose
 ```
 This is not something you would do very often, but if you needed to do some work on a management server, you might decide to make a clean transition of the role before decommissioning or performing maintenance on the server hosting the RMSE role.
@@ -169,10 +168,10 @@ This script performs the following high-level actions:
 3. Sets the primary and failover management servers for the list of agents in the $agent variable.
 ```powershell
 #Get the agent you want to update
-$Agent = Get-SCOMAgent "LON-DC1.adatum.com"
+$Agent = Get-SCOMAgent "LON-DC1.adatum.msft"
 #Get the primary and failover management servers
-$primaryMS = Get-SCOMManagementServer "LON-SV1.Adatum.com"
-$failoverMS = Get-SCOMManagementServer "LON-SV2.Adatum.com"
+$primaryMS = Get-SCOMManagementServer "LON-SV1.Adatum.msft"
+$failoverMS = Get-SCOMManagementServer "LON-SV2.Adatum.msft"
 #Set Fail-over Management Server on Agent
 Set-SCOMParentManagementServer -Agent $Agent -FailoverServer $FailoverMS -passthru
 #Set Primary Management Server on Agent
@@ -236,7 +235,7 @@ Enable-PSRemoting  -Force
 ```
 2. Log on to LON-DC1 and open PowerShell from the Taskbar. Establish a remote session to the server with the OpsMgr module.
 ```powershell
-Enter-PSSession  -ComputerName LON-SV1.Adatum.com
+Enter-PSSession  -ComputerName LON-SV1.Adatum.msft
 ```
 3. Import the OperationsManager module using the Import-Module cmdlet.
 ```powershell
