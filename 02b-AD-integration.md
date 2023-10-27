@@ -28,6 +28,7 @@ Active Directory Integration enables domain member computers to automatically fi
 1. Navigate to **Administration -> Security -> User Roles -> Operations Manager Administrators**.
 2. The group specified when running MOMADAdmin must be added to the Operations Manager Administrator role: **Adatum\ADIntegration**.
 3. If this step does not occur, Operations Manager raises an alert indicating that this step is required for AD Integration to function.
+4. Remove the **NT AUTHORITY\SYSTEM** account from the **Operations Manager Administrators** role and click Ok to close the window.
 
 ## Verification
 After configuring AD Integration, you must validate it is functional. There are multiple steps associated with validation, including checking AD, agent event logs, and the registry key on the agent.
