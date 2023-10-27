@@ -10,9 +10,12 @@ Get-SCOMAgent | Where-Object ManuallyInstalled -eq $True | FT Name
 
 ## PowerShell-Based Agent Installation
 1. Start the Windows 10 VM.
+1. Open Windows Explorer and enter this in the address bar: ```\\LON-SV1\E$```
+1. Navigate to the Lib folder and start the .NET Framework setup by double clicking this file: **ndp472-kb4054530-x86-x64-allos-enu**.
+1. Follow the wizard using all default values.
 1. Rename the computer to LON-W10, and make it a member of the Adatum.msft domain.
 1. Reboot the Windows 10 VM.
-1. Log on to the LON-SV1 VM using the ADATUM\Admin account.
+1. Switch to the LON-SV1 VM Connection window.
 1. Run the following command on th eto deploy an Operations Manager agent:
 ```powershell
 $Account = Get-Credential -UserName 'ADATUM\Admin' -Message 'Enter password'
@@ -74,7 +77,7 @@ Issue" -Comment "Applying software update"
 To modify an active maintenance mode window requires a combination of the Get-SCOMMaintenanceMode and Set-SCOMMaintenanceMode cmdlets. The Get-SCOMMaintenanceMode cmdlet is used to retrieve the active maintenance mode window and the Set-SCOMMaintenanceMode cmdlet to update the end time of the maintenance mode window.
 ```powershell
 $NewEndTime = (Get-Date).addDays(1)
-Get-SCOMClassInstance -Name *.Contoso.com | Get-SCOMMaintenanceMode |
+Get-SCOMClassInstance -Name *.adatum.msft | Get-SCOMMaintenanceMode |
 Set-SCOMMaintenanceMode -EndTime $NewEndTime ` -Comment "Updating end time."
 ```
 By updating the end time to the current time, you can effectively end maintenance mode for a monitored object on demand.
