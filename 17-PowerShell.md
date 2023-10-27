@@ -162,7 +162,7 @@ Part of a comprehensive backup strategy for OpsMgr would include backing up unse
 Make sure you have a C:\Backup folder before running this command.
 ```powershell
 Import-Module OperationsManager
-Get-SCOMManagementGroupConnection -ComputerName ‘LON-SV1’ |
+Get-SCOMManagementGroupConnection -ComputerName 'LON-SV1' |
 Set-SCOMManagementGroupConnection
 Get-SCOMManagementPack | Where-Object { $_.Sealed -eq $False } |
 Export-SCOMManagementPack -path "C:\Backups"
@@ -190,8 +190,8 @@ With a bit of effort, you can update agent failover settings in bulk as describe
 
 ## Balancing the Agent Load
 While resource pools were a fantastic addition to Operations Manager 2012, one important item they do not address is balancing the agent load across management servers in the resource pool. For example, if you have two management servers and you discover and install 2,500 agents with the Discovery Wizard, all 2,500 will use the same management server as their primary. This is not a very efficient use of resources to say the least! 
-Fortunately, with the OpsMgr Shell, you can easily balance the agent load across multiple management servers. The sample script referenced in this section evenly distributes agents across two or more management servers. Running this script as part of a schedule task can ensure the agent load is balanced as your environment grows and evolves.
-While it is relatively easy to balance agents across two management servers with PowerShell, the script logic becomes significantly more complex when you need to support 2– N management servers. Fortunately, that did not bother Andreas Zuckerhut, who routinely writes PowerShell-based automation solutions for OpsMgr that rate at the high end of the complexity scale. You can find a copy of this community-developed solution in the OpsMgr by Example series at http://www.systemcentercentral.com/BlogDetails/tabid/143/IndexID/96292/Default.aspx .
+Fortunately, with the Operations Manager Shell, you can easily balance the agent load across multiple management servers. The sample script referenced in this section evenly distributes agents across two or more management servers. Running this script as part of a scheduled task can ensure the agent load is balanced as your environment grows and evolves.
+While it is relatively easy to balance agents across two management servers with PowerShell, the script logic becomes significantly more complex when you need to support 2– N management servers. Fortunately, that did not bother Andreas Zuckerhut, who routinely writes PowerShell-based automation solutions that rate at the high end of the complexity scale. You can find a copy of this community-developed solution at http://www.systemcentercentral.com/BlogDetails/tabid/143/IndexID/96292/Default.aspx .
 
 ## Some Useful One-Liners
 PowerShell is a very succinct language, and it is relatively easy to do a lot of work with a relatively small amount of code when compared to some other MS scripting languages, like VBScript and JScript. This section includes a few easy-to-use one-liners that should be useful in any OpsMgr environment.
@@ -230,7 +230,7 @@ The health state value could be Success (good), Uninitialized (maintenance mode 
 You will want to get a report monthly to check that your agents are not attempting to report to a management server previously removed from your environment. This is also a great sanity check to make sure things are set up properly.
 ```powershell
 Get-SCOMAgent|sort ComputerName |
-FT -a ComputerName, PrimaryManagementServerName, @{   label="SecondaryManagementServers";
+FT -a ComputerName, PrimaryManagementServerName, @{ label="SecondaryManagementServers";
 expression={ $_.GetFailoverManagementServers() | foreach { $_.name }}
 }
 ```
