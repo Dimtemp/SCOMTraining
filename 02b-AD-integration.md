@@ -28,6 +28,7 @@ Active Directory Integration enables domain member computers to automatically fi
 1. Navigate to **Administration -> Security -> User Roles -> Operations Manager Administrators**.
 2. The group specified when running MOMADAdmin must be added to the Operations Manager Administrator role: **Adatum\ADIntegration**.
 3. If this step does not occur, Operations Manager raises an alert indicating that this step is required for AD Integration to function.
+4. Remove the **NT AUTHORITY\SYSTEM** account from the **Operations Manager Administrators** role and click Ok to close the window.
 
 ## Verification
 After configuring AD Integration, you must validate it is functional. There are multiple steps associated with validation, including checking AD, agent event logs, and the registry key on the agent.
@@ -39,3 +40,7 @@ After configuring AD Integration, you must validate it is functional. There are 
 **Note!** Perform these steps on a Windows computer where an unconfigured agent is installed. We will perform this later in the course if time permits. The following steps are provided as a reference only.
 1. Agent Event Logs: An agent must be installed without specifying management group information to use Active Directory Integration. When the System Center Management service starts, events are logged to the Operations Manager event log, indicating AD Integration is configured and that the agent is able to identify its management server.
 1. Registry Key: A registry key is created on the agent indicating AD Integration is configured for the agent. This key is named EnableADIntegration. Open the registry editor and navigate to **HKLM\System\CurrentControlSet\Services\HealthService\Parameters\ConnectorManager**. A value of 0 indicates Active Directory Integration is turned off, and a value of 1 indicates that Active Directory Integration is turned on. This value can be changed on an agent, but do not manipulate this registry key on a management server.
+
+
+More info on AD Integration in SCOM 2022, check the **Known / Common issues** section: 
+https://kevinholman.com/2022/05/01/scom-2022-quickstart-deployment-guide/

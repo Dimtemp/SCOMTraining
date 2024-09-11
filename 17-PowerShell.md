@@ -1,34 +1,41 @@
-# Chapter: PowerShell (optional)
+# Chapter: PowerShell
 
 ## Get-SCOMAgent
-1. Log on to LON-SV1 as Administrator and open the Operations Manager Shell. Make sure you start the Operations Manager Shell. If you start the ‘regular’ PowerShell then use this command to import the Operations Manager module: “import-module OperationsManager”.
-2. The Get-SCOMAgent cmdlets fetch the OpsMgr agent data into the PowerShell pipeline; then the Where-Object acts as a filter and only keeps information about the objects that meet the criteria of ManuallyInstalled = True. The result of the filter action is then piped to the following Format-Table cmdlet, which specifies that only the Name object should be displayed to the output.
+1. Log on to LON-SV1 as ADATUM\Admin.
+1. Click Start, navigate to Microsoft System Center, and open the Operations Manager Shell.
+1. The Get-SCOMAgent cmdlets fetch the OpsMgr agent data into the PowerShell pipeline; then the Where-Object acts as a filter and only keeps information about the objects that meet the criteria of ManuallyInstalled = True. The result of the filter action is then piped to the following Format-Table cmdlet, which specifies that only the Name object should be displayed to the output.
 ```powershell
-Get-SCOMAgent | Where ManuallyInstalled -eq $True | FT Name
+Get-SCOMAgent | Where-Object ManuallyInstalled -eq $True | FT Name
 ```
 
 ## PowerShell-Based Agent Installation
-Here is an example of syntax used to deploy an OpsMgr 2012 agent:
+1. Start the Windows 10 VM.
+1. Open Windows Explorer and enter this in the address bar: ```\\LON-SV1\E$```
+1. Navigate to the Lib folder and start the .NET Framework setup by double clicking this file: **ndp472-kb4054530-x86-x64-allos-enu**.
+1. Follow the wizard using all default values.
+1. Rename the computer to LON-W10, and make it a member of the Adatum.msft domain.
+1. Reboot the Windows 10 VM.
+1. Switch to the LON-SV1 VM Connection window.
+1. Run the following command on th eto deploy an Operations Manager agent:
 ```powershell
-$Account = Get-Credential
-$MSvr = Get-SCOMManagementServer -Name "LON-SV1.Adatum.com"
-$PC = "LON-W10.Adatum.com"
-Install-SCOMAgent  –Name $PC  –PrimaryManagementServer $MSvr  –ActionAccount $Account
+$Account = Get-Credential -UserName 'ADATUM\Admin' -Message 'Enter password'
+$Svr = Get-SCOMManagementServer -Name "LON-SV1.Adatum.msft"
+Install-SCOMAgent  –Name "LON-W10.Adatum.msft" –PrimaryManagementServer $Svr  –ActionAccount $Account
 ```
 
 ## Uninstalling Agents Using PowerShell
 The following is a PowerShell script that uninstalls agents based upon matching a naming convention. This example identifies a unique naming for the computers such as those named with “CL” indicating they are a client computer:
 ```powershell
-Get-SCOMAgent -DNSHostName CL*.adatum.com | Disable-SCOMAgentProxy
-$credential = Get-Credential
-Get-SCOMAgent -DNSHostName CL*.adatum.com |
-Foreach { Uninstall-SCOMAgent –Agent $_ -ActionAccount $credential }
+Get-SCOMAgent -DNSHostName LON-W10.adatum.msft | Disable-SCOMAgentProxy
+$Account = Get-Credential -UserName 'ADATUM\Admin' -Message 'Enter password'
+Get-SCOMAgent -DNSHostName LON-W10.adatum.msft |
+Foreach { Uninstall-SCOMAgent –Agent $_ -ActionAccount $Account }
 ```
 
 ## Using Repair-SCOMAgent
 You can also repair an OpsMgr agent from the command line. Repair-SCOMAgent requires the agent object (not just the agent name) as input in order to perform the repair. The underlying repair process is the same; you are simply instantiating the repair from the PowerShell Shell.
 ```powershell
-Get-SCOMAgent -Name "LON-DC1.adatum.com" | Repair-SCOMAgent -verbose
+Get-SCOMAgent -Name "LON-DC1.adatum.msft" | Repair-SCOMAgent -verbose
 ```
 
 ## Enable-SCOMAgentProxy
@@ -60,7 +67,7 @@ Get-SCOMAgentApprovalSetting
 ## Starting Maintenance Mode
 As you might guess, the Start-SCOMMaintenanceMode cmdlet can be used to initiate maintenance mode for a monitored object. The following snippet starts maintenance mode for a computer.
 ```powershell
-$Instance = Get-SCOMClassInstance -Name LON-DC1.adatum.com
+$Instance = Get-SCOMClassInstance -Name LON-DC1.adatum.msft
 $Time = ((Get-Date).AddMinutes(10))
 Start-SCOMMaintenanceMode -Instance $Instance -EndTime $Time -Reason "Security
 Issue" -Comment "Applying software update"
@@ -70,7 +77,7 @@ Issue" -Comment "Applying software update"
 To modify an active maintenance mode window requires a combination of the Get-SCOMMaintenanceMode and Set-SCOMMaintenanceMode cmdlets. The Get-SCOMMaintenanceMode cmdlet is used to retrieve the active maintenance mode window and the Set-SCOMMaintenanceMode cmdlet to update the end time of the maintenance mode window.
 ```powershell
 $NewEndTime = (Get-Date).addDays(1)
-Get-SCOMClassInstance -Name *.Contoso.com | Get-SCOMMaintenanceMode |
+Get-SCOMClassInstance -Name *.adatum.msft | Get-SCOMMaintenanceMode |
 Set-SCOMMaintenanceMode -EndTime $NewEndTime ` -Comment "Updating end time."
 ```
 By updating the end time to the current time, you can effectively end maintenance mode for a monitored object on demand.
@@ -78,21 +85,21 @@ By updating the end time to the current time, you can effectively end maintenanc
 ## Using Get-SCOMAlert
 Before PowerShell can take action on an alert, an alert or collection of alerts must be identified. Get-SCOMAlert does just that; it fetches specified alerts. The Get-SCOMAlert cmdlet has many parameters due to the number of attributes defined in an alert.
 Here are examples using the ResolutionState parameter for the Get-SCOMAlert cmdlet:
-•	Get new alerts: ```Get-SCOMAlert -ResolutionState 0```
-•	Get closed alerts: ```Get-SCOMAlert -ResolutionState 255```
+- Get new alerts: ```Get-SCOMAlert -ResolutionState 0```
+- Get closed alerts: ```Get-SCOMAlert -ResolutionState 255```
 Examples using the Severity parameter for the Get-SCOMAlert cmdlet:
-•	Get severity informational alerts: ```Get-SCOMalert -severity 0```
-•	Get alerts of severity warning: ```Get-SCOMalert -severity 1```
-•	Get alerts of severity error: ```Get-SCOMalert -severity 2```
+- Get severity informational alerts: ```Get-SCOMalert -severity 0```
+- Get alerts of severity warning: ```Get-SCOMalert -severity 1```
+- Get alerts of severity error: ```Get-SCOMalert -severity 2```
 Examples using Priority parameter for Get-SCOMAlert cmdlet:
-•	Get low priority alerts: ```Get-SCOMAlert -Priority 0```
-•	Get normal priority alerts: ```Get-SCOMAlert -Priority 1```
-•	Get high priority alerts: ```Get-SCOMAlert -Priority 2```
+- Get low priority alerts: ```Get-SCOMAlert -Priority 0```
+- Get normal priority alerts: ```Get-SCOMAlert -Priority 1```
+- Get high priority alerts: ```Get-SCOMAlert -Priority 2```
 It is possible to combine several parameters together in one line to get some specific information, illustrated in the following examples:
-•	Gets a list of new alerts with a error severity: ```Get-SCOMAlert -ResolutionState 0 -Severity 2```
-•	Gets a list of closed alerts with high priority: ```Get-SCOMAlert -ResolutionState 255 -Priority 2```
-•	Gets a list of new alerts with severity of error and high:
-o	```Get-SCOMAlert -ResolutionState 0 -Severity 2 -Priority 2```
+- Gets a list of new alerts with a error severity: ```Get-SCOMAlert -ResolutionState 0 -Severity 2```
+- Gets a list of closed alerts with high priority: ```Get-SCOMAlert -ResolutionState 255 -Priority 2```
+- Gets a list of new alerts with severity of error and high:
+```Get-SCOMAlert -ResolutionState 0 -Severity 2 -Priority 2```
 
 ## Setting Alert Resolution State with Resolve-SCOMAlert
 The Resolve-SCOMAlert cmdlet does one thing; it sets the ResolutionState on an alert sent to it to closed (255). This is the same action that occurs with Set-SCOMAlert -ResolutionState 255. The cmdlet has many parameters similar to those available with Set-SCOMAlert; in essence, you could resolve alerts in bulk and modify the properties of the alert at the same time as in these examples:
@@ -106,14 +113,14 @@ Get-SCOMAlert -ResolutionState 0 -Severity 2 | Resolve-SCOMAlert -Comment 'Autom
 ```
 
 ## Retrieving License Information
-The Get-SCOMAccessLicense cmdlet retrieves license information about the management group to which your OpsMgr PowerShell session is connected. It returns DeviceID, WorkloadRoleName, information about role type for a given computer (management server, agent-managed computer, and so on), and whether the machine is virtualized. It also returns the LogicalProcessorCount and PhysicalProcessorCount; both are important pieces of information when dealing with System Center 2012 licensing.
+The Get-SCOMAccessLicense cmdlet retrieves license information about the management group to which your OpsMgr PowerShell session is connected. It returns DeviceID, WorkloadRoleName, information about role type for a given computer (management server, agent-managed computer, and so on), and whether the machine is virtualized. It also returns the LogicalProcessorCount and PhysicalProcessorCount; both are important pieces of information when dealing with System Center licensing.
 Here is an example of a one-liner report that gives a sum of both of the processor counts and physical process count for the management group to which the OpsMgr PowerShell console is currently connected:
 ```powershell
 Get-SCOMAccessLicense | measure-object -property LogicalProcessorCount,PhysicalProcessorCount -sum | foreach{$_.Property + " Total : " + $_.Sum}
 ```
 
 ## Upgrading from an Evaluation Copy
-If a management group was installed using an evaluation copy of Operations Manager 2012, Set-SCOMLicense enables an administrator to run this cmdlet with a valid product key and remove the evaluation expiration timeout. The following example is only to show proper syntax and is taken directly from the help file.
+If a management group was installed using an evaluation copy of Operations Manager, Set-SCOMLicense enables an administrator to run this cmdlet with a valid product key and remove the evaluation expiration timeout. The following example is only to show proper syntax and is taken directly from the help file.
 ```powershell
 Set-SCOMLicense -ProductId 'C97A1C5E-6429-4F71-8B2D-3525E237BF62'
 ```
@@ -127,7 +134,7 @@ Get-SCOMRMSEmulator
 ## Moving the RMS Emulator Role
 The Set-SCOMRMSEmulator cmdlet moves the RMSE to a specified management server. First retrieve the management server object (for the management server where you wish to move the role) using Get-SCOMManagementServer cmdlet. Then pass the output through the pipeline to Set-SCOMRMSEmulator to the variable.
 ```powershell
-Get-SCOMManagementServer -Name "LON-SV2.adatum.com" |
+Get-SCOMManagementServer -Name "LON-SV2.adatum.msft" |
 Set-SCOMRMSEmulator -verbose
 ```
 This is not something you would do very often, but if you needed to do some work on a management server, you might decide to make a clean transition of the role before decommissioning or performing maintenance on the server hosting the RMSE role.
@@ -155,7 +162,7 @@ Part of a comprehensive backup strategy for OpsMgr would include backing up unse
 Make sure you have a C:\Backup folder before running this command.
 ```powershell
 Import-Module OperationsManager
-Get-SCOMManagementGroupConnection -ComputerName ‘LON-SV1’ |
+Get-SCOMManagementGroupConnection -ComputerName 'LON-SV1' |
 Set-SCOMManagementGroupConnection
 Get-SCOMManagementPack | Where-Object { $_.Sealed -eq $False } |
 Export-SCOMManagementPack -path "C:\Backups"
@@ -169,10 +176,10 @@ This script performs the following high-level actions:
 3. Sets the primary and failover management servers for the list of agents in the $agent variable.
 ```powershell
 #Get the agent you want to update
-$Agent = Get-SCOMAgent "LON-DC1.adatum.com"
+$Agent = Get-SCOMAgent "LON-DC1.adatum.msft"
 #Get the primary and failover management servers
-$primaryMS = Get-SCOMManagementServer "LON-SV1.Adatum.com"
-$failoverMS = Get-SCOMManagementServer "LON-SV2.Adatum.com"
+$primaryMS = Get-SCOMManagementServer "LON-SV1.Adatum.msft"
+$failoverMS = Get-SCOMManagementServer "LON-SV2.Adatum.msft"
 #Set Fail-over Management Server on Agent
 Set-SCOMParentManagementServer -Agent $Agent -FailoverServer $FailoverMS -passthru
 #Set Primary Management Server on Agent
@@ -182,9 +189,9 @@ One behavior to be aware of when using the Set-SCOMParentManagementServer cmdlet
 With a bit of effort, you can update agent failover settings in bulk as described in the article on updating agent failover settings from a spreadsheet with PowerShell at http://www.systemcentercentral.com/tabid/143/indexid/95393/default.aspx
 
 ## Balancing the Agent Load
-While resource pools are a fantastic addition to OpsMgr 2012, one important item they do not address is balancing the agent load across management servers in the resource pool. For example, if you have two management servers and you discover and install 2,500 agents with the Discovery Wizard, all 2,500 will use the same management server as their primary. This is not a very efficient use of resources to say the least! 
-Fortunately, with the OpsMgr Shell, you can easily balance the agent load across multiple management servers. The sample script referenced in this section evenly distributes agents across two or more management servers. Running this script as part of a schedule task can ensure the agent load is balanced as your environment grows and evolves.
-While it is relatively easy to balance agents across two management servers with PowerShell, the script logic becomes significantly more complex when you need to support 2– N management servers. Fortunately, that did not bother Andreas Zuckerhut, who routinely writes PowerShell-based automation solutions for OpsMgr that rate at the high end of the complexity scale. You can find a copy of this community-developed solution in the OpsMgr by Example series at http://www.systemcentercentral.com/BlogDetails/tabid/143/IndexID/96292/Default.aspx .
+While resource pools were a fantastic addition to Operations Manager 2012, one important item they do not address is balancing the agent load across management servers in the resource pool. For example, if you have two management servers and you discover and install 2,500 agents with the Discovery Wizard, all 2,500 will use the same management server as their primary. This is not a very efficient use of resources to say the least! 
+Fortunately, with the Operations Manager Shell, you can easily balance the agent load across multiple management servers. The sample script referenced in this section evenly distributes agents across two or more management servers. Running this script as part of a scheduled task can ensure the agent load is balanced as your environment grows and evolves.
+While it is relatively easy to balance agents across two management servers with PowerShell, the script logic becomes significantly more complex when you need to support 2– N management servers. Fortunately, that did not bother Andreas Zuckerhut, who routinely writes PowerShell-based automation solutions that rate at the high end of the complexity scale. You can find a copy of this community-developed solution at http://www.systemcentercentral.com/BlogDetails/tabid/143/IndexID/96292/Default.aspx .
 
 ## Some Useful One-Liners
 PowerShell is a very succinct language, and it is relatively easy to do a lot of work with a relatively small amount of code when compared to some other MS scripting languages, like VBScript and JScript. This section includes a few easy-to-use one-liners that should be useful in any OpsMgr environment.
@@ -196,10 +203,10 @@ Processing alerts in bulk may well be the most common use of the OpsMgr Shell an
 Get-SCOMAlert -criteria 'ResolutionState = ''0'' AND Severity = ''0''' |
 Set-SCOMAlert -ResolutionState 255
 ```
-Find a longer list of one-liners for processing alerts at Pete Zerger’s OpsMgr 2012 PowerShell article discussing an updated collection of one-liners at http://www.systemcentercentral.com/BlogDetails/tabid/143/IndexID/89870/Default.aspx
+Find a longer list of one-liners for processing alerts at Pete Zerger’s article discussing an updated collection of one-liners at http://www.systemcentercentral.com/BlogDetails/tabid/143/IndexID/89870/Default.aspx
 
 ## Overview of Installed Patches on Agent Machines
-This excellent one-liner shows the contents of the PatchList object. This is a great improvement from OpsMgr 2007 pre-SP 1 days, when an OpsMgr administrator had to keep track of individual patches via the version of files. The following one-liner shows the name of an agent and what is in the patch list.
+This excellent one-liner shows the contents of the PatchList object. It shows the name of an agent and what is in the patch list.
 ```powershell
 Get-SCOMAgent | sort {[string] $_.PatchList} | select Name, PatchList
 ```
@@ -223,7 +230,7 @@ The health state value could be Success (good), Uninitialized (maintenance mode 
 You will want to get a report monthly to check that your agents are not attempting to report to a management server previously removed from your environment. This is also a great sanity check to make sure things are set up properly.
 ```powershell
 Get-SCOMAgent|sort ComputerName |
-FT -a ComputerName, PrimaryManagementServerName, @{   label="SecondaryManagementServers";
+FT -a ComputerName, PrimaryManagementServerName, @{ label="SecondaryManagementServers";
 expression={ $_.GetFailoverManagementServers() | foreach { $_.name }}
 }
 ```
@@ -236,7 +243,7 @@ Enable-PSRemoting  -Force
 ```
 2. Log on to LON-DC1 and open PowerShell from the Taskbar. Establish a remote session to the server with the OpsMgr module.
 ```powershell
-Enter-PSSession  -ComputerName LON-SV1.Adatum.com
+Enter-PSSession  -ComputerName LON-SV1.Adatum.msft
 ```
 3. Import the OperationsManager module using the Import-Module cmdlet.
 ```powershell

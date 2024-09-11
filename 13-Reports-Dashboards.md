@@ -42,11 +42,12 @@
 6.	Change the delivery method to File Share.
 7.	In the Delivery Window enter the following:
   -	File name: Availability
-  -	Path: \\LON-SV1\SCOM-Reports
+  -	Path: \\\LON-SV1\SCOM-Reports
   -	Render format: MHTML
   -	Write mode: Autoincrement
-  -	User name: Administrator
-  -	Password: Pa$$w0rd
+  -	File Extension: enabled
+  -	User name: ADATUM\Admin
+  -	Password: Pa55w.rd
 8.	Click Next.
 9.	In the Schedule window enter the following:
 a.	Generate the report: Once
@@ -86,6 +87,6 @@ Consider the following reports to explore:
 9. Finish the wizard.
 10. Optionally reconfigure the widget with the gear symbol in the top right corner of the graph.
 11. Repeat step 6 – 9 for the remaining widgets. Try at least these widgets:
-•	Alert widget on all active alerts
-•	Objects by performance to display most heavily used servers
-•	State widget to show the state of your databases (not database servers)
+  - Alert widget on all active alerts
+  - Objects by performance to display most heavily used servers
+  - State widget to show the state of your databases (not database servers)
