@@ -1,32 +1,43 @@
 function Test-AlertSystem {
     <#
-    Doel: testen van functionaliteit van monitoring systeem, zoals SCOM of Azure Monitor
+    .SYNOPSIS
+    Performs different tests to determine alert functionality from for example Azure Monitor or SCOM.
     #>
 
     param(
-        [string]$filename = 'c:\testfile-save-to-delete.bin',
-
-        [string]$ServiceName = 'spooler',
-
-        [string]$JobName = 'CpuTestJob*',
-
-        [int]$EventlogCollectionThreshold = 16 # minutes
+        [switch]$EventLogTest,
+        [switch]$DiskSpaceTest,
+        [switch]$ServiceTest,
+        [switch]$CPUUsageTest,
+        [switch]$MemoryUsageTest
     )
 
-    # init
-    Write-Host "Test-SCOMAgent: performs tests to determine agent functionality" -ForegroundColor Cyan
+    $i = 0
+    if ($EventLogTest)    { $i++; Test-AlertEventLog }
+    if ($DiskSpaceTest)   { $i++; Test-AlertDiskSpace }
+    if ($ServiceTest)     { $i++; Test-AlertService }
+    if ($CPUUsageTest)    { $i++; Test-AlertCPUUsage }
+    if ($MemoryUsageTest) { $i++; Test-AlertMemoryUsage }
 
-    Test-AlertEventLog
-    Test-AlertDiskSpace
-    Test-AlertService
-    Test-AlertCPUUsageAlert
-    Test-AlertMemoryUsage
+    if ($i -eq 0) {
+        Write-Warning "No tests selected. Use -EventLogTest, -DiskSpaceTest, -ServiceTest, -CPUUsageTest or -MemoryUsageTest."
+    } else {
+        Write-Verbose "$i tests started."
+    }
+}
 
-    # hersteltaken
-    
-    Read-Host "Press Enter to continue and execute recovery tasks"
+
+
+
+function Stop-AlertSystemTests {
+    param(
+        [string]$JobName = 'CpuTestJob*',
+        [string]$DiskFile = 'c:\testfile-save-to-delete.bin',
+        [string]$ServiceName = 'spooler'
+    )
+
     Get-Job -Name $JobName | Stop-Job
-    Remove-Item $filename
+    Remove-Item $DiskFile
     Start-Service $ServiceName
 }
 
@@ -34,11 +45,16 @@ function Test-AlertSystem {
 
 
 function Test-AlertEventLog {
+    <#
+    .SYNOPSIS
+    Test EventLog by writing a number of events to the specified log.
+    #>
+
     param(
         [int]$Count = 100,
         [string]$LogName = 'System',
         [string]$Source = 'Test',
-        [string]$Message = 'not good',
+        [string]$Message = 'this is a test event',
         [string]$EntryType = 'Error',
         [int]$EventId = 1
     )
@@ -54,6 +70,11 @@ function Test-AlertEventLog {
 
 
 function Test-AlertDiskSpace {
+    <#
+    .SYNOPSIS
+    Test low disk space alert by creating a file with a specified size.
+    #>
+
     param(
         [string]$filename = 'c:\testfile-save-to-delete.bin',
 
@@ -72,9 +93,15 @@ function Test-AlertDiskSpace {
 
 
 function Test-AlertService {
+    <#
+    .SYNOPSIS
+    Test service alert by stopping a specified service.
+    #>
+
     [CmdletBinding()]
     param(
-        [string]$ServiceName = 'spooler'   # spooler, lmhosts = TCP/IP NetBIOS Helper
+        # e.g. spooler, lmhosts = TCP/IP NetBIOS Helper
+        [string]$ServiceName = 'spooler'
     )
 
     Write-Verbose "Stopping $ServiceName service"
@@ -87,10 +114,10 @@ function Test-AlertService {
 function Test-AlertCPUUsage {
     <#
     .SYNOPSIS
-    Test CPU usage by starting a number of jobs.
+    Test CPU usage by starting a number of jobs. Jobs should eventually finish. Jobs finish when closing PowerShell.
     #>
 
-    [cmdletbinding()]
+    [CmdletBinding()]
     param(
         [string]$CpuJobName = 'CpuTestJob'
     )
@@ -100,7 +127,7 @@ function Test-AlertCPUUsage {
         $NumberOfCores += $_.NumberOfLogicalProcessors 
     }
 
-    Write-Host "$NumberOfCores CPU cores found." -ForegroundColor Cyan
+    Write-Verbose "$NumberOfCores CPU cores found."
     0..$NumberOfCores | ForEach-Object { 
         Start-Job -Name "$CpuJobName$_" -ScriptBlock {
             $result = 1
@@ -109,13 +136,17 @@ function Test-AlertCPUUsage {
             } 
         }
     }
-    Write-Host "$NumberOfCores jobs has started." -ForegroundColor Cyan
 }
 
 
 
 
 function Test-AlertMemoryUsage {
+    <#
+    .SYNOPSIS
+    Test memory usage by creating a large array. Memory usage might remain high until the script is finished.
+    #>
+
     [CmdletBinding()]
     param(
         $size=10MB
@@ -146,27 +177,14 @@ function Test-AlertMemoryUsage {
 <#
 
 
-ter info, eventueel nog verwerken
-
-function Test-MemoryUsageOld {
-    # werkt niet zo lekker als de nieuwe versie
-    param(
-        $size=1KB
-    )
-
-    # Create a large array
-    $a = ""
-    for ($i=0; $i -lt 65000; $i++) { $a += "x" }
-    
-    # Fill the array with data
-    $b = @()
-    for ($i=0; $i -lt $size; $i++) { $b += $a }
-}
-
-
 
 fucntion Test-SCOMAgent {
-    Write-Host
+
+    [int]$EventlogCollectionThreshold = 16 # minutes
+
+    # init
+    Write-Host "Test-SCOMAgent: performs tests to determine agent functionality" -ForegroundColor Cyan
+
     $laatste = Get-EventLog 'Operations Manager' | Where-Object {
         $_.eventid -eq 6022 -and $_.source -eq 'health service script' 
     } | Select-Object -first 1 -expand timegenerated
