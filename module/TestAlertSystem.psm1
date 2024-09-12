@@ -4,6 +4,7 @@ function Test-AlertSystem {
     Performs different tests to determine alert functionality from for example Azure Monitor or SCOM.
     #>
 
+    [CmdletBinding()]
     param(
         [switch]$EventLogTest,
         [switch]$DiskSpaceTest,
@@ -30,6 +31,7 @@ function Test-AlertSystem {
 
 
 function Stop-AlertSystemTests {
+    [CmdletBinding()]
     param(
         [string]$JobName = 'CpuTestJob*',
         [string]$DiskFile = 'c:\testfile-save-to-delete.bin',
@@ -50,6 +52,7 @@ function Test-AlertEventLog {
     Test EventLog by writing a number of events to the specified log.
     #>
 
+    [CmdletBinding()]
     param(
         [int]$Count = 100,
         [string]$LogName = 'System',
@@ -75,6 +78,7 @@ function Test-AlertDiskSpace {
     Test low disk space alert by creating a file with a specified size.
     #>
 
+    [CmdletBinding()]
     param(
         [string]$filename = 'c:\testfile-save-to-delete.bin',
 
